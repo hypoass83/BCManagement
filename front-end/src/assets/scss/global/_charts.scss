@@ -1,0 +1,47 @@
+/*-------Charts styles start here ----*/
+
+.apexcharts-menu-icon,
+.apexcharts-pan-icon,
+.apexcharts-reset-icon,
+.apexcharts-selection-icon,
+.apexcharts-toolbar-custom-icon,
+.apexcharts-zoom-icon,
+.apexcharts-zoomin-icon,
+.apexcharts-zoomout-icon {
+  @apply hidden;
+}
+
+//apexcharts
+.apexcharts-gridline {
+  @apply stroke-[#77778e14];
+}
+
+
+#sales-chart,
+#sales-chart2,
+#sales-chart3,
+#sales-chart4 > apx-chart:first-child {
+  @apply block h-[100px];
+}
+
+#btc-chart,
+#dash-chart,
+#eth-chart,
+#glm-chart {
+  @apply h-[85px];
+}
+
+#active-chart {
+  @apply h-[100px];
+}
+
+.salesdonut {
+  @apply h-[235px];
+}
+
+#chartjs-line {
+  @apply h-[300px] #{!important};
+}
+
+
+/*--------Charts Styles End--------------------*/

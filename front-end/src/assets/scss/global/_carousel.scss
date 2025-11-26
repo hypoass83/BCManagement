@@ -1,0 +1,15 @@
+/*-----Carousel Styles Start------*/
+
+.our-clients-says {
+  .owl-carousel .owl-item img {
+    @apply w-[2.375rem] h-[2.375rem] #{!important};
+  }
+}
+
+.featured-collections {
+  .owl-carousel .owl-item.center {
+    @apply z-[-1] #{!important};
+  }
+}
+
+/*-----Carousel Styles End------*/

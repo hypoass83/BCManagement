@@ -1,0 +1,62 @@
+/*-----Select Styles Start------*/
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.left {
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.ng-select.ng-select-opened .ng-select-container {
+  @apply z-[47] #{!important};
+}
+
+.ng-dropdown-panel.ng-select-bottom {
+  @apply rounded-[inherit] #{!important};
+}
+
+.Profile-post-footer {
+  .ng-select {
+    @apply m-auto;
+  }
+}
+
+.ng-select {
+  @apply p-0 #{!important};
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  border-color: rgb(var(--color-primary)) !important;
+  background-color: rgb(var(--color-primary)) !important;
+  color: #fff !important;
+}
+.selected-list {
+    .c-angle-down,
+    .c-angle-up {
+      @apply left-[10px] right-auto #{!important};
+    }
+
+    .c-list .c-token {
+      @apply ml-[4px] mr-auto float-right pr-[8px] pl-[22px] #{!important};
+
+      .c-remove {
+        @apply left-[8px] right-auto #{!important};
+      }
+    }
+  }
+
+  .selected-list .c-list .c-token .c-remove svg {
+  @apply fill-[#000] #{!important};
+}
+
+#buy-style-1 {
+  .ti-form-select {
+    @apply cursor-pointer;
+
+    &:focus {
+      border-color: #eff0f6 !important;
+      --tw-ring-color: #eff0f6 !important;
+    }
+  }
+}
+
+
+/*--------Select Styles End--------------------*/
+

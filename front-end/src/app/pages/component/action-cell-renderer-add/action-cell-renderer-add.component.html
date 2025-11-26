@@ -1,0 +1,32 @@
+<div class="font-medium space-x-2 rtl:space-x-reverse">
+  <div class="hs-tooltip ti-main-tooltip" *ngIf="edit">
+    <a
+
+      (click)="onEdit()"
+      class="customer-edit m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-secondary"
+    >
+      <i class="ti ti-pencil"></i>
+      <span
+        class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+        role="tooltip"
+      >
+        Edit
+      </span>
+    </a>
+  </div>
+
+  <div class="hs-tooltip ti-main-tooltip" *ngIf="delete">
+    <a
+    (click)="onDelete()"
+      class="m-0 hs-tooltip-toggle relative w-8 h-8 ti-btn rounded-full p-0 transition-none focus:outline-none ti-btn-soft-danger"
+    >
+      <i class="ti ti-trash"></i>
+      <span
+        class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+        role="tooltip"
+      >
+        Delete
+      </span>
+    </a>
+  </div>
+</div>

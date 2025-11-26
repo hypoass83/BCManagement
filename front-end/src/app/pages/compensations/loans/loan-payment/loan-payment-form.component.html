@@ -1,0 +1,109 @@
+<app-modal
+  modalId="loan-payment-form"
+  title="Record Loan Payment"
+  (close)="closePopup()"
+  width="50%">
+
+  <!-- Loan Info Card -->
+  <div class="box bg-light p-4 mb-4" *ngIf="loan">
+    <h6 class="font-semibold text-gray-700 mb-3">Loan Information</h6>
+    <div class="grid grid-cols-2 gap-3 text-sm">
+      <div>
+        <strong>Employee:</strong> {{ loan.employee?.name }}
+      </div>
+      <div>
+        <strong>Grant Date:</strong> {{ loan.grantDate | date:'dd/MM/yyyy' }}
+      </div>
+      <div>
+        <strong>Total Loan:</strong>
+        <span class="text-primary font-semibold">{{ formatCurrency(loan.totalAmount) }}</span>
+      </div>
+      <div>
+        <strong>Monthly Payment:</strong> {{ formatCurrency(loan.monthlyAmount) }}
+      </div>
+      <div>
+        <strong>Already Repaid:</strong>
+        <span class="text-success font-semibold">{{ formatCurrency(loan.repaidAmount) }}</span>
+      </div>
+      <div>
+        <strong>Remaining Balance:</strong>
+        <span class="text-danger font-semibold">{{ formatCurrency(loan.remainingBalance) }}</span>
+      </div>
+      <div class="col-span-2">
+        <strong>Progress:</strong>
+        <div class="flex items-center gap-2 mt-1">
+          <div class="flex-grow h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div
+              class="h-full bg-primary transition-all"
+              [style.width.%]="loan.progressPercentage">
+            </div>
+          </div>
+          <span class="text-sm font-semibold">{{ loan.progressPercentage | number:'1.0-0' }}%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Form -->
+  <form [formGroup]="paymentForm" (ngSubmit)="recordPayment()" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-4 p-4">
+
+      <!-- Payment Amount -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="paymentForm"
+          controlName="paymentAmount"
+          inputId="paymentAmount"
+          label="Payment Amount (XAF) (*)"
+          inputType="number"
+          [placeholder]="'Max: ' + (loan?.remainingBalance || 0)"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+        <small class="text-gray-500 text-xs mt-1 block">
+          Maximum payment: {{ formatCurrency(loan?.remainingBalance) }}
+        </small>
+      </div>
+
+      <!-- Payment Date -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="paymentForm"
+          controlName="paymentDate"
+          inputId="paymentDate"
+          label="Payment Date (*)"
+          inputType="date"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Warning for Full Payment -->
+      <!-- <div class="col-span-12" *ngIf=" paymentForm.get('paymentAmount')?.value >= loan?.remainingBalance">
+        <div class="alert alert-success">
+          <i class="ti ti-check-circle"></i>
+          <strong>Full Payment:</strong> This payment will fully settle the loan and mark it as "Soldé".
+        </div>
+      </div> -->
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button
+      type="button"
+      (click)="closePopup()"
+      class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm">
+      Cancel
+    </button>
+    <button
+      class="ti-btn ti-btn-success"
+      type="submit"
+      (click)="recordPayment()">
+      <i class="ti ti-check"></i> Record Payment
+    </button>
+  </div>
+
+</app-modal>

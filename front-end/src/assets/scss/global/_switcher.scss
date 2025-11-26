@@ -1,0 +1,45 @@
+/*-----Switcher Styles Start------*/
+//switcher color-picker styles
+#hs-overlay-switcher {
+  .theme-colors {
+    .switch-select {
+      input:where(.color-primary-light, .color-bg-transparent) {
+        @apply w-[30px] h-[30px] rounded-[6px] cursor-pointer #{!important};
+      }
+
+      .color-picker {
+        @apply dark:bg-bgdark;
+        .hue {
+          @apply dir-ltr w-full h-[18%] rounded-[10px];
+        }
+
+        .right {
+          @apply w-full p-0;
+        }
+
+        .cursor {
+          @apply w-[18px] h-[18px];
+        }
+
+        .hex-text {
+          @apply p-0;
+
+          .box {
+            @apply py-[8px] pr-[24px] pl-[8px];
+          }
+
+          input {
+            @apply w-full;
+          }
+        }
+
+        .hue-alpha {
+          @apply mb-0;
+        }
+      }
+    }
+  }
+}
+
+
+/*-----Switcher Styles End------*/

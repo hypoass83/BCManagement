@@ -1,0 +1,9 @@
+/***** apexcharts styles *****/
+.apexcharts-tooltip.apexcharts-theme-dark {
+    @apply shadow-sm dark:border-bgbody dark:bg-bgdark #{!important};
+}
+
+.dark .apexcharts-tooltip.apexcharts-theme-light{
+    border-color: rgb(255 255 255 / 0.1) !important; 
+    background-color: rgb(var(--dark-bg)) !important;
+}

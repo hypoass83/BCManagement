@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.0.1" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.1" />
+    <PackageReference Include="ZXing.Net" Version="0.16.9" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Domain\Domain.csproj" />
+		<ProjectReference Include="..\Insfrastructure\Insfrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Services\CandDocs\" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,546 @@
+/*-----Custom Styles Start------*/
+
+.iti__country-list {
+  @apply border border-[#7a6d6d38];
+}
+
+.ltr .iti__arrow {
+  @apply ml-[12px] #{!important};
+}
+
+// .invoice-search {
+//   @apply h-[58px] #{!important};
+// }
+
+.default-border {
+  @apply border border-[#ccc];
+}
+
+.text-xxl {
+  @apply text-[1.25rem] leading-[2.5rem];
+}
+
+#external-events {
+  @apply mt-0 #{!important};
+
+  .fc-event {
+    @apply p-0 #{!important};
+  }
+
+  ul {
+    li {
+      a {
+        @apply p-[6px] #{!important};
+      }
+    }
+  }
+}
+
+.recent-files {
+  .plain-container {
+    @apply items-center flex flex-wrap;
+
+    .image {
+      @apply w-[30%] h-[100%] rounded-md #{!important};
+    }
+  }
+}
+
+.ti-switch:before {
+  @apply content-[""] #{!important};
+}
+
+.min-w-15rem {
+  @apply w-[15rem] #{!important};
+}
+
+.mdc-line-ripple::after {
+  transform: initial !important;
+}
+
+#cdk-overlay-0 {
+  .cdk-overlay-pane {
+    @apply z-[45px] #{!important};
+  }
+}
+
+.dp-popup {
+  @apply bg-white #{!important};
+}
+
+.ti-btn-primary {
+  background-color: rgb(var(--color-primary)) !important;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+}
+
+// btn-group radius styles
+.ti-btn-group {
+  &:first-child {
+    @apply rtl:rounded-l-[0px] rtl:rounded-r-[0.25rem] #{!important};
+  }
+  &:last-child {
+    @apply rounded-l-[0px] rounded-r-[0.25rem]  rtl:rounded-r-[0px] rtl:rounded-l-[0.25rem] #{!important};
+  }
+}
+
+.active.hs-scrollspy-active {
+  color: rgb(var(--color-primary)) !important;
+}
+
+.ri-arrow-left-s-line:before {
+  @apply rtl:content-["\ea6e"];
+}
+
+.mat-mdc-text-field-wrapper {
+  @apply rounded-sm #{!important};
+}
+.timepicker {
+  .mat-mdc-text-field-wrapper {
+    @apply ltr:rounded-l-none rtl:rounded-r-none #{!important};
+  }
+}
+.preload-time input {
+  @apply ltr:rounded-l-none rtl:rounded-r-none rtl:rounded-l-sm #{!important};
+}
+
+#ngx-colors-overlay {
+  .opened {
+    @apply rtl:translate-x-[100%] rtl:-translate-y-[280px] #{!important};
+  }
+}
+[data-menu-position="scrollable"]:not([data-nav-layout="horizontal"]) .content {
+  @apply min-h-[250vh];
+}
+.authentication-page {
+  @apply h-full;
+}
+div:where(.swal2-container) div:where(.swal2-validation-message) {
+  @apply dark:bg-bodybg text-danger/80 #{!important};
+}
+.toast-close-button {
+  @apply rtl:-left-[0.3em];
+}
+.filemanger-circle-chart {
+  tspan {
+    @apply dark:fill-[#fff] #{!important};
+  }
+}
+[dir="rtl"] {
+  .right-arrow-image,
+  .left-arrow-image {
+    @apply scale-x-[-1] #{!important};
+  }
+}
+
+[data-menu-styles="light"][data-vertical-style="doublemenu"]:not([data-nav-layout="horizontal"])
+  .app-sidebar
+  .slide.has-sub
+  .slide-menu {
+  @apply h-screen #{!important};
+}
+[data-menu-styles="dark"][data-vertical-style="doublemenu"]:not([data-nav-layout="horizontal"])
+  .app-sidebar
+  .slide.has-sub
+  .slide-menu {
+  @apply h-screen #{!important};
+}
+[dir="ltr"][data-nav-layout="overlay"] {
+  .main-sidebar .main-menu {
+    @apply ms-0 #{!important};
+  }
+}
+[dir="ltr"][data-nav-layout="vertical"] {
+  .main-sidebar .main-menu {
+    @apply ms-0 #{!important};
+  }
+}
+
+.sales-values {
+  @apply w-[135px] h-[135px] -top-8 left-[0.3rem];
+}
+
+#storage-circle {
+  text {
+    tspan {
+      @apply text-[18px] #{!important};
+    }
+  }
+}
+@media (max-width: 400px) {
+  .pie-charts {
+    .pie-chart {
+      @apply h-[250px] #{!important};
+    }
+  }
+}
+.mdc-checkbox .mdc-checkbox__native-control:enabled:checked ~ .mdc-checkbox__background,
+.mdc-checkbox .mdc-checkbox__native-control:enabled:indeterminate ~ .mdc-checkbox__background,
+.mdc-checkbox .mdc-checkbox__native-control[data-indeterminate="true"]:enabled ~ .mdc-checkbox__background {
+  @apply border-primary bg-primary #{!important};
+}
+.mdc-checkbox .mdc-checkbox__native-control:focus:checked ~ .mdc-checkbox__ripple {
+  @apply bg-primary opacity-10 #{!important};
+}
+/*-----Custom Styles End------*/
+
+#buy-style-1 {
+  .ng-select.ng-select-single .ng-select-container {
+    @apply h-[45px] #{!important};
+  }
+  .ti-form-select {
+    @apply w-[90px] #{!important};
+  }
+  .ng-select .ng-select-container {
+    @apply border-0 border-transparent shadow-none #{!important};
+  }
+}
+
+[dir="rtl"] .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.left {
+  border-left: 1px solid #8494a5 #{!important};
+}
+@media (max-width: 460px) {
+  #stars-busytext {
+    .br-movie {
+      .br-units {
+        @apply flex flex-col text-center #{!important};
+      }
+    }
+  }
+}
+// .ri-arrow-right-s-line:before {
+//   @apply rtl:content-["\ea64"];
+// }
+
+.thumbnail .keen-slider__slide.active {
+  border-color: rgb(var(--color-success)) !important;
+}
+.ngx-slider .ngx-slider-tick {
+  @apply bg-white #{!important};
+}
+#result {
+  @apply text-gray-400 #{!important};
+}
+
+.mdc-dialog__actions {
+  @apply p-[10px] #{!important};
+}
+.NgxEditor {
+  h1 {
+    @apply font-bold text-4xl;
+  }
+  h2 {
+    @apply font-bold text-3xl;
+  }
+  h3 {
+    @apply font-bold text-2xl;
+  }
+  h4 {
+    @apply font-bold text-xl;
+  }
+  h5 {
+    @apply font-bold text-lg;
+  }
+  h6 {
+    @apply font-bold text-base;
+  }
+}
+
+.dark {
+  .apexcharts-tooltip.apexcharts-theme-light {
+    border-color: rgb(255 255 255 / 0.1) !important;
+    background-color: rgb(var(--dark-bg)) !important;
+  }
+  .apexcharts-tooltip.apexcharts-theme-light .apexcharts-tooltip-title {
+    border-color: rgb(255 255 255 / 0.1) !important;
+    background-color: rgb(var(--dark-bg)) !important;
+  }
+
+  //  .apexcharts-legend-text{
+  //      color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+  //  }
+
+  .ng-dropdown-panel {
+    @apply bg-bgdark;
+  }
+  .apexcharts-text title,
+  .apexcharts-text tspan {
+    @apply fill-[#64748b] text-[#64748b];
+  }
+  .dropzone-preview {
+    border: 1px solid #bbbbbb52;
+    background: var(--dark-bg);
+  }
+
+  .mat-mdc-table {
+    background-color: var(--dark-bg) !important;
+    color: #fff !important;
+  }
+
+  .mdc-data-table__cell {
+    color: #fff !important;
+  }
+
+  .mdc-data-table__header-cell {
+    color: #fff !important;
+  }
+
+  .NgxEditor__Seperator {
+    @apply border-s border-s-white/20;
+  }
+  #ngx-colors-overlay {
+    .opened {
+      @apply bg-bgdark #{!important};
+    }
+    .g-input {
+      @apply border border-white/10 #{!important};
+      input {
+        @apply bg-bodybg text-white/60 #{!important};
+      }
+    }
+  }
+  .nav-wrapper {
+    .round-button svg {
+      @apply fill-white;
+    }
+  }
+
+  .md-drppicker {
+    td,
+    th {
+      &.available {
+        &.prev {
+          @apply invert #{!important};
+        }
+        &.next {
+          @apply invert #{!important};
+        }
+      }
+    }
+  }
+  .md-drppicker td.off,
+  .md-drppicker td.off.in-range,
+  .md-drppicker td.off.start-date,
+  .md-drppicker td.off.end-date {
+    @apply bg-transparent #{!important};
+  }
+  .cal-month-view {
+    @apply bg-[#1e293b] #{!important};
+  }
+
+  .cal-cell {
+    @apply border-r border-white/10;
+  }
+
+  .cal-month-view .cal-days {
+    @apply border-white/10;
+  }
+
+  .cal-month-view .cal-day-cell.cal-today {
+    @apply bg-[#293549];
+
+    .cal-day-number {
+      @apply text-white;
+    }
+  }
+
+  .cal-month-view .cal-day-number {
+    @apply text-white/30;
+  }
+
+  .cal-month-view .cal-days .cal-cell-row {
+    @apply border-b-white/10;
+
+    &:hover {
+      @apply bg-[#1e293b];
+    }
+
+    .cal-cell {
+      &:hover {
+        @apply bg-[#293549];
+      }
+    }
+  }
+
+  .cal-header {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .cal-month-view .cal-day-cell:not(:last-child) {
+    @apply border-r-white/10;
+  }
+
+  #external-events {
+    @apply border-none bg-[#1e293b] rounded-[0] #{!important};
+  }
+
+  .selected-list .c-angle-down,
+  .selected-list .c-angle-up {
+    filter: invert(1);
+  }
+
+  .ngx-slider .ngx-slider-bar {
+    @apply bg-[#293549];
+  }
+
+  .ql-editor.ql-blank::before {
+    @apply text-white/60;
+  }
+
+  .list-area {
+    @apply border border-white/10 bg-bgdark;
+  }
+
+  .selected-list .c-list .c-token {
+    --tw-text-opacity: 1 !important;
+    color: rgb(226 232 240 / var(--tw-text-opacity)) !important;
+    @apply border-white/10 bg-black/20 #{!important};
+  }
+
+  .list-filter,
+  .select-all {
+    @apply border-b border-white/10;
+  }
+
+  .arrow-down,
+  .arrow-up {
+    border-left: 13px solid #1e293b;
+    border-right: 13px solid #1e293b;
+    border-bottom: 15px solid #293549;
+  }
+
+  .ng-dropdown-panel {
+    @apply border-[#3d4450] #{!important};
+
+    .ng-dropdown-panel-items .ng-optgroup {
+      @apply bg-[#293549];
+    }
+  }
+
+  [type="text"],
+  [type="email"],
+  [type="url"],
+  [type="password"],
+  [type="number"],
+  [type="date"],
+  [type="datetime-local"],
+  [type="month"],
+  [type="search"],
+  [type="tel"],
+  [type="time"],
+  [type="week"],
+  [multiple],
+  textarea,
+  select {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .selected-list .c-btn {
+    @apply border-white/10;
+  }
+
+  .ng-select.ng-select-multiple
+    .ng-select-container
+    .ng-value-container
+    .ng-input
+    > input {
+    @apply text-white/70;
+  }
+
+  .ng-select .ng-select-container {
+    @apply text-white/70 bg-[#1e293b] border border-white/10;
+  }
+
+  .ng-select.ng-select-bottom.ng-select-container {
+    @apply bg-white/10 #{!important};
+  }
+
+  .ng-select.ng-select-single .ng-select-container {
+    @apply bg-bgdark text-white/70 border-white/10 #{!important};
+  }
+
+  .ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+    @apply bg-bgdark text-white/70 #{!important};
+  }
+
+  .ng-select.ng-select-opened > .ng-select-container {
+    @apply bg-bgdark;
+  }
+
+  .list-area {
+    @apply bg-bgdark;
+  }
+
+  ngx-dropzone {
+    @apply bg-bgdark border-white/10 #{!important};
+  }
+
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    @apply bg-bgdark;
+  }
+
+  .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
+    @apply bg-bgdark text-white/60;
+  }
+
+  .mat-mdc-icon-button svg {
+    @apply bg-bgdark text-white/60;
+  }
+
+  .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    @apply bg-bgdark text-white/60;
+  }
+
+  .mat-mdc-button:not(:disabled) {
+    @apply bg-bgdark m-1 text-white/60;
+  }
+
+  .mat-datepicker-content {
+    @apply bg-bgdark text-white/60;
+  }
+
+  .ng-select.ng-select-multiple
+    .ng-select-container
+    .ng-value-container
+    .ng-value {
+    @apply bg-[#5a66f1] text-white;
+  }
+
+  dp-date-picker .dp-input-container {
+    input {
+      @apply bg-bgdark #{!important};
+    }
+  }
+  .ng-dropdown-panel .ng-dropdown-panel-items .ng-optgroup {
+    @apply text-white;
+  }
+  .mdc-text-field--filled .mdc-line-ripple::after {
+    @apply border-b-bgdark;
+  }
+  .apexcharts-title-text,
+  .apexcharts-subtitle-text {
+    @apply text-[#8c9097] fill-[#8c9097] #{!important};
+  }
+
+  .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+    @apply bg-[rgb(var(--color-primary))] text-white #{!important};
+  }
+}
+
+/* apexcharts */
+[dir="rtl"] {
+  .apexcharts-canvas {
+    @apply dir-ltr;
+  }
+}
+/* apexcharts */
+
+
+
+
+
+
+

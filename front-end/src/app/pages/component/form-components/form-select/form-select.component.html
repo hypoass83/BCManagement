@@ -1,0 +1,31 @@
+<div [formGroup]="form" class="col-span-12 sm:inline-flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full">
+  <label [for]="controlName" class="w-32 ti-form-label mb-0 block">
+    {{ label }} <span *ngIf="required" class="text-red-500">*</span>
+  </label>
+
+  <div class="relative w-full">
+    <!-- The [formControlName] here now has the required [formGroup] context from the parent div -->
+    <ng-select
+      [id]="controlName"
+      [formControlName]="controlName"
+      [placeholder]="placeholder"
+      class="w-full ti-form-select"
+      [ngClass]="
+        submitted && formControl?.errors
+          ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+          : ''
+      "
+    >
+      <ng-option *ngFor="let item of options" [value]="item[optionValue]">
+        {{ item[optionLabel] }}
+      </ng-option>
+    </ng-select>
+
+    <div
+      *ngIf="submitted && formControl?.errors"
+      class="invalid-feedback mt-2 text-sm text-red-600"
+    >
+      <p *ngIf="formControl?.errors?.['required']">This field is required.</p>
+    </div>
+  </div>
+</div>

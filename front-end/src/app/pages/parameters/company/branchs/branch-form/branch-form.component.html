@@ -1,0 +1,115 @@
+<app-modal modalId="branch-create-form" title="Create a new Branch" (close)="closePopup()" width="80%">
+
+  <form [formGroup]="branchForm" (ngSubmit)="createOrUpdateBranch()" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-4 p-4">
+
+      <!-- Left Column Fields -->
+      <div class="col-span-6">
+        <app-form-input [form]="branchForm" controlName="branchName" inputId="branchName" label="Name"
+          placeholder="Name" [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-6" formGroupName="adress">
+        <app-form-input [form]="$any(branchForm.get('adress'))" controlName="adressPhoneNumber"
+          inputId="adressPhoneNumber" label="Address Phone Number" placeholder="Phone Number" [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-6">
+        <app-form-input [form]="branchForm" controlName="branchCode" inputId="branchCode" label="Code"
+          placeholder="branchCode" [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-6" formGroupName="adress">
+        <app-form-input [form]="$any(branchForm.get('adress'))" controlName="adressCellNumber"
+          inputId="adressCellNumber" label="Address Cell Number" placeholder="Cell Number"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-6">
+        <app-form-input [form]="branchForm" controlName="branchDescription" inputId="branchDescription"
+          label="Description" placeholder="branchDescription" inputType="textarea" [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-6" formGroupName="adress">
+        <app-form-input [form]="$any(branchForm.get('adress'))" controlName="adressEmail" inputId="adressEmail"
+          label="Address Email" placeholder="Email Address" inputType="email" [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-6">
+        <app-form-input [form]="branchForm" controlName="branchAbbreviation" inputId="branchAbbreviation"
+          label="Abbreviation" placeholder="branchAbbreviation" [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-6" formGroupName="adress">
+        <app-form-input [form]="$any(branchForm.get('adress'))" controlName="adressPOBox" inputId="adressPOBox"
+          label="Address PO Box" placeholder="PO Box" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-6">
+        <app-form-select [form]="branchForm" controlName="companyID" label="Company" [options]="companies"
+          optionLabel="companyName" optionValue="companyID" [required]="true" [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Location Selects - Full Width Section -->
+      <div class="col-span-12" formGroupName="adress">
+        <div class="grid grid-cols-12 gap-4">
+
+          <div class="col-span-6">
+            <app-form-select [form]="$any(branchForm.get('adress'))" controlName="countryID" inputId="countryID"
+              label="Country (*)" placeholder="Select a country" [options]="countries" optionLabel="countryLabel"
+              optionValue="countryID" [required]="true" [submitted]="isSubmitted">
+            </app-form-select>
+          </div>
+
+          <div class="col-span-6">
+            <app-form-select [form]="$any(branchForm.get('adress'))" controlName="regionID" inputId="regionID"
+              label="Region (*)" placeholder="Select a region" [options]="regions" optionLabel="regionLabel"
+              optionValue="regionID" [required]="true" [submitted]="isSubmitted">
+            </app-form-select>
+          </div>
+
+          <div class="col-span-6">
+            <app-form-select [form]="$any(branchForm.get('adress'))" controlName="townID" inputId="townID"
+              label="Town (*)" placeholder="Select a town" [options]="towns" optionLabel="townLabel"
+              optionValue="townID" [required]="true" [submitted]="isSubmitted">
+            </app-form-select>
+          </div>
+
+          <div class="col-span-6">
+            <app-form-select [form]="$any(branchForm.get('adress'))" controlName="quarterID" inputId="quarterID"
+              label="Quarter (*)" placeholder="Select a quarter" [options]="quarters" optionLabel="quarterLabel"
+              optionValue="quarterID" [required]="true" [submitted]="isSubmitted">
+            </app-form-select>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button type="button" (click)="closePopup()"
+      class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10">
+      Close
+    </button>
+    <button class="ti-btn ti-btn-primary" type="submit" (click)="createOrUpdateBranch()">
+      Save changes
+    </button>
+  </div>
+
+</app-modal>

@@ -1,0 +1,38 @@
+<app-modal modalId="departement-create-form" title="Create a new Department" wi (close)="closePopup()">
+
+  <form [formGroup]="departmentForm" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-y-4 p-4">
+      <div class="col-span-12">
+        <app-form-input [form]="departmentForm" controlName="departmentCode" label="department Code" placeholder="Enter department code"
+          [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12">
+        <app-form-input [form]="departmentForm" controlName="departmentName" label="department Name" placeholder="Enter department name"
+          [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12">
+        <app-form-input [form]="departmentForm" controlName="departmentDescription" label="Description"
+          placeholder="Enter department description" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12">
+        <app-form-select [form]="departmentForm" controlName="companyID" label="Companies" [options]="companies"
+          optionLabel="companyName" optionValue="companyID" [required]="true" [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+    </div>
+
+  </form>
+
+  <div footer>
+    <button type="button" class="ti-btn ti-border bg-white text-gray-700" (click)="closePopup()">Close</button>
+    <button type="submit" (click)="createOrUpdateDepartment()" class="ti-btn ti-btn-primary">Save changes</button>
+  </div>
+
+</app-modal>

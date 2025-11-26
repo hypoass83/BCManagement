@@ -1,0 +1,118 @@
+<!-- Start::app-sidebar -->
+<aside class="app-sidebar" [ngClass]="{ 'sticky-pin': scrolled }" id="sidebar">
+  <!-- Start::main-sidebar-header -->
+  <div class="main-sidebar-header">
+    <a routerLink="/dashboard/sales" class="header-logo">
+      <span class="category-name text-lg font-bold text-white">{{companyName}} Management</span>
+    </a>
+  </div>
+  <!-- End::main-sidebar-header -->
+
+  <!-- ::main-sidebar -->
+  <ngx-simplebar [options]="options">
+    <div class="main-sidebar" id="sidebar-scroll">
+      <!-- Start::nav -->
+      <nav class="main-menu-container nav nav-pills flex-column sub-open active open">
+        <div class="slide-left" id="slide-left">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"></path>
+          </svg>
+        </div>
+        <ul class="main-menu">
+          <!-- 1st Level Menu -->
+          <ng-container *ngFor="let menuItem of (menuItems())">
+              <li class="slide" #activeMenuItems
+                  [ngClass]="{'slide__category':menuItem.headTitle,
+                  'slide has-sub':menuItem.title,
+                  'open': menuItem.active,
+                  'active': menuItem.selected,}">
+                  <!-- head title  -->
+                  <span *ngIf="menuItem.headTitle" class="category-name">{{ t(menuItem.headTitle) | async}}</span>
+                  <!-- has-Link -->
+                  <a class="side-menu__item" [routerLink]="!menuItem.type ? null : [menuItem.path]" routerLinkActive="active" *ngIf="menuItem.type === 'link'"
+                      (click)="setNavActive(menuItem)">
+                      <i *ngIf="menuItem.icon" class="side-menu__icoprofileIDn demoicon ri-{{menuItem.icon}}"></i>
+                      <span class="side-menu__label">{{ t(menuItem.title??"") | async}}</span>
+                  </a>
+                  <!-- has-empty -->
+                  <a class="side-menu__item" href="javascript:;" *ngIf="menuItem.type === 'empty'" (click)="setNavActive(menuItem)">
+                      <i *ngIf="menuItem.icon" class="side-menu__icon demoicon ri-{{menuItem.icon}}"></i>
+                      <span class="side-menu__label">{{ t(menuItem.title??"")| async}}</span>
+                  </a>
+                  <!-- has-Sub -->
+                  <a class="side-menu__item with-sub" [routerLink]="menuItem.type ? null: [menuItem.path]" [ngClass]="{active: menuItem.selected}" *ngIf="menuItem.type === 'sub'"
+                      (click)="toggleNavActive(menuItem)">
+                      <i *ngIf="menuItem.icon" class="side-menu__icon demoicon ri-{{menuItem.icon}}"></i>
+                      <span class="side-menu__label">{{ t(menuItem.title??"")| async}}</span>
+                      <span class="badge {{menuItem.badgeClass}} side-badge" *ngIf="menuItem.badgeClass && menuItem.badgeValue">
+                          {{menuItem.badgeValue}}
+                      </span>
+                      <i class="ri ri-arrow-right-s-line side-menu__angle"></i>
+                  </a>
+
+                  <!-- 2nd Level menu -->
+                  <ul class="slide-menu child1" *ngIf="menuItem.children" [ngStyle]="{ display: menuItem.active ? 'block' : 'none' }">
+                    <li class="slide side-menu__label1"><a href="javascript:void(0)">{{menuItem.title}}</a></li>
+                      <ng-container *ngFor="let childrenItem of menuItem.children">
+                          <li class="slide cursor-pointer" activeMenuItems
+                              [ngClass]="{'is-expanded': childrenItem.active, active: childrenItem.active, 'sub-slide': childrenItem.type === 'sub'}">
+                              <!-- link -->
+                              <a class="side-menu__item" [routerLink]="!childrenItem.type ? null : [childrenItem.path] " routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                                  *ngIf="childrenItem.type === 'link'" (click)="setNavActive(childrenItem)">
+                                  {{ t(childrenItem.title??"")| async}}
+                              </a>
+                              <!-- empty -->
+                              <a class="side-menu__item" href="javascript:;" *ngIf="childrenItem.type === 'empty' " (click)="setNavActive(childrenItem)">
+                                  {{ t(childrenItem.title??"") | async}}
+                              </a>
+                              <!-- sub -->
+                              <a class="side-menu__item" [ngClass]="{active: childrenItem.selected}" [routerLink]="childrenItem.type ? null : [childrenItem.path]"
+                                  *ngIf="childrenItem.type === 'sub'" (click)="toggleNavActive(childrenItem)">
+                                  <span class="">{{ t(childrenItem.title??"")| async}}</span>
+                                  <i class="ri ri-arrow-right-s-line side-menu__angle"></i>
+                              </a>
+                              <!-- 3rd Level menu -->
+                              <ul class="slide-menu child2" [ngStyle]="{
+                                display: childrenItem.active ? 'block' : 'none',
+                                right: localdata['synto-dir'] == 'rtl' ? 'auto' : '',
+                                left: localdata['synto-dir'] == 'rtl' ? '100%' : ''
+                              }"
+
+
+
+
+
+                              *ngIf="childrenItem.children" [ngClass]="{'open': childrenItem.active}">
+                                  <ng-container *ngFor="let childrenSubItem of childrenItem.children">
+                                      <li *ngIf="childrenSubItem.path && childrenSubItem.path!=='Index'" class="slide" activeMenuItems [ngClass]="{'is-expanded': childrenSubItem.active}">
+                                          <!-- link -->
+                                          <a class="side-menu__item" routerLinkActive="active" [routerLink]="!childrenSubItem.type ?  null : [childrenSubItem.path]"
+                                              *ngIf="childrenSubItem.type === 'link'" [routerLinkActiveOptions]="{exact : true}">
+                                              {{ t(childrenSubItem.title??"")| async}} {{localdata['synto-dir']}}
+                                          </a>
+                                          <!-- empty -->
+                                          <a class="side-menu__item" href="javascript:;" *ngIf="childrenSubItem.type === 'empty'">
+                                              {{ t(childrenSubItem.title??"")| async}}
+                                          </a>
+                                      </li>
+                                  </ng-container>
+                              </ul>
+                          </li>
+                      </ng-container>
+                  </ul>
+              </li>
+          </ng-container>
+      </ul>
+        <div class="slide-right" id="slide-right">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"></path>
+          </svg>
+        </div>
+      </nav>
+      <!-- End::nav -->
+    </div>
+  </ngx-simplebar>
+
+  <!-- End::main-sidebar -->
+</aside>
+<!-- End::app-sidebar -->

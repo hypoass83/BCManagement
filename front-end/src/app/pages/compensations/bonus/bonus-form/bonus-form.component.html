@@ -1,0 +1,167 @@
+<app-modal
+  modalId="bonus-create-form"
+  [title]="bonusToUpdate ? 'Edit Bonus' : 'Create a new Bonus'"
+  (close)="closePopup()"
+  width="70%">
+
+  <form [formGroup]="bonusForm" (ngSubmit)="createOrUpdateBonus()" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-4 p-4">
+
+      <!-- Bonus Type -->
+
+
+      <!-- Award Date -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="bonusForm"
+          controlName="awardDate"
+          inputId="awardDate"
+          label="Award Date (*)"
+          inputType="date"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Bonus Scope (Create Mode Only) -->
+      <div class="col-span-12" *ngIf="!bonusToUpdate">
+        <label class="ti-form-label mb-2">Bonus Scope (*)</label>
+        <div class="flex gap-4">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              formControlName="bonusScope"
+              value="individual"
+              class="ti-form-radio">
+            <span>Individual Bonus (specific employee)</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              formControlName="bonusScope"
+              value="collective"
+              class="ti-form-radio">
+            <span>Collective Bonus (all employees in branch)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Employee Selection (Individual) -->
+      <div class="col-span-6" *ngIf="selectedScope === 'individual'">
+        <app-form-select
+          [form]="bonusForm"
+          controlName="employeeId"
+          label="Employee (*)"
+          placeholder="Select an employee"
+          [options]="employees"
+          optionLabel="name"
+          optionValue="globalPersonID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Branch Selection (Collective) -->
+      <div class="col-span-6" *ngIf="selectedScope === 'collective'">
+        <app-form-select
+          [form]="bonusForm"
+          controlName="branchId"
+          label="Branch (*)"
+          placeholder="Select a branch"
+          [options]="branches"
+          optionLabel="branchName"
+          optionValue="branchID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Amount -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="bonusForm"
+          controlName="amount"
+          inputId="amount"
+          label="Amount (XAF) (*)"
+          inputType="number"
+          placeholder="500000"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Reason -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="bonusForm"
+          controlName="reason"
+          inputId="reason"
+          label="Reason"
+          placeholder="Enter bonus reason (optional)"
+          inputType="textarea"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Info Alert for Edit Mode -->
+      <div class="col-span-12" *ngIf="bonusToUpdate">
+        <div class="alert alert-info">
+          <strong>Note:</strong> You can modify the bonus type, amount, award date, and reason.
+          The scope (employee or branch) cannot be changed after creation.
+        </div>
+      </div>
+
+      <!-- Info Alert for Collective Bonus -->
+      <div class="col-span-12" *ngIf="selectedScope === 'collective' && !bonusToUpdate">
+        <div class="alert alert-warning">
+          <i class="ti ti-info-circle"></i>
+          <strong>Collective Bonus:</strong> This bonus will be awarded to all active employees in the selected branch.
+        </div>
+      </div>
+
+      <!-- Bonus Summary -->
+      <div class="col-span-12" *ngIf="bonusForm.get('amount')?.value">
+        <div class="box bg-light p-3">
+          <h6 class="font-semibold mb-2">Bonus Summary</h6>
+          <div class="grid grid-cols-2 gap-2 text-sm">
+            <!-- <div>
+              <strong>Type:</strong>
+              {{ bonusTypeOptions.find(t => t.value === bonusForm.get('bonusType')?.value)?.label }}
+            </div> -->
+            <div>
+              <strong>Amount:</strong>
+              {{ bonusForm.get('amount')?.value | number:'1.0-0' }} XAF
+            </div>
+            <div>
+              <strong>Scope:</strong>
+              {{ selectedScope === 'individual' ? 'Individual' : 'Collective (Branch)' }}
+            </div>
+            <div>
+              <strong>Award Date:</strong>
+              {{ bonusForm.get('awardDate')?.value | date:'dd/MM/yyyy' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button
+      type="button"
+      (click)="closePopup()"
+      class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm">
+      Close
+    </button>
+    <button
+      class="ti-btn ti-btn-primary"
+      type="submit"
+      (click)="createOrUpdateBonus()">
+      {{ bonusToUpdate ? 'Save changes' : 'Create Bonus' }}
+    </button>
+  </div>
+
+</app-modal>

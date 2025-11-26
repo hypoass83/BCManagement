@@ -1,0 +1,13 @@
+
+.apexcharts-yaxis {
+  .apexcharts-yaxis-texts-g {
+    @apply rtl:-translate-x-2;
+  }
+}
+.bar-chart {
+  .apexcharts-yaxis {
+    .apexcharts-yaxis-texts-g {
+      @apply rtl:translate-x-4;
+    }
+  }
+}

@@ -1,0 +1,38 @@
+<app-modal modalId="job-create-form" title="Create a new Job" wi (close)="closePopup()">
+
+  <form [formGroup]="jobForm" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-y-4 p-4">
+      <div class="col-span-12">
+        <app-form-input [form]="jobForm" controlName="jobCode" label="Job Code" placeholder="Enter job code"
+          [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12">
+        <app-form-input [form]="jobForm" controlName="jobLabel" label="Job Name" placeholder="Enter job name"
+          [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12">
+        <app-form-input [form]="jobForm" controlName="jobDescription" label="Description"
+          placeholder="Enter job description" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12">
+        <app-form-select [form]="jobForm" controlName="departmentID" label="Department" [options]="departments"
+          optionLabel="departmentName" optionValue="departmentID" [required]="true" [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+    </div>
+
+  </form>
+
+  <div footer>
+    <button type="button" class="ti-btn ti-border bg-white text-gray-700" (click)="closePopup()">Close</button>
+    <button type="submit" (click)="createOrUpdateJob()" class="ti-btn ti-btn-primary">Save changes</button>
+  </div>
+
+</app-modal>

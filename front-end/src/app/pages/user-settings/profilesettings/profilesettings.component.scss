@@ -1,0 +1,15 @@
+::ng-deep{
+    .dp-date-picker.dp-material .dp-picker-input{
+         height: 45px !important;
+        width: 500px !important; 
+    }
+        .dark{
+            dp-day-calendar .dp-day-calendar-container {
+                    background-color: rgb(var(--dark-bg));
+                }
+                                .dp-input-container{
+                    background-color: rgb(var(--dark-bg));
+                }
+        }
+    
+}

@@ -1,0 +1,55 @@
+<app-page-header
+  title="Human Resources"
+  title1="Financial"
+  activeitem="Employee Bonuses">
+</app-page-header>
+
+<!-- Filter Buttons -->
+<div class="box p-3 mb-3">
+  <div class="flex gap-2">
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'all' ? 'ti-btn-primary' : 'ti-btn-outline-primary')"
+      (click)="onFilterChange('all')">
+      <i class="ti ti-list"></i> All Bonuses
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'individual' ? 'ti-btn-primary' : 'ti-btn-outline-primary')"
+      (click)="onFilterChange('individual')">
+      <i class="ti ti-user"></i> Individual Bonuses
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'collective' ? 'ti-btn-primary' : 'ti-btn-outline-primary')"
+      (click)="onFilterChange('collective')">
+      <i class="ti ti-users"></i> Collective Bonuses
+    </button>
+  </div>
+</div>
+
+<app-search-bar
+  [(quickFilterText)]="quickFilterText"
+  [buttonLabel]="'Create Bonus'"
+  (buttonClick)="createBonus()">
+</app-search-bar>
+
+<div style="height: 60vh" class="ag-grid-container">
+  <ag-grid-angular
+    style="width: 100%; height: 100%"
+    [rowData]="rowData()"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [pagination]="true"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    [class]="themeClass()"
+    [quickFilterText]="quickFilterText"
+    (gridReady)="onGridReady($event)"
+  />
+</div>
+
+<app-bonus-form
+  [bonusToUpdate]="bonusToEdit"
+  (bonusSaved)="loadBonuses()">
+</app-bonus-form>

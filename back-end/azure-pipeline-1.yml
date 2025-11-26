@@ -1,0 +1,47 @@
+trigger:
+  branches:
+    include:
+      - main
+
+stages:
+- stage: BuildAndDeploy
+  displayName: 'Build and Deploy Front-End to All Agencies'
+  jobs:
+  - job: DeployToAgencies
+    displayName: 'Deploy to $(agentName) - $(location)'
+    strategy:
+      matrix:
+        DC_VAL_DLA_01:
+          agentName: DC-VAL-DLA-01
+          location: Douala Akwa
+        DOYOAN_DC_DLA_0:
+          agentName: DOYOAN-DC-DLA-0
+          location: Douala Bonamoussadi
+        RAFA_DLA_DC_01:
+          agentName: RAFA-DLA-DC-01
+          location: Douala Bonaberi
+        DOYOANSERVERYDE:
+          agentName: DOYOANSERVERYDE
+          location: Yaounde Doyoan Tsinga 
+    pool:
+      name: 'default'
+      demands:
+        - Agent.Name -equals $(agentName)
+    steps:
+    - checkout: self
+      clean: false
+      displayName: 'Update code'
+
+    - script : dotnet clean
+      displayName: 'Clean Solution'
+
+    - script : dotnet restore
+      displayName: 'Restoration packages'
+    
+    - script: |
+        iisreset /stop
+        echo "Suppression des anciens fichiers..."
+        rd /s /q "C:\inetpub\wwwroot\NewValdozManagementAPI"
+        dotnet publish WebAPI/WebAPI.csproj --configuration Release --output "C:\inetpub\wwwroot\NewValdozManagementAPI\"
+        iisreset /start
+      displayName: 'Publish Application and deploy application'

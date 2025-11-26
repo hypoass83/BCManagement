@@ -1,0 +1,460 @@
+<!-- contract-form.component.html -->
+<app-modal
+  modalId="contract-create-form"
+  [title]="contractToUpdate ? 'Edit Contract' : 'Create a new Contract'"
+  (close)="closePopup()"
+  width="90%">
+
+  <!-- Steps Progress Bar -->
+  <div class="box lg:border-b lg:border-t lg:border-gray-200 mb-4" *ngIf="!contractToUpdate">
+    <nav class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Progress">
+      <ol
+        role="list"
+        class="overflow-hidden rounded-md lg:flex lg:rounded-none lg:border-l lg:border-r lg:border-gray-200">
+        <li class="relative overflow-hidden lg:flex-1" *ngFor="let step of steps">
+          <div class="overflow-hidden border border-gray-200 lg:border-0">
+            <a aria-current="step">
+              <span
+                class="absolute left-0 top-0 h-full w-1 lg:bottom-0 lg:top-auto lg:h-1 lg:w-full"
+                [ngClass]="step.position === currentStep() ? 'bg-indigo-600' : 'bg-gray-200'"
+                aria-hidden="true"></span>
+              <span class="flex items-start px-6 py-5 text-sm font-medium lg:pl-9">
+                <span class="shrink-0">
+                  <span
+                    class="flex size-10 items-center justify-center rounded-full border-2"
+                    [ngClass]="step.position === currentStep() ? 'border-indigo-600' : 'border-gray-300'">
+                    <span
+                      [ngClass]="step.position === currentStep() ? 'text-indigo-600' : 'text-gray-500'">
+                      0{{ step.position + 1 }}
+                    </span>
+                  </span>
+                </span>
+                <span class="ml-4 mt-0.5 flex min-w-0 flex-col">
+                  <span
+                    class="text-sm font-medium"
+                    [ngClass]="step.position === currentStep() ? 'text-indigo-600' : 'text-gray-500'">
+                    {{ step.subtitle }}
+                  </span>
+                </span>
+              </span>
+            </a>
+          </div>
+        </li>
+      </ol>
+    </nav>
+  </div>
+
+  <form [formGroup]="contractForm" class="mx-auto w-full">
+
+    <!-- Step 0: Employee Selection -->
+    <div *ngIf="currentStep() === 0 || contractToUpdate" class="grid grid-cols-12 gap-4 p-4">
+      <div class="col-span-12">
+        <h3 class="text-lg font-semibold mb-3">Select Employee</h3>
+      </div>
+
+      <div class="col-span-12">
+        <app-form-select
+          [form]="contractForm"
+          controlName="employeeId"
+          label="Employee"
+          [options]="employees"
+          optionLabel="name"
+          optionValue="globalPersonID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+
+        <!-- Loading indicator -->
+        <div *ngIf="isLoadingSalary()" class="mt-3 flex items-center text-blue-600">
+          <i class="ti ti-loader animate-spin mr-2"></i>
+          <span>Loading employee information...</span>
+        </div>
+
+        <!-- Employee Info Card -->
+        <div *ngIf="selectedEmployee() && !isLoadingSalary()" class="mt-4 bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <h4 class="font-semibold text-blue-900 mb-2">Employee Information</h4>
+          <div class="grid grid-cols-2 gap-2 text-sm">
+            <div>
+              <span class="text-gray-600">Name:</span>
+              <span class="ml-2 font-medium">{{ selectedEmployee()?.name }}</span>
+            </div>
+            <div>
+              <span class="text-gray-600">Branch:</span>
+              <span class="ml-2 font-medium">{{ selectedEmployee()?.branch?.branchName }}</span>
+            </div>
+            <div>
+              <span class="text-gray-600">Department:</span>
+              <span class="ml-2 font-medium">{{ selectedEmployee()?.department?.departmentName }}</span>
+            </div>
+            <div>
+              <span class="text-gray-600">Job:</span>
+              <span class="ml-2 font-medium">{{ selectedEmployee()?.job?.jobLabel }}</span>
+            </div>
+          </div>
+
+          <!-- Previous Salary Info -->
+          <div *ngIf="lastSalaryInfo()" class="mt-3 pt-3 border-t border-blue-200">
+            <div class="flex items-center justify-between">
+              <span class="text-green-700 font-medium">
+                <i class="ti ti-check-circle mr-1"></i>
+                Current Salary Found
+              </span>
+              <span class="text-xl font-bold text-green-600">
+                {{ lastSalaryInfo()?.grossMonthlyBaseSalary | currency:'XAF':'symbol':'1.0-0' }}
+              </span>
+            </div>
+            <p class="text-xs text-green-600 mt-1">
+              Salary information will be pre-filled in step 3
+            </p>
+          </div>
+
+          <div *ngIf="!lastSalaryInfo() && !isLoadingSalary()" class="mt-3 pt-3 border-t border-blue-200">
+            <div class="flex items-center text-orange-700">
+              <i class="ti ti-alert-circle mr-2"></i>
+              <span class="text-sm">No previous contract found - This will be the employee's first contract</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 1: Contract Details -->
+    <div *ngIf="currentStep() === 1 || contractToUpdate" class="grid grid-cols-12 gap-4 p-4">
+      <div class="col-span-12">
+        <h3 class="text-lg font-semibold mb-3">Contract Information</h3>
+      </div>
+
+      <div class="col-span-6">
+        <app-form-select
+          [form]="contractForm"
+          controlName="contractTypeId"
+          label="Contract Type"
+          [options]="contractTypes"
+          optionLabel="contractTypeName"
+          optionValue="contractTypeID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <div class="col-span-6">
+        <app-form-select
+          [form]="contractForm"
+          controlName="contractStatus"
+          label="Contract Status"
+          [options]="contractStatuses"
+          optionLabel="label"
+          optionValue="value"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <div class="col-span-6">
+        <app-form-input
+          [form]="contractForm"
+          controlName="startDate"
+          inputId="startDate"
+          label="Start Date"
+          inputType="date"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-6">
+        <app-form-input
+          [form]="contractForm"
+          controlName="endDate"
+          inputId="endDate"
+          label="End Date (Optional)"
+          inputType="date"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-6">
+        <app-form-input
+          [form]="contractForm"
+          controlName="probationPeriodMonths"
+          inputId="probationPeriodMonths"
+          label="Probation Period (Months)"
+          inputType="number"
+          placeholder="0"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-6">
+        <app-form-input
+          [form]="contractForm"
+          controlName="contractReference"
+          inputId="contractReference"
+          label="Contract Reference"
+          placeholder="e.g., CTR-2024-001"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12">
+        <app-form-input
+          [form]="contractForm"
+          controlName="terms"
+          inputId="terms"
+          label="Terms & Conditions"
+          placeholder="Enter contract terms and conditions"
+          inputType="textarea"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+    </div>
+
+    <!-- Step 2: Salary Information -->
+    <div *ngIf="currentStep() === 2 || contractToUpdate" class="grid grid-cols-12 gap-4 p-4">
+      <div class="col-span-12">
+        <h3 class="text-lg font-semibold mb-3">
+          {{ contractToUpdate ? 'Current Salary (Read-only)' : 'Initial Salary' }}
+        </h3>
+      </div>
+
+      <div class="col-span-12" formGroupName="initialSalary">
+        <div class="grid grid-cols-12 gap-4">
+
+          <!-- Base Salary -->
+          <div class="col-span-6">
+            <app-form-input
+              [form]="$any(contractForm.get('initialSalary'))"
+              controlName="baseSalary"
+              inputId="baseSalary"
+              label="Base Salary"
+              inputType="number"
+              placeholder="0"
+              [required]="true"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-6">
+            <app-form-input
+              [form]="$any(contractForm.get('initialSalary'))"
+              controlName="effectiveDate"
+              inputId="effectiveDate"
+              label="Effective Date"
+              inputType="date"
+              [required]="true"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <!-- Allowances Grid -->
+          <div class="col-span-12">
+            <h4 class="text-md font-semibold mb-3 text-gray-700">Allowances</h4>
+          </div>
+
+          <div class="col-span-4">
+            <app-form-input
+              [form]="$any(contractForm.get('initialSalary'))"
+              controlName="transportAllowance"
+              inputId="transportAllowance"
+              label="Transport"
+              inputType="number"
+              placeholder="0"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-4">
+            <app-form-input
+              [form]="$any(contractForm.get('initialSalary'))"
+              controlName="housingAllowance"
+              inputId="housingAllowance"
+              label="Housing"
+              inputType="number"
+              placeholder="0"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-4">
+            <app-form-input
+              [form]="$any(contractForm.get('initialSalary'))"
+              controlName="functionAllowance"
+              inputId="functionAllowance"
+              label="Function"
+              inputType="number"
+              placeholder="0"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-4">
+            <app-form-input
+              [form]="$any(contractForm.get('initialSalary'))"
+              controlName="dutyAllowance"
+              inputId="dutyAllowance"
+              label="Duty"
+              inputType="number"
+              placeholder="0"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-4">
+            <app-form-input
+              [form]="$any(contractForm.get('initialSalary'))"
+              controlName="riskAllowance"
+              inputId="riskAllowance"
+              label="Risk"
+              inputType="number"
+              placeholder="0"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-4">
+            <app-form-input
+              [form]="$any(contractForm.get('initialSalary'))"
+              controlName="overtimeAllowance"
+              inputId="overtimeAllowance"
+              label="Overtime"
+              inputType="number"
+              placeholder="0"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-6">
+            <app-form-input
+              [form]="$any(contractForm.get('initialSalary'))"
+              controlName="otherAllowances"
+              inputId="otherAllowances"
+              label="Other Allowances"
+              inputType="number"
+              placeholder="0"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-6">
+            <app-form-input
+              [form]="$any(contractForm.get('initialSalary'))"
+              controlName="changeReason"
+              inputId="changeReason"
+              label="Change Reason"
+              placeholder="e.g., New Contract, Promotion, Annual Increase"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <!-- Salary Summary Card -->
+          <div class="col-span-12 mt-4">
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-lg p-6 shadow-md">
+              <h4 class="text-lg font-bold text-blue-900 mb-4">Salary Summary</h4>
+
+              <div class="flex justify-between items-center mb-4">
+                <span class="text-xl font-semibold text-gray-700">Gross Monthly Salary:</span>
+                <span class="text-3xl font-bold text-blue-600">
+                  {{ calculateGrossSalary() | currency:'XAF':'symbol':'1.0-0' }}
+                </span>
+              </div>
+
+              <!-- Comparison with previous salary -->
+              <div *ngIf="lastSalaryInfo()" class="mt-4 pt-4 border-t border-blue-200">
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                  <div class="flex justify-between">
+                    <span class="text-gray-600">Previous Salary:</span>
+                    <span class="font-semibold">
+                      {{ lastSalaryInfo()?.grossMonthlyBaseSalary | currency:'XAF':'symbol':'1.0-0' }}
+                    </span>
+                  </div>
+
+                  <div class="flex justify-between" *ngIf="calculateSalaryDifference() !== 0">
+                    <span class="text-gray-600">Difference:</span>
+                    <span class="font-bold"
+                          [class.text-green-600]="calculateSalaryDifference() > 0"
+                          [class.text-red-600]="calculateSalaryDifference() < 0">
+                      {{ calculateSalaryDifference() > 0 ? '+' : '' }}{{ calculateSalaryDifference() | currency:'XAF':'symbol':'1.0-0' }}
+                    </span>
+                  </div>
+
+                  <div class="flex justify-between col-span-2" *ngIf="calculateSalaryPercentageChange() !== 0">
+                    <span class="text-gray-600">Percentage Change:</span>
+                    <span class="font-bold text-lg"
+                          [class.text-green-600]="calculateSalaryPercentageChange() > 0"
+                          [class.text-red-600]="calculateSalaryPercentageChange() < 0">
+                      {{ calculateSalaryPercentageChange() > 0 ? '+' : '' }}{{ calculateSalaryPercentageChange() | number:'1.1-1' }}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Breakdown -->
+              <div class="mt-4 pt-4 border-t border-blue-200">
+                <h5 class="text-sm font-semibold text-gray-700 mb-2">Breakdown:</h5>
+                <div class="grid grid-cols-2 gap-2 text-xs text-gray-600">
+                  <div class="flex justify-between">
+                    <span>Base Salary:</span>
+                    <span>{{ contractForm.get('initialSalary.baseSalary')?.value | currency:'XAF':'symbol':'1.0-0' }}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Transport:</span>
+                    <span>{{ contractForm.get('initialSalary.transportAllowance')?.value | currency:'XAF':'symbol':'1.0-0' }}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Housing:</span>
+                    <span>{{ contractForm.get('initialSalary.housingAllowance')?.value | currency:'XAF':'symbol':'1.0-0' }}</span>
+                  </div>
+                  <div class="flex justify-between">
+                    <span>Function:</span>
+                    <span>{{ contractForm.get('initialSalary.functionAllowance')?.value | currency:'XAF':'symbol':'1.0-0' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- Footer Buttons -->
+  <div footer>
+    <div class="flex justify-between w-full">
+      <button
+        *ngIf="currentStep() > 0 && !contractToUpdate"
+        type="button"
+        (click)="prevStep()"
+        class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm">
+        <i class="ti ti-arrow-left mr-2"></i>
+        Previous
+      </button>
+      <div></div>
+      <div class="flex gap-2">
+        <button
+          type="button"
+          (click)="closePopup()"
+          class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm">
+          Close
+        </button>
+        <button
+          *ngIf="currentStep() < 2 || contractToUpdate"
+          class="ti-btn ti-btn-primary"
+          type="button"
+          (click)="contractToUpdate ? createOrUpdateContract() : nextStep()">
+          {{ contractToUpdate ? 'Update Contract' : 'Next' }}
+          <i class="ti ti-arrow-right ml-2" *ngIf="!contractToUpdate"></i>
+        </button>
+        <button
+          *ngIf="currentStep() === 2 && !contractToUpdate"
+          class="ti-btn ti-btn-primary"
+          type="button"
+          (click)="nextStep()">
+          <i class="ti ti-check mr-2"></i>
+          Create Contract
+        </button>
+      </div>
+    </div>
+  </div>
+</app-modal>

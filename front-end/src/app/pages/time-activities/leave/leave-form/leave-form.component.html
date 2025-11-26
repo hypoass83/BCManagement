@@ -1,0 +1,277 @@
+<app-modal
+  modalId="leave-create-form"
+  [title]="leaveToUpdate ? 'Edit Leave Request' : 'Create a new Leave Request'"
+  (close)="closePopup()"
+  width="80%">
+
+  <form [formGroup]="leaveForm" (ngSubmit)="createOrUpdateLeave()" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-4 p-4">
+
+      <!-- Leave Type avec Info Card -->
+      <div class="col-span-6">
+        <app-form-select
+          [form]="leaveForm"
+          controlName="leaveTypeId"
+          label="Leave Type (*)"
+          placeholder="Select a leave type"
+          [options]="leaveTypes"
+          optionLabel="name"
+          optionValue="leaveTypeID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+
+        <!-- Info Card du Leave Type sélectionné -->
+        <div class="leave-type-info mt-2" *ngIf="selectedLeaveType">
+          <div class="info-card">
+            <div class="info-header">
+              <span class="badge bg-primary">{{ selectedLeaveType.code }}</span>
+              <span class="info-title">{{ selectedLeaveType.name }}</span>
+            </div>
+            <div class="info-body">
+              <div class="info-item">
+                <i class="ti ti-calendar"></i>
+                <span>Default Duration: <strong>{{ selectedLeaveType.defaultDurationDays }} days</strong></span>
+              </div>
+              <div class="info-item">
+                <i [class]="selectedLeaveType.isPaid ? 'ti ti-check text-success' : 'ti ti-x text-danger'"></i>
+                <span>{{ selectedLeaveType.isPaid ? 'Paid Leave' : 'Unpaid Leave' }}</span>
+              </div>
+              <div class="info-item" *ngIf="selectedLeaveType.description">
+                <i class="ti ti-info-circle"></i>
+                <span class="text-muted">{{ selectedLeaveType.description }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Employee -->
+      <div class="col-span-6">
+        <app-form-select
+          [form]="leaveForm"
+          controlName="employeeId"
+          label="Employee (*)"
+          placeholder="Select an employee"
+          [options]="employees"
+          optionLabel="name"
+          optionValue="globalPersonID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Start Date -->
+      <div class="col-span-4">
+        <app-form-input
+          [form]="leaveForm"
+          controlName="startDate"
+          inputId="startDate"
+          label="Start Date (*)"
+          inputType="date"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- End Date -->
+      <div class="col-span-4">
+        <app-form-input
+          [form]="leaveForm"
+          controlName="endDate"
+          inputId="endDate"
+          label="End Date (*)"
+          inputType="date"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Number of Days with Auto-fill -->
+      <div class="col-span-4">
+        <label class="ti-form-label">Number of Days (*)</label>
+        <div class="flex gap-2">
+          <app-form-input
+            [form]="leaveForm"
+            controlName="numberOfDays"
+            inputId="numberOfDays"
+            inputType="number"
+            placeholder="5"
+            [required]="true"
+            [submitted]="isSubmitted">
+          </app-form-input>
+          <button
+            type="button"
+            class="ti-btn ti-btn-info"
+            (click)="autoFillDays()"
+            [disabled]="calculatedDays === 0"
+            title="Auto-fill with calculated days">
+            <i class="ti ti-reload"></i> Auto ({{ calculatedDays }})
+          </button>
+        </div>
+        <small class="text-muted">
+          <i class="ti ti-info-circle"></i>
+          Calculated: {{ calculatedDays }} days | You can edit to exclude weekends/holidays
+        </small>
+      </div>
+
+      <!-- Status -->
+      <div class="col-span-6">
+        <app-form-select
+          [form]="leaveForm"
+          controlName="status"
+          label="Status (*)"
+          [options]="leaveStatusOptions"
+          optionLabel="label"
+          optionValue="value"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Is Paid (Auto-filled from LeaveType) -->
+      <div class="col-span-6">
+        <label class="ti-form-label">Payment Status (*)</label>
+        <div class="flex items-center gap-4 mt-2">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              formControlName="isPaid"
+              [value]="true"
+              class="ti-form-radio">
+            <span class="flex items-center gap-1">
+              <i class="ti ti-check text-success"></i> Paid Leave
+            </span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              formControlName="isPaid"
+              [value]="false"
+              class="ti-form-radio">
+            <span class="flex items-center gap-1">
+              <i class="ti ti-x text-danger"></i> Unpaid Leave
+            </span>
+          </label>
+        </div>
+        <small class="text-muted" *ngIf="selectedLeaveType">
+          <i class="ti ti-bulb"></i>
+          Auto-filled from leave type "{{ selectedLeaveType.name }}"
+        </small>
+      </div>
+
+      <!-- Reason -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="leaveForm"
+          controlName="reason"
+          inputId="reason"
+          label="Reason (*)"
+          placeholder="Enter the reason for this leave request..."
+          inputType="textarea"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Justification Path -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="leaveForm"
+          controlName="justificationPath"
+          inputId="justificationPath"
+          label="Justification Document Path"
+          placeholder="Path to justification document (optional)"
+          [submitted]="isSubmitted">
+        </app-form-input>
+        <small class="text-muted">
+          <i class="ti ti-file"></i>
+          Optional: Path to medical certificate or other supporting document
+        </small>
+      </div>
+
+      <!-- Info Alert for Edit Mode -->
+      <div class="col-span-12" *ngIf="leaveToUpdate">
+        <div class="alert alert-info">
+          <i class="ti ti-info-circle"></i>
+          <div>
+            <strong>Note:</strong> You can modify the leave details.
+            The employee assignment cannot be changed after creation.
+          </div>
+        </div>
+      </div>
+
+      <!-- Leave Summary -->
+      <div class="col-span-12" *ngIf="leaveForm.get('numberOfDays')?.value && leaveForm.get('leaveTypeId')?.value">
+        <div class="box bg-gradient p-4">
+          <h6 class="font-semibold mb-3 flex items-center gap-2">
+            <i class="ti ti-calendar-stats"></i> Leave Request Summary
+          </h6>
+          <div class="grid grid-cols-4 gap-4 text-center">
+            <div class="summary-card">
+              <div class="summary-icon">
+                <i class="ti ti-calendar-event"></i>
+              </div>
+              <div class="summary-value">{{ leaveForm.get('numberOfDays')?.value }} days</div>
+              <div class="summary-label">Duration</div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-icon">
+                <i [class]="leaveForm.get('isPaid')?.value ? 'ti ti-cash' : 'ti ti-cash-off'"></i>
+              </div>
+              <div class="summary-value">{{ leaveForm.get('isPaid')?.value ? 'Paid' : 'Unpaid' }}</div>
+              <div class="summary-label">Payment Status</div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-icon">
+                <i class="ti ti-calendar"></i>
+              </div>
+              <div class="summary-value text-sm">
+                {{ leaveForm.get('startDate')?.value | date:'dd/MM/yyyy' }} - {{ leaveForm.get('endDate')?.value | date:'dd/MM/yyyy' }}
+              </div>
+              <div class="summary-label">Period</div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-icon">
+                <i class="ti ti-tag"></i>
+              </div>
+              <div class="summary-value text-sm">{{ selectedLeaveType?.name || 'N/A' }}</div>
+              <div class="summary-label">Leave Type</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Help Alert -->
+      <div class="col-span-12">
+        <div class="alert alert-success">
+          <i class="ti ti-bulb"></i>
+          <div>
+            <strong>Auto-fill Feature:</strong>
+            When you select a leave type, the system automatically fills in the default duration and payment status.
+            You can still edit these values manually if needed (e.g., to exclude weekends or holidays).
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button
+      type="button"
+      (click)="closePopup()"
+      class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm">
+      Close
+    </button>
+    <button
+      class="ti-btn ti-btn-primary"
+      type="submit"
+      (click)="createOrUpdateLeave()">
+      {{ leaveToUpdate ? 'Save changes' : 'Create Leave Request' }}
+    </button>
+  </div>
+
+</app-modal>

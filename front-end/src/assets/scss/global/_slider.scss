@@ -1,0 +1,63 @@
+/*-----Slider Styles Start------*/
+
+//range-sliders
+.ngx-slider {
+  .ngx-slider-pointer {
+    @apply cursor-pointer w-[20px] h-[20px] -top-[6px] rounded-[4px] border border-[#808080] bg-primary after:top-[5px] after:left-[5px] #{!important};
+  }
+
+  .ngx-slider-bar {
+    @apply h-[10px] #{!important};
+  }
+}
+
+.ngx-slider-span .ngx-slider-bubble .ngx-slider-model-value {
+  @apply invisible #{!important};
+}
+
+.colo-picker-slider,
+.slider-toggle {
+  .ngx-slider-bar {
+    @apply h-full #{!important};
+  }
+
+  .ngx-slider.vertical {
+    .ngx-slider-bar {
+      @apply w-[10px];
+    }
+
+    .ngx-slider-pointer {
+      @apply -left-[5px] top-auto bottom-0 #{!important};
+    }
+  }
+}
+
+.ngx-slider .ngx-slider-selection {
+  @apply bg-[#5a66f1] #{!important};
+}
+
+
+.toggle-movements {
+  .ngx-slider {
+    .ngx-slider-bar-wrapper {
+      @apply pt-[13px];
+    }
+
+    .ngx-slider-pointer {
+      @apply -top-[8px] #{!important};
+    }
+  }
+}
+
+.color-picker-slider {
+  @apply mt-[4rem] flex flex-wrap justify-center #{!important};
+
+  .noUi-target {
+    @apply bg-transparent #{!important};
+  }
+
+  .sliders {
+    @apply ltr:mr-[1rem] rtl:ml-[1rem];
+  }
+}
+/*-----Slider Styles End------*/

@@ -1,0 +1,199 @@
+<app-modal
+  modalId="salary-revision-create-form"
+  [title]="revisionToUpdate ? 'Edit Salary Revision' : 'Create a new Salary Revision'"
+  (close)="closePopup()"
+  width="70%">
+
+  <form [formGroup]="revisionForm" (ngSubmit)="createOrUpdateRevision()" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-4 p-4">
+
+      <!-- Revision Type with Visual Icons -->
+      <div class="col-span-6">
+        <label class="ti-form-label mb-2">Revision Type (*)</label>
+        <div class="flex gap-3">
+          <label
+            *ngFor="let option of revisionTypeOptions"
+            class="flex-1 cursor-pointer">
+            <input
+              type="radio"
+              formControlName="revisionType"
+              [value]="option.value"
+              class="hidden"
+              [attr.id]="'revisionType' + option.value">
+            <div
+              [class]="'border-2 rounded-lg p-4 text-center transition-all ' +
+                      (form['revisionType'].value === option.value
+                        ? 'border-' + option.color + ' bg-' + option.color + '-50'
+                        : 'border-gray-300 hover:border-gray-400')">
+              <i [class]="'ti ' + option.icon + ' text-3xl mb-2 ' +
+                         (form['revisionType'].value === option.value ? 'text-' + option.color : 'text-gray-500')"></i>
+              <div class="font-semibold">{{ option.label }}</div>
+            </div>
+          </label>
+        </div>
+        <small class="text-red-500" *ngIf="isSubmitted && form['revisionType'].errors">
+          Revision type is required
+        </small>
+      </div>
+
+      <!-- Effective Date -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="revisionForm"
+          controlName="effectiveDate"
+          inputId="effectiveDate"
+          label="Effective Date (*)"
+          inputType="date"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Revision Scope (Create Mode Only) -->
+      <div class="col-span-12" *ngIf="!revisionToUpdate">
+        <label class="ti-form-label mb-2">Revision Scope (*)</label>
+        <div class="flex gap-4">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              formControlName="revisionScope"
+              value="individual"
+              class="ti-form-radio">
+            <span>Individual Revision (specific employee)</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              type="radio"
+              formControlName="revisionScope"
+              value="collective"
+              class="ti-form-radio">
+            <span>Collective Revision (all employees in branch)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Employee Selection (Individual) -->
+      <div class="col-span-6" *ngIf="selectedScope === 'individual'">
+        <app-form-select
+          [form]="revisionForm"
+          controlName="employeeId"
+          label="Employee (*)"
+          placeholder="Select an employee"
+          [options]="employees"
+          optionLabel="name"
+          optionValue="globalPersonID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Branch Selection (Collective) -->
+      <div class="col-span-6" *ngIf="selectedScope === 'collective'">
+        <app-form-select
+          [form]="revisionForm"
+          controlName="branchId"
+          label="Branch (*)"
+          placeholder="Select a branch"
+          [options]="branches"
+          optionLabel="branchName"
+          optionValue="branchID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Amount -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="revisionForm"
+          controlName="amount"
+          inputId="amount"
+          label="Amount (XAF) (*)"
+          inputType="number"
+          placeholder="50000"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Reason -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="revisionForm"
+          controlName="reason"
+          inputId="reason"
+          label="Reason"
+          placeholder="Enter revision reason (optional)"
+          inputType="textarea"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Info Alert for Edit Mode -->
+      <div class="col-span-12" *ngIf="revisionToUpdate">
+        <div class="alert alert-info">
+          <strong>Note:</strong> You can modify the revision type, amount, effective date, and reason.
+          The scope (employee or branch) cannot be changed after creation.
+        </div>
+      </div>
+
+      <!-- Info Alert for Collective Revision -->
+      <div class="col-span-12" *ngIf="selectedScope === 'collective' && !revisionToUpdate">
+        <div class="alert alert-warning">
+          <i class="ti ti-info-circle"></i>
+          <strong>Collective Revision:</strong> This revision will apply to all active employees in the selected branch
+          who were hired before or on the effective date.
+        </div>
+      </div>
+
+      <!-- Revision Summary -->
+      <div class="col-span-12" *ngIf="revisionForm.get('amount')?.value">
+        <div class="box bg-light p-3">
+          <h6 class="font-semibold mb-2">Revision Summary</h6>
+          <div class="grid grid-cols-2 gap-2 text-sm">
+            <div>
+              <strong>Type:</strong>
+              <span [class]="'badge ' + (revisionForm.get('revisionType')?.value === 0 ? 'bg-success' : 'bg-danger')">
+                {{ getSelectedRevisionTypeLabel() }}
+              </span>
+            </div>
+            <div>
+              <strong>Amount:</strong>
+              <span [class]="revisionForm.get('revisionType')?.value === 0 ? 'text-success' : 'text-danger'">
+                {{ revisionForm.get('revisionType')?.value === 0 ? '+' : '-' }}
+                {{ revisionForm.get('amount')?.value | number:'1.0-0' }} XAF
+              </span>
+            </div>
+            <div>
+              <strong>Scope:</strong>
+              {{ selectedScope === 'individual' ? 'Individual' : 'Collective (Branch)' }}
+            </div>
+            <div>
+              <strong>Effective Date:</strong>
+              {{ revisionForm.get('effectiveDate')?.value | date:'dd/MM/yyyy' }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button
+      type="button"
+      (click)="closePopup()"
+      class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm">
+      Close
+    </button>
+    <button
+      class="ti-btn ti-btn-primary"
+      type="submit"
+      (click)="createOrUpdateRevision()">
+      {{ revisionToUpdate ? 'Save changes' : 'Create Revision' }}
+    </button>
+  </div>
+
+</app-modal>

@@ -1,0 +1,121 @@
+.sanction-type-card {
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.2s;
+  background: white;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  &.selected {
+    background: #f9fafb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    &.border-warning { border-color: #f59e0b; }
+    &.border-orange { border-color: #f97316; }
+    &.border-danger { border-color: #ef4444; }
+    &.border-purple { border-color: #a855f7; }
+    &.border-dark { border-color: #1f2937; }
+  }
+
+  .icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #6b7280;
+  }
+
+  .label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    color: #1f2937;
+  }
+
+  .description {
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+}
+
+.box.bg-gradient {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border-radius: 0.5rem;
+}
+
+.summary-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 0.5rem;
+  padding: 1rem;
+
+  .summary-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .summary-value {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .summary-label {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    text-transform: uppercase;
+  }
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+
+  &.bg-warning { background-color: #f59e0b; color: white; }
+  &.bg-orange { background-color: #f97316; color: white; }
+  &.bg-danger { background-color: #ef4444; color: white; }
+  &.bg-purple { background-color: #a855f7; color: white; }
+  &.bg-dark { background-color: #1f2937; color: white; }
+  &.bg-success { background-color: #10b981; color: white; }
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: start;
+  gap: 0.75rem;
+
+  &.alert-info {
+    background-color: #dbeafe;
+    border: 1px solid #93c5fd;
+    color: #1e40af;
+  }
+
+  &.alert-warning {
+    background-color: #fef3c7;
+    border: 1px solid #fcd34d;
+    color: #92400e;
+  }
+
+  i {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+}
+
+.text-muted {
+  color: #6b7280;
+  font-size: 0.875rem;
+  display: block;
+  margin-top: 0.25rem;
+}

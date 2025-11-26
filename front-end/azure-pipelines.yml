@@ -1,0 +1,50 @@
+trigger:
+  branches:
+    include:
+      - master
+
+stages:
+- stage: BuildAndDeploy
+  displayName: 'Build and Deploy Back-End to All Agencies'
+  jobs:
+  - job: DeployToAgencies
+    displayName: 'Deploy'
+    strategy:
+      matrix:
+        DC_VAL_DLA_01:
+          agentName: DC-VAL-DLA-01
+          location: Douala Akwa
+        DOYOAN_DC_DLA_0:
+          agentName: DOYOAN-DC-DLA-0
+          location: Douala Bonamoussadi
+        RAFA_DLA_DC_01:
+          agentName: RAFA-DLA-DC-01
+          location: Douala Bonaberi
+        DOYOANSERVERYDE:
+          agentName: DOYOANSERVERYDE
+          location: Yaounde Doyoan Tsinga
+    pool:
+      name: 'default'
+      demands:
+        - Agent.Name -equals $(agentName)
+    steps:
+    - checkout: self
+      clean: false
+      displayName: 'Update code'
+
+    - script: |
+        npm install
+      displayName: 'Install dependencies'
+
+    - script: |
+        npm run prebuild
+      displayName: 'Get Hote Name'
+
+    - script: |
+        npm run build
+      displayName: 'Build Angular'
+
+    - script: |
+        xcopy C:\inetpub\wwwroot\valdoz_temp\* C:\inetpub\wwwroot\valdoz\ /E /H /Y /C
+        copy "C:\inetpub\wwwroot\valdoz\assets\web.config" "C:\inetpub\wwwroot\valdoz\web.config"
+      displayName: 'Deploy project'

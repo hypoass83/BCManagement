@@ -1,0 +1,117 @@
+<!-- certification-form.component.html -->
+<app-modal
+  modalId="certification-create-form"
+  [title]="certificationToUpdate ? 'Edit Certification' : 'Create Certification'"
+  (close)="closePopup()"
+  width="70%">
+
+  <form [formGroup]="certificationForm" (ngSubmit)="createOrUpdateCertification()">
+
+    <div class="grid grid-cols-12 gap-4 p-4">
+
+      <!-- Certification Type -->
+      <div class="col-span-6">
+        <app-form-select
+          [form]="certificationForm"
+          controlName="certificationTypeId"
+          label="Certification Type (*)"
+          placeholder="Select certification type"
+          [options]="certificationTypes"
+          optionLabel="name"
+          optionValue="certificationTypeID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Employee -->
+      <div class="col-span-6">
+        <app-form-select
+          [form]="certificationForm"
+          controlName="employeeId"
+          label="Employee (*)"
+          placeholder="Select employee"
+          [options]="employees"
+          optionLabel="name"
+          optionValue="globalPersonID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Title -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="certificationForm"
+          controlName="title"
+          inputId="title"
+          label="Title (*)"
+          placeholder="Best Marketer 2024"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Award Date -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="certificationForm"
+          controlName="awardDate"
+          inputId="awardDate"
+          label="Award Date (*)"
+          inputType="date"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Effective Bonus Amount -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="certificationForm"
+          controlName="effectiveBonusAmount"
+          inputId="effectiveBonusAmount"
+          label="Bonus Amount (XAF) (*)"
+          inputType="number"
+          placeholder="500000"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+        <small class="text-muted">
+          Auto-filled from certification type. You can edit this amount.
+        </small>
+      </div>
+
+      <!-- Description -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="certificationForm"
+          controlName="description"
+          inputId="description"
+          label="Description"
+          placeholder="Describe the achievement..."
+          inputType="textarea"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button
+      type="button"
+      (click)="closePopup()"
+      class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm">
+      Close
+    </button>
+    <button
+      class="ti-btn ti-btn-primary"
+      type="submit"
+      (click)="createOrUpdateCertification()">
+      {{ certificationToUpdate ? 'Save changes' : 'Create Certification' }}
+    </button>
+  </div>
+
+</app-modal>

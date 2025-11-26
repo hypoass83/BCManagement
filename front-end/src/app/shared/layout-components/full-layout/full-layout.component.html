@@ -1,0 +1,16 @@
+<app-switcher> </app-switcher>
+<div class="page">
+
+<app-sidebar appHoverEffectSidebar></app-sidebar>
+<app-header></app-header>
+<div class="content">
+<div id="maincontent" class="main-content" (click)="togglesidemenuBody()">
+  <router-outlet></router-outlet>
+</div>
+<app-backtotop></app-backtotop>
+<div id="responsive-overlay" class="" (click)="clearToggle()"></div>
+</div>
+<app-footer class="mt-auto"></app-footer>
+</div>
+
+

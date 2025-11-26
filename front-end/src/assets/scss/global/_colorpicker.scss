@@ -1,0 +1,59 @@
+/*-----Color-Picker Styles Start------*/
+
+.color-picker {
+  @apply z-[10px] #{!important};
+
+  input {
+    @apply w-[50px];
+  }
+
+  .right {
+    @apply w-[225px];
+  }
+
+  .hex-text {
+    @apply w-[100%];
+
+    .box {
+      @apply p-0 #{!important};
+
+      input {
+        @apply w-full;
+      }
+    }
+  }
+
+  .rgba-text {
+    .box {
+      @apply p-0 mb-1 #{!important};
+
+      div {
+        @apply dark:text-white dark:bg-bodybg;
+      }
+
+      input {
+        @apply w-full dark:bg-bodybg dark:text-white dark:border-white/10;
+      }
+    }
+  }
+}
+
+// .color-picker-input {
+//   @apply relative;
+//   &::before {
+//     // @apply content-["/\/"] font-['remixicon'] cursor-pointer text-white/70 leading-loose absolute z-0 bottom-[4px] right-[-6px] #{!important};
+//     @apply content-["/\/"] w-[22px] h-[13px] absolute bottom-1 text-white z-[1] -end-[6px] text-lg leading-[0]  rotate-[24deg]  translate-x-1 tarnslate-y-2 #{!important};
+//   }
+// }
+
+@media (max-width: 550px) {
+  .color-picker-slider {
+    @apply mt-[4rem] block #{!important};
+
+    .sliders {
+      @apply my-4;
+    }
+  }
+}
+
+/*-----Color-Picker Styles End------*/

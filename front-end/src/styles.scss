@@ -1,0 +1,556 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@import "../src/assets/css/style.css";
+
+@import "./assets/iconfonts/RemixIcons/fonts/remixicon.css";
+@import "./assets/iconfonts/tabler-icons/webfont/tabler-icons.css";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+@import "../node_modules/leaflet/dist/leaflet.css";
+@import "../node_modules/@angular/cdk/overlay-prebuilt.css";
+@import "../node_modules/ngx-toastr/toastr.css";
+@import "../node_modules/lightgallery/scss/lightgallery";
+
+// @import "swiper/scss";
+// @import "swiper/scss/navigation";
+// @import "swiper/scss/pagination";
+
+// ngx bar rating
+@import "../node_modules/ngx-bar-rating/themes/br-default-theme.scss";
+@import "../node_modules/ngx-bar-rating/themes/br-horizontal-theme.scss";
+@import "../node_modules/ngx-bar-rating/themes/br-vertical-theme.scss";
+@import "../node_modules/ngx-bar-rating/themes/br-movie-theme.scss";
+@import "../node_modules/ngx-bar-rating/themes/br-square-theme.scss";
+@import "../node_modules/ngx-bar-rating/themes/br-stars-theme.scss";
+@import "../node_modules/angular-calendar/scss/angular-calendar.scss";
+@import "../node_modules/angular-calendar/scss/angular-calendar.scss";
+
+@import "../node_modules/keen-slider/keen-slider.min.css";
+@import "../node_modules/lightgallery/scss/lightgallery";
+
+
+@import 'ag-grid-community/styles/ag-grid.css';
+/* Quartz Theme Specific CSS */
+@import 'ag-grid-community/styles/ag-theme-quartz.css';
+// dark styles start
+
+.ag-theme-alpine-dark {
+  --ag-background-color: #rgb(255 255 255 / 0.1) !important;
+  --ag-header-background-color: #rgb(255 255 255 / 0.1) !important;
+  --ag-odd-row-background-color: #rgb(255 255 255 / 0.1) !important;
+  --ag-border-color: #444 !important;
+  --ag-foreground-color: #fff !important;
+}
+
+
+.ag-center-cols-container {
+  width: 100% !important;
+}
+
+.display-flex {
+  display: flex;
+}
+
+.display-none {
+  display: none !important;
+}
+
+.ag-theme-alpine-dark {
+  --ag-background-color: #rgb(255 255 255 / 0.1);
+  --ag-header-background-color: #rgb(255 255 255 / 0.1);
+  --ag-odd-row-background-color: #rgb(255 255 255 / 0.1);
+  --ag-border-color: #444;
+  --ag-foreground-color: #fff;
+}
+
+@media print {
+  #sidebar,
+  .app-sidebar,
+  .main-sidebar-header,
+  header {
+    display: none !important;
+  }
+
+}
+
+.bar-code-text{
+
+  font-size: 9px;
+
+}
+
+
+body.loading::before {
+  content: '';
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1052;
+  background: rgba(0, 0, 0, 0.2);
+  /* Semi-transparent background */
+}
+
+body.loading::after {
+  content: '';
+  border: 6px solid #3f51b5;
+  /* Spinner color */
+  border-top: 4px solid transparent;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: spin 2s linear infinite;
+  /* Spinning animation */
+  z-index: 1055;
+}
+
+input:disabled {
+  border: 1px solid #e5e7eb;
+  /* Light gray */
+  background-color: #e5e7eb;
+  /* Light gray */
+  color: #6b7280;
+  /* Optional: Muted text color */
+  cursor: not-allowed;
+  /* Optional: Change cursor to indicate disabled state */
+}
+
+select:disabled {
+  border: 1px solid #e5e7eb;
+  /* Light gray */
+  background-color: #e5e7eb;
+  /* Light gray */
+  color: #6b7280;
+  /* Optional: Muted text color */
+  cursor: not-allowed;
+  /* Optional: Change cursor to indicate disabled state */
+}
+
+
+textarea:disabled {
+  border: 1px solid #e5e7eb;
+  /* Light gray */
+  background-color: #e5e7eb;
+  /* Light gray */
+  color: #6b7280;
+  /* Optional: Muted text color */
+  cursor: not-allowed;
+  /* Optional: Change cursor to indicate disabled state */
+}
+
+
+
+@keyframes spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@media (min-width: 992px) {
+  [data-nav-layout="horizontal"][dir="rtl"] .main-menu-container {
+    .slide-right {
+      @apply left-[3%];
+    }
+
+    .slide-left {
+      @apply right-[3%];
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  [data-nav-layout="horizontal"][dir="ltr"] .main-menu-container {
+    .slide-left {
+      @apply left-[3%];
+    }
+
+    .slide-right {
+      @apply right-[3%];
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  [data-nav-layout="horizontal"] .app-sidebar .main-sidebar {
+    overflow: hidden !important;
+  }
+}
+
+@media (min-width: 992px) {
+  [data-nav-style="icon-click"][toggled="icon-click-closed"]:not([data-nav-layout="horizontal"]) .main-menu {
+    @apply ltr:ps-[2rem] ltr:pe-[1.219rem] rtl:pe-[2rem] rtl:ps-[1.219rem];
+  }
+}
+
+// Angular Mat date picker module start
+
+.light {
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: white !important;
+  }
+
+  mat-label {
+    font-size: 0.875rem !important;
+  }
+
+  .mat-mdc-form-field-focus-overlay {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  .mdc-text-field--filled .mdc-line-ripple::after {
+    border-bottom-color: #ffffff;
+  }
+
+  .mdc-text-field--focused:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: #293549 !important;
+  }
+}
+
+[data-nav-layout="horizontal"] {
+  &[data-header-styles="light"] {
+    @media (max-width="992px") {
+      .landing-body .responsive-logo {
+        .responsive-logo-light {
+          display: none #{!important};
+        }
+
+        .responsive-logo-dark {
+          display: none #{!important};
+        }
+      }
+    }
+  }
+}
+
+[data-nav-layout="horizontal"] {
+  @media (max-width: 991px) {
+    .landing-body .responsive-logo .responsive-logo-dark {
+      display: none !important;
+    }
+
+    .landing-body .responsive-logo .responsive-logo-light {
+      display: none !important;
+    }
+  }
+}
+
+.toast-container .ngx-toastr {
+  @apply rtl:dir-ltr;
+}
+
+@media (max-width: 480px) {
+  #buy-style-1 {
+    .ti-form-select {
+      @apply border-t-[0px] w-[100%] #{!important};
+    }
+
+    .ng-select.ng-select-single .ng-select-container {
+      @apply border-t-[0px] #{!important};
+    }
+  }
+}
+
+[data-width="boxed"] {
+  @media (min-width: 1400px) {
+
+    .xxxl\:col-span-3,
+    .xxxl\:col-span-4,
+    .xxxl\:col-span-6,
+    .xxxl\:col-span-8 {
+      @apply col-span-12;
+    }
+  }
+
+  .mat-mdc-form-field-infix {
+    width: 90px;
+  }
+
+  .timepicker .mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
+    margin-inline-start: 10px;
+  }
+}
+
+@media (min-width: 1800px) {
+  .xxxl\:col-span-9 {
+    @apply col-span-9;
+  }
+}
+
+.dark {
+  ::-webkit-scrollbar {
+    @apply w-[0px] bg-black/30 #{!important};
+  }
+
+  .input-date-picker .dp-input-container input::placeholder {
+    @apply text-white/50;
+  }
+
+  .ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-selected {
+    @apply bg-black/30;
+  }
+
+  .ng-select .ng-select-container {
+    @apply border-white/10 #{!important};
+  }
+
+  .mat-calendar-table-header th {
+    color: rgb(255 255 255 / 0.6) !important;
+  }
+}
+
+[dir="rtl"] {
+
+  .apexcharts-title-text,
+  .apexcharts-subtitle-text {
+    text-anchor: end;
+  }
+
+  .apexcharts-xaxis,
+  .apexcharts-yaxis {
+    text {
+      direction: ltr;
+    }
+  }
+
+  .apexcharts-legend-text {
+    // padding-right: 18px;
+    // margin-right: -15px;
+    @apply pr-[18px] pl-[0px] mr-[-15px] ml-[0px];
+  }
+
+  .mat-datepicker-content {
+    direction: ltr;
+  }
+
+  .mat-calendar-previous-button,
+  .mat-calendar-next-button {
+    transform: rotate(0deg) !important;
+  }
+
+  .example-tree .mat-nested-tree-node div[role="group"] {
+    padding-right: 40px;
+    padding-left: 0px;
+  }
+
+  .mat-tree .mat-tree-node {
+    button {
+      margin: 10px 0px 10px 10px !important;
+    }
+  }
+}
+
+.ti-dropdown-toggle {
+  svg {
+    @apply shrink-0;
+  }
+}
+
+.apexcharts-legend .apexcharts-legend-text {
+  @apply dark:text-white #{!important};
+}
+
+.mat-calendar-controls {
+  @apply m-0 #{!important};
+}
+
+.mat-datepicker-content {
+  @apply transform-none #{!important};
+}
+
+#todo-compose {
+  .ng-select-container {
+    width: 100% !important;
+  }
+}
+
+ngx-dropzone {
+  @apply border-gray-200 dark:border-white/10 h-20 #{!important};
+}
+
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon:hover {
+  @apply bg-primary;
+}
+
+/* custom styles */
+
+
+/* custom styles */
+
+@media (min-width: 992px) {
+
+  [data-nav-style="icon-hover"],
+  [data-nav-style="menu-hover"] {
+    .app-sidebar {
+      .slide.has-sub {
+        .child1>.sub-slide:hover>.child2 {
+          @apply block -mt-[30px] #{!important};
+        }
+      }
+    }
+  }
+}
+
+/* advanced forms */
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::after {
+  --mdc-filled-text-field-focus-active-indicator-color: transparent;
+}
+
+/* advanced forms */
+
+.ng-select.ng-select-focused:not(.ng-select-opened)>.ng-select-container {
+  @apply shadow-none;
+}
+
+::-webkit-calendar-picker-indicator {
+  @apply opacity-50;
+}
+
+/* dark */
+.dark {
+  ::-webkit-calendar-picker-indicator {
+    @apply invert;
+  }
+
+  .ae-font .ae-picker-label {
+    @apply bg-bodybg border-white/10;
+  }
+
+  .ae-font .ae-picker-options {
+    @apply bg-bodybg;
+  }
+
+  .ae-font.ae-picker {
+    @apply text-white;
+  }
+
+  .ae-font .ae-picker-label:before {
+    @apply bg-none;
+  }
+
+  .ae-font .ae-picker-label:hover {
+    @apply bg-bodybg;
+  }
+
+  .ae-font .ae-picker-label svg .ae-stroke {
+    @apply stroke-[#fff];
+  }
+
+  .ae-font .ae-picker-label:hover:before {
+    background: linear-gradient(to right, #293549 100%, #293549 100%);
+  }
+
+  .ae-font.ae-expanded .ae-picker-options {
+    @apply border-white/10;
+  }
+
+  .swal2-input {
+    @apply bg-bgdark #{!important};
+  }
+
+  .angular-editor-toolbar {
+    @apply bg-bodybg border border-white/10 #{!important};
+  }
+
+  .angular-editor-button {
+    @apply bg-bgdark border border-white/10 #{!important};
+  }
+
+  .angular-editor-textarea {
+    @apply border border-white/10 #{!important};
+  }
+
+  .clock-face {
+    @apply bg-bodybg #{!important};
+  }
+
+  .mat-mdc-dialog-container .mdc-dialog__content {
+    // color: var(--mdc-dialog-supporting-text-color, rgba(0, 0, 0, 0.6));
+    --mdc-dialog-supporting-text-color: #fff;
+  }
+}
+
+/* dark */
+/* tasks */
+@media (width <=23.75rem) {
+  .add-new-tasks {
+    .ng-select.ng-select-single .ng-select-container {
+      @apply w-[13.125rem];
+    }
+  }
+}
+
+/* tasks */
+
+/* advanced forms */
+@media screen and (max-width: 320px) {
+  ngx-mat-timepicker-face .clock-face {
+    @apply w-[14.375rem] h-[14.375rem] #{!important};
+  }
+
+  ngx-mat-timepicker-face .clock-face__number--outer {
+    @apply h-[7.375rem] #{!important};
+  }
+
+  ngx-mat-timepicker-face .clock-face__number {
+    @apply top-[calc(50%-120px)] #{!important};
+  }
+}
+
+/* advanced forms */
+/* colorpicker */
+.color-picker {
+  .left {
+    @apply py-[5px] #{!important};
+  }
+
+  .selected-color {
+    @apply top-[5px] #{!important};
+  }
+}
+
+/* colorpicker */
+
+
+
+
+.ti-modal {
+  position: fixed;
+  top: 2%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99;
+}
+
+.ti-modal-box {
+  opacity: 1 !important;
+  padding: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.floating-button {
+  position: fixed;
+  bottom: 4%;
+  right: 5%;
+}

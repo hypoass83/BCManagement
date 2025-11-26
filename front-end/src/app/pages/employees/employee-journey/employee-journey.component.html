@@ -1,0 +1,187 @@
+<app-page-header
+  title="Human Resources"
+  title1="Employees"
+  activeitem="Employee Journey">
+</app-page-header>
+
+<div class="col-span-12">
+  <div class="box p-3">
+    <div class="box-body p-3">
+
+      <!-- Search Form -->
+      <form [formGroup]="searchForm">
+        <div class="flex justify-between items-end mb-4">
+          <div class="w-full flex gap-4">
+
+            <!-- Employee Selection -->
+            <div class="w-1/3 flex flex-col flex-grow">
+              <label for="employeeId" class="ti-form-label mb-2">
+                Select Employee <span class="text-danger">*</span>
+              </label>
+              <div class="relative w-full">
+                <ng-select
+                  id="employeeId"
+                  class="ti-form-select"
+                  placeholder="Search by name or CNI"
+                  formControlName="employeeId"
+                  (input)="onInputEmployees($event)"
+                  [clearable]="true">
+                  <ng-option
+                    *ngFor="let employee of employees"
+                    [value]="employee.globalPersonID">
+                    {{ employee.name }} - {{ employee.cni }}
+                  </ng-option>
+                </ng-select>
+              </div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="flex items-end gap-2">
+              <button
+                type="button"
+                [class]="'ti-btn ' + (activeFilter === 'all' ? 'ti-btn-primary' : 'ti-btn-outline-primary')"
+                (click)="onFilterChange('all')">
+                <i class="ti ti-list"></i> All Events
+              </button>
+              <button
+                type="button"
+                [class]="'ti-btn ' + (activeFilter === 'contracts' ? 'ti-btn-primary' : 'ti-btn-outline-primary')"
+                (click)="onFilterChange('contracts')">
+                <i class="ti ti-file-text"></i> Contracts Only
+              </button>
+              <button
+                type="button"
+                [class]="'ti-btn ' + (activeFilter === 'transfers' ? 'ti-btn-primary' : 'ti-btn-outline-primary')"
+                (click)="onFilterChange('transfers')">
+                <i class="ti ti-transfer"></i> Transfers Only
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <!-- Employee Info Card (displayed when employee is selected) -->
+      <div *ngIf="selectedEmployee" class="box bg-light mb-4 p-4">
+        <div class="grid grid-cols-12 gap-4">
+
+          <!-- Employee Basic Info -->
+          <div class="col-span-3">
+            <h6 class="font-semibold text-gray-700 mb-2">Employee Information</h6>
+            <div class="space-y-1">
+              <p class="text-sm">
+                <strong>Name:</strong> {{ selectedEmployee.name }}
+              </p>
+              <p class="text-sm">
+                <strong>CNI:</strong> {{ selectedEmployee.cni }}
+              </p>
+              <p class="text-sm">
+                <strong>Age:</strong> {{ selectedEmployee.age }} years
+              </p>
+              <p class="text-sm">
+                <strong>Status:</strong>
+                <span [class]="selectedEmployee.isActive ? 'badge bg-success' : 'badge bg-danger'">
+                  {{ selectedEmployee.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Current Assignment -->
+          <div class="col-span-3">
+            <h6 class="font-semibold text-gray-700 mb-2">Current Assignment</h6>
+            <div class="space-y-1">
+              <p class="text-sm">
+                <strong>Branch:</strong> {{ selectedEmployee.branch?.branchName || 'N/A' }}
+              </p>
+              <p class="text-sm">
+                <strong>Department:</strong> {{ selectedEmployee.department?.departmentName || 'N/A' }}
+              </p>
+              <p class="text-sm">
+                <strong>Job:</strong> {{ selectedEmployee.job?.jobLabel || 'N/A' }}
+              </p>
+            </div>
+          </div>
+
+          <!-- Seniority Info -->
+          <div class="col-span-3">
+            <h6 class="font-semibold text-gray-700 mb-2">Seniority</h6>
+            <div class="space-y-1">
+              <p class="text-sm">
+                <strong>Hire Date:</strong> {{ selectedEmployee.hireDate | date:'dd/MM/yyyy' }}
+              </p>
+              <p class="text-sm">
+                <strong>Seniority:</strong> {{ getSeniorityDisplay() }}
+              </p>
+              <p class="text-sm">
+                <strong>Eligible for Bonus:</strong>
+                <span [class]="selectedEmployee.isEligibleForSeniorityBonus ? 'badge bg-success' : 'badge bg-warning'">
+                  {{ selectedEmployee.isEligibleForSeniorityBonus ? 'Yes' : 'No' }}
+                </span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Salary Info (from active contract) -->
+          <!-- <div class="col-span-3">
+            <h6 class="font-semibold text-gray-700 mb-2">Current Salary</h6>
+            <div class="space-y-1">
+              <p class="text-sm">
+                <strong>Gross Salary:</strong>
+                <span class="text-primary font-semibold">
+                  {{ formatSalary(selectedEmployee?.activeContract?.currentSalary?.grossMonthlyBaseSalary) }}
+                </span>
+              </p>
+              <p class="text-sm">
+                <strong>Base Salary:</strong>
+                {{ formatSalary(selectedEmployee.activeContract?.currentSalary?.baseSalary) }}
+              </p>
+              <p class="text-sm">
+                <strong>Net Salary:</strong>
+                {{ formatSalary(selectedEmployee.activeContract?.currentSalary?.netMonthlySalary) }}
+              </p>
+            </div>
+          </div> -->
+        </div>
+      </div>
+
+      <!-- Quick Search -->
+      <div class="flex justify-end mb-3">
+        <div class="w-80">
+          <label for="quick-search" class="sr-only">Search</label>
+          <div class="flex rounded-md">
+            <button
+              type="button"
+              class="inline-flex flex-shrink-0 justify-center items-center h-[2.875rem] w-[2.875rem] ltr:rounded-l-md rtl:rounded-r-md border border-transparent font-semibold bg-primary text-white hover:bg-primary focus:z-10">
+              <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+              </svg>
+            </button>
+            <input
+              type="text"
+              id="quick-search"
+              [(ngModel)]="quickFilterText"
+              class="ti-form-input rounded-none ltr:rounded-r-md rtl:rounded-l-md focus:z-10"
+              placeholder="Quick search in grid..."/>
+          </div>
+        </div>
+      </div>
+
+      <!-- AG Grid -->
+      <div style="height: 60vh" class="ag-grid-container">
+        <ag-grid-angular
+          #agGrid
+          style="width: 100%; height: 100%"
+          [rowData]="rowData"
+          [columnDefs]="columnDefs"
+          [defaultColDef]="defaultColDef"
+          [pagination]="true"
+          [paginationPageSize]="paginationPageSize"
+          [paginationPageSizeSelector]="paginationPageSizeSelector"
+          [class]="themeClass()"
+          [quickFilterText]="quickFilterText"
+          [rowSelection]="rowSelection"
+          (gridReady)="onGridReady($event)"/>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,116 @@
+/*-----Forms Styles Start------*/
+
+.mat-mdc-form-field-subscript-wrapper {
+  @apply hidden;
+}
+
+.mat-mdc-form-field {
+  @apply w-full;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  @apply bg-white;
+}
+.mat-mdc-form-field-has-icon-suffix .mat-mdc-text-field-wrapper {
+  @apply pl-[6px];
+}
+
+.mdc-text-field--filled .mdc-line-ripple::after {
+  @apply border-b-white/10;
+}
+
+.mat-mdc-form-field:hover .mat-mdc-form-field-focus-overlay {
+  @apply opacity-0;
+}
+
+.mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+  @apply border-b-transparent #{!important};
+}
+
+.mat-mdc-form-field-flex {
+  .ti-form-input {
+    @apply focus:shadow-none #{!important};
+  }
+}
+
+.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
+  @apply border #{!important};
+}
+
+.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
+  @apply border-0 #{!important};
+}
+
+.mat-mdc-text-field-wrapper {
+  @apply border dark:border-white/10 #{!important};
+}
+
+.mdc-text-field {
+  @apply px-0 #{!important};
+}
+
+.mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+  @apply left-[15px] #{!important};
+}
+
+.mat-mdc-form-field:not(.mat-form-field-no-animations) .mdc-text-field__input {
+  @apply ltr:ms-[15px] rtl:ms-[15px] #{!important};
+}
+
+.joining-date.flatpickr-input.date.active {
+  &.ti-form-input {
+    @apply p-0  #{!important};
+  }
+}
+.timepicker {
+  .mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
+    @apply rtl:ms-[30px];
+    margin-inline-start: 30px;
+  }
+}
+ngx-dropzone-label {
+  @apply px-2;
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option.ng-option-marked {
+  @apply bg-[rgb(var(--color-primary))] text-white #{!important};
+}
+.ng-dropdown-panel .ng-dropdown-panel-items .ng-option {
+  @apply bg-[rgb(var(--color-primary))] text-white;
+}
+
+#select-beast-disabled {
+  .ng-select-container {
+    @apply opacity-50;
+  }
+}
+.ng-select .ng-select-container {
+  @apply text-sm border-gray-200 #{!important};
+}
+.ng-select .ng-select-container {
+  @apply min-h-[45px] #{!important};
+}
+////////////////////////////////////////////////////
+
+.mdc-button__label {
+  @apply flex items-center gap-2 #{!important};
+}
+
+.mat-calendar-arrow {
+  @apply fill-black/[0.54] #{!important};
+}
+.dropzonebg {
+  @apply border-0 text-[1.25rem] text-[#4f4f4f] #{!important};
+}
+.joining-date {
+  @apply rtl:text-right;
+}
+.input-date-picker {
+  @apply rounded-tr-none rounded-br-none #{!important};
+}
+// .ng-select-container {
+//   @apply w-[10rem] #{!important};
+// }
+.ng-select{
+  @apply w-auto #{!important};
+}
+/*-----Forms Styles End------*/

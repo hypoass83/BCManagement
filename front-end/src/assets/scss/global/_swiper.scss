@@ -1,0 +1,29 @@
+/*-----Swiper Styles Stert------*/
+
+.mySwiper6 {
+  .swiper-slide {
+    @apply mr-[25px];
+  }
+}
+
+.mySwiper7 {
+  .swiper-slide {
+    @apply mr-[25px];
+  }
+}
+
+.swiper-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal {
+  @apply bottom-0;
+}
+
+@media (min-width: 320px) and (max-width: 1320px) {
+  .related-files {
+    .swiper {
+      @apply h-[250px] block #{!important};
+    }
+  }
+}
+
+
+/*-----Swiper Styles End------*/

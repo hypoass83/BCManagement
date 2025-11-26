@@ -1,0 +1,156 @@
+<app-modal
+  modalId="loan-create-form"
+  [title]="loanToUpdate ? 'Edit Loan' : 'Create a new Loan'"
+  (close)="closePopup()"
+  width="70%">
+
+  <form [formGroup]="loanForm" (ngSubmit)="createOrUpdateLoan()" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-4 p-4">
+
+      <!-- Employee Selection -->
+      <div class="col-span-6">
+        <app-form-select
+          [form]="loanForm"
+          controlName="employeeId"
+          label="Employee (*)"
+          placeholder="Select an employee"
+          [options]="employees"
+          optionLabel="name"
+          optionValue="globalPersonID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Grant Date -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="loanForm"
+          controlName="grantDate"
+          inputId="grantDate"
+          label="Grant Date (*)"
+          inputType="date"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Total Amount -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="loanForm"
+          controlName="totalAmount"
+          inputId="totalAmount"
+          label="Total Amount (XAF) (*)"
+          inputType="number"
+          placeholder="1000000"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Monthly Amount -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="loanForm"
+          controlName="monthlyAmount"
+          inputId="monthlyAmount"
+          label="Monthly Amount (XAF) (*)"
+          inputType="number"
+          placeholder="100000"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Repayment Months (Auto-calculated) -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="loanForm"
+          controlName="repaymentMonths"
+          inputId="repaymentMonths"
+          label="Repayment Duration (Months) (*)"
+          inputType="number"
+          placeholder="10"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+        <small class="text-gray-500 text-xs mt-1 block">
+          Auto-calculated based on Total Amount ÷ Monthly Amount
+        </small>
+      </div>
+
+      <!-- Status (Only in Edit Mode) -->
+      <div class="col-span-6" *ngIf="loanToUpdate">
+        <app-form-select
+          [form]="loanForm"
+          controlName="status"
+          label="Status (*)"
+          [options]="statusOptions"
+          optionLabel="label"
+          optionValue="value"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Reason -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="loanForm"
+          controlName="reason"
+          inputId="reason"
+          label="Reason"
+          placeholder="Enter loan reason"
+          inputType="textarea"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Info Alert for Edit Mode -->
+      <div class="col-span-12" *ngIf="loanToUpdate">
+        <div class="alert alert-info">
+          <strong>Note:</strong> You can only modify the monthly amount, repayment months, status, and reason.
+          The employee, total amount, and grant date cannot be changed.
+        </div>
+      </div>
+
+      <!-- Loan Summary (Create Mode) -->
+      <div class="col-span-12" *ngIf="!loanToUpdate && loanForm.get('totalAmount')?.value && loanForm.get('monthlyAmount')?.value">
+        <div class="box bg-light p-3">
+          <h6 class="font-semibold mb-2">Loan Summary</h6>
+          <div class="grid grid-cols-3 gap-2 text-sm">
+            <div>
+              <strong>Total Loan:</strong> {{ loanForm.get('totalAmount')?.value | number:'1.0-0' }} XAF
+            </div>
+            <div>
+              <strong>Monthly Payment:</strong> {{ loanForm.get('monthlyAmount')?.value | number:'1.0-0' }} XAF
+            </div>
+            <div>
+              <strong>Duration:</strong> {{ loanForm.get('repaymentMonths')?.value }} months
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button
+      type="button"
+      (click)="closePopup()"
+      class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm">
+      Close
+    </button>
+    <button
+      class="ti-btn ti-btn-primary"
+      type="submit"
+      (click)="createOrUpdateLoan()">
+      {{ loanToUpdate ? 'Save changes' : 'Create Loan' }}
+    </button>
+  </div>
+
+</app-modal>

@@ -1,0 +1,67 @@
+<!-- contract-type-form.component.html -->
+<app-modal
+  modalId="contract-type-form"
+  [title]="contractTypeToUpdate ? 'Edit Contract Type' : 'Create Contract Type'"
+  (close)="closePopup()"
+  width="60%">
+
+  <form [formGroup]="contractTypeForm" (ngSubmit)="createOrUpdateContractType()">
+
+    <div class="grid grid-cols-12 gap-4 p-4">
+
+      <div class="col-span-6">
+        <app-form-input
+          [form]="contractTypeForm"
+          controlName="contractTypeCode"
+          inputId="contractTypeCode"
+          label="Code (*)"
+          placeholder="CDI"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-6">
+        <app-form-input
+          [form]="contractTypeForm"
+          controlName="contractTypeName"
+          inputId="contractTypeName"
+          label="Name (*)"
+          placeholder="Contrat à Durée Indéterminée"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12">
+        <app-form-input
+          [form]="contractTypeForm"
+          controlName="contractTypeDescription"
+          inputId="contractTypeDescription"
+          label="Description"
+          placeholder="Description of this contract type..."
+          inputType="textarea"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button
+      type="button"
+      (click)="closePopup()"
+      class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm">
+      Close
+    </button>
+    <button
+      class="ti-btn ti-btn-primary"
+      type="submit"
+      (click)="createOrUpdateContractType()">
+      {{ contractTypeToUpdate ? 'Save changes' : 'Create Contract Type' }}
+    </button>
+  </div>
+
+</app-modal>

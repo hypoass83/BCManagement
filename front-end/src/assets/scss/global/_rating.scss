@@ -1,0 +1,16 @@
+/*-----Rating Styles Starts ---------------*/
+
+@media (max-width: 460px) {
+  .br-units {
+    @apply flex flex-col justify-center #{!important};
+  }
+}
+
+@media (max-width: 468px) {
+  .br-movie .br-unit-inner.br-active {
+    @apply w-full;
+  }
+}
+
+
+/*-----Media Styles End ---------------*/

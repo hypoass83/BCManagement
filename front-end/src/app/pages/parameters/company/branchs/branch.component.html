@@ -1,0 +1,36 @@
+<app-page-header
+  title="Parameters"
+  title1="Company"
+  activeitem="Branch Home"
+
+>
+
+</app-page-header>
+
+
+<app-search-bar
+  [(quickFilterText)]="quickFilterText"
+  [buttonLabel]="'Create Branche'"
+  (buttonClick)="createBranch()">
+</app-search-bar>
+
+
+
+ <div style="height: 60vh" class="ag-grid-container">
+  <ag-grid-angular
+    style="width: 100%; height: 100%"
+    [rowData]="rowData()"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+
+
+    [pagination]="true"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    [class]="themeClass()"
+    [quickFilterText]="quickFilterText"
+    (gridReady)="onGridReady($event)"
+  />
+</div>
+
+<app-branch-form [branchToUpdate]="BranchToEdit"></app-branch-form>

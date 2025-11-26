@@ -1,0 +1,107 @@
+<!-- certification-type-form.component.html -->
+<app-modal
+  modalId="certification-type-create-form"
+  [title]="certificationTypeToUpdate ? 'Edit Certification Type' : 'Create Certification Type'"
+  (close)="closePopup()"
+  width="60%">
+
+  <form [formGroup]="certificationTypeForm" (ngSubmit)="createOrUpdateCertificationType()">
+
+    <div class="grid grid-cols-12 gap-4 p-4">
+
+      <!-- Code -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="certificationTypeForm"
+          controlName="code"
+          inputId="code"
+          label="Code (*)"
+          placeholder="BMKT"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Name -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="certificationTypeForm"
+          controlName="name"
+          inputId="name"
+          label="Name (*)"
+          placeholder="Best Marketer of the Year"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Description -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="certificationTypeForm"
+          controlName="description"
+          inputId="description"
+          label="Description"
+          placeholder="Description of this certification type..."
+          inputType="textarea"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Default Bonus Amount -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="certificationTypeForm"
+          controlName="defaultBonusAmount"
+          inputId="defaultBonusAmount"
+          label="Default Bonus Amount (XAF) (*)"
+          inputType="number"
+          placeholder="500000"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Is Active -->
+      <div class="col-span-6">
+        <label class="ti-form-label">Active Status (*)</label>
+        <div class="flex items-center gap-4 mt-2">
+          <label class="flex items-center gap-2">
+            <input
+              type="radio"
+              formControlName="isActive"
+              [value]="true"
+              class="ti-form-radio">
+            <span>Active</span>
+          </label>
+          <label class="flex items-center gap-2">
+            <input
+              type="radio"
+              formControlName="isActive"
+              [value]="false"
+              class="ti-form-radio">
+            <span>Inactive</span>
+          </label>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button
+      type="button"
+      (click)="closePopup()"
+      class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm">
+      Close
+    </button>
+    <button
+      class="ti-btn ti-btn-primary"
+      type="submit"
+      (click)="createOrUpdateCertificationType()">
+      {{ certificationTypeToUpdate ? 'Save changes' : 'Create Certification Type' }}
+    </button>
+  </div>
+
+</app-modal>

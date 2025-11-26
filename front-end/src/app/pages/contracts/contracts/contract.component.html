@@ -1,0 +1,32 @@
+<!-- contract.component.html -->
+<app-page-header
+  title="Human Resources"
+  title1="Contracts"
+  activeitem="Contract Management">
+</app-page-header>
+
+<app-search-bar
+  [(quickFilterText)]="quickFilterText"
+  [buttonLabel]="'Create Contract'"
+  (buttonClick)="createContract()">
+</app-search-bar>
+
+<div style="height: 60vh" class="ag-grid-container">
+  <ag-grid-angular
+    style="width: 100%; height: 100%"
+    [rowData]="rowData()"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [pagination]="true"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    [class]="themeClass()"
+    [quickFilterText]="quickFilterText"
+    (gridReady)="onGridReady($event)">
+  </ag-grid-angular>
+</div>
+
+<app-contract-form
+  [contractToUpdate]="contractToEdit"
+  [employeeId]="selectedEmployeeId">
+</app-contract-form>

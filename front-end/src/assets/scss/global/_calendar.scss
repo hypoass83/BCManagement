@@ -1,0 +1,174 @@
+/*---start calendar styles-----*/
+
+#full-calendar-activity {
+  @apply overflow-scroll;
+}
+
+#calendar2 {
+  .btn-group {
+    @apply relative inline-flex align-middle;
+
+    &:not(:last-child) {
+      @apply mr-[4px] mb-[2px];
+    }
+
+    .btn-primary {
+      @apply px-[10px] py-[5px] bg-[#5a66f1] text-white cursor-pointer;
+
+      &:hover {
+        @apply bg-[#6672f3];
+      }
+
+      &:first-child {
+        @apply ltr:rounded-tl-[2px] ltr:rounded-bl-[2px] rtl:rounded-tr-[2px] rtl:rounded-br-[2px];
+      }
+
+      &:last-child {
+        @apply ltr:rounded-tr-[2px] ltr:rounded-br-[2px] rtl:rounded-tl-[2px] rtl:rounded-bl-[2px];
+      }
+    }
+  }
+}
+
+dp-day-calendar .dp-day-calendar-container {
+  @apply bg-white border #{!important};
+}
+dp-calendar-nav .dp-calendar-nav-container {
+  @apply border-0 h-[40px] text-primary #{!important};
+}
+
+dp-day-calendar .dp-calendar-wrapper {
+  @apply border-0 p-1 #{!important};
+}
+
+dp-day-calendar .dp-calendar-weekday {
+  @apply border-b-gray-200 w-[40px] #{!important};
+}
+
+dp-day-calendar .dp-calendar-weekday {
+  @apply border-l-gray-200 #{!important};
+}
+
+dp-day-calendar .dp-calendar-day {
+  @apply w-[40px] h-[40px] hover:bg-gray-100 rounded-full hover:border hover:border-gray-200 #{!important};
+}
+
+dp-day-calendar .dp-current-month.dp-current-day {
+  @apply bg-primary text-white #{!important};
+}
+
+dp-day-calendar .dp-weekdays {
+  @apply font-semibold text-sm text-primary #{!important};
+}
+
+.mat-calendar-arrow {
+  @apply fill-[#e0dbdbbd] #{!important};
+}
+
+.md-drppicker {
+  @apply dark:bg-bgdark #{!important};
+  .calendar-table {
+    @apply dark:bg-bgdark dark:border-bgdark #{!important};
+  }
+}
+
+.mat-calendar-body-cell-content {
+  @apply dark:bg-bgdark dark:text-white/60;
+}
+
+.mat-calendar-table-header {
+  @apply dark:bg-bgdark dark:text-white/60;
+}
+
+.mat-datepicker-content .mat-calendar-previous-button {
+  @apply dark:bg-bgdark dark:text-white/60;
+}
+
+.mat-datepicker-toggle,
+.mat-datepicker-content .mat-calendar-next-button,
+.mat-datepicker-content .mat-calendar-previous-button {
+  @apply dark:text-white/60;
+}
+
+.mat-calendar-body-label {
+  @apply dark:bg-bgdark dark:text-white/60;
+}
+
+dp-day-calendar .dp-day-calendar-container {
+  @apply dark:bg-bgdark dark:border-white/10 #{!important};
+}
+
+.dp-popup {
+  @apply dark:bg-bgdark #{!important};
+}
+
+dp-day-calendar .dp-calendar-weekday {
+  @apply dark:border-b-white/10 w-[40px] #{!important};
+}
+
+dp-day-calendar .dp-calendar-weekday {
+  @apply dark:border-l-white/10 #{!important};
+}
+
+dp-day-calendar .dp-calendar-day {
+  @apply dark:hover:bg-bodybg dark:hover:border-white/20 #{!important};
+}
+.mat-calendar-body-selected {
+  @apply bg-primary text-white #{!important};
+}
+.mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+  @apply bg-primary/10 text-primary border-primary #{!important};
+}
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover
+  > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+  @apply hover:bg-primary/10 #{!important};
+}
+
+.cal-week-view{
+   @apply dark:bg-bodybg text-white dark:border dark:border-white/10 #{!important};
+}
+
+.cal-week-view {
+  .cal-day-headers {
+    @apply dark:border-white/10 #{!important};
+    .cal-header {
+      @apply dark:hover:bg-bgdark text-defaultcolor dark:text-white dark:border-t-0 dark:border-l-0 #{!important};
+      &:first-child {
+        @apply border-l-[1px] border-l-[#e1e1e1] dark:border-l-white/10 rtl:dark:border-r-white/10 #{!important};
+      }
+      &:not(:last-child) {
+        @apply border-r-[#e1e1e1] dark:border-r-white/10 rtl:dark:border-l-white/10 #{!important};
+      }
+      &.cal-weekend span {
+        @apply dark:text-white #{!important};
+      }
+      &.cal-today {
+        @apply dark:bg-bgdark #{!important};
+      }
+    }  
+  }
+  .cal-all-day-events {
+    @apply dark:border-white/10 border border-b-[1px] #{!important};
+  }
+  .cal-day-column {
+    @apply dark:border-l-white/10 rtl:dark:border-r-white/10 border-l-[1px] #{!important};
+  }
+  .cal-time-events .cal-day-columns:not(.cal-resize-active) .cal-hour-segment:hover {
+    @apply dark:hover:bg-bgdark #{!important};
+  }
+  .cal-hour-odd {
+    @apply dark:bg-bgdark #{!important};
+  }
+  .cal-time-events {
+    @apply dark:border-white/10 #{!important};
+  }
+}
+.cal-month-view .cal-cell.cal-has-events.cal-open {
+  @apply dark:bg-bgdark #{!important};
+}
+.cal-week-view .cal-hour:not(:last-child) .cal-hour-segment,
+.cal-week-view .cal-hour:last-child :not(:last-child) .cal-hour-segment {
+  @apply dark:border-b-white/10 dark:text-white/50 text-defaultcolor #{!important};
+}
+
+/*--------Calendar Styles End--------------------*/

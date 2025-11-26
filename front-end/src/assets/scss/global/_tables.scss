@@ -1,0 +1,88 @@
+/*-----Tables Styles Start------*/
+
+.sortable-table {
+  table {
+    @apply border border-black/[0.12] shadow-none;
+  }
+}
+.selection-datatable {
+  table {
+    @apply overflow-auto #{!important};
+  }
+
+  .mdc-data-table__table {
+    @apply w-full border-0 whitespace-nowrap border-spacing-[0] #{!important};
+  }
+}
+
+.edit-validation-data-table {
+  .mat-mdc-text-field-wrapper {
+    @apply border-0 dark:border-[0] #{!important};
+  }
+
+  .mdc-checkbox
+    .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate):not([data-indeterminate="true"])
+    ~ .mdc-checkbox__background {
+    @apply dark:border-white/10 #{!important};
+  }
+
+  .mat-mdc-button:not(:disabled) {
+    @apply bg-primary text-white;
+  }
+}
+
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mdc-checkbox .mdc-checkbox__native-control:enabled ~ .mdc-checkbox__background .mdc-checkbox__checkmark {
+  @apply text-white #{!important};
+}
+.mdc-data-table__cell,
+.mdc-data-table__header-cell {
+  @apply dark:border-b-white/10;
+}
+.mdc-checkbox
+  .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate):not([data-indeterminate="true"])
+  ~ .mdc-checkbox__background {
+  @apply dark:border-white/30 #{!important};
+}
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  @apply dark:bg-bgdark text-white #{!important};
+}
+.mat-mdc-dialog-container .mdc-dialog__title {
+  @apply dark:text-white #{!important};
+}
+.mdc-checkbox
+  .mdc-checkbox__native-control:enabled:not(:checked):not(:indeterminate):not([data-indeterminate="true"])
+  ~ .mdc-checkbox__background {
+  @apply bg-transparent border dark:border-white/20 #{!important};
+}
+.mdc-data-table__header-cell {
+  @apply font-semibold #{!important};
+}
+.validation-datble {
+  @apply whitespace-nowrap #{!important};
+}
+.mdc-text-field__input:focus {
+  @apply shadow-none ring-0 #{!important};
+}
+
+.table-bordered .mat-mdc-text-field-wrapper {
+  @apply border-0 border-b rounded-none dark:border-white/10 #{!important};
+}
+.table-bordered {
+  .demo-button-container {
+    @apply border-b;
+  }
+  .mat-elevation-z8 {
+    @apply shadow-none #{!important};
+  }
+}
+.mdc-button--raised {
+  @apply my-1 #{!important}
+}
+/*-----Tables Styles End------*/

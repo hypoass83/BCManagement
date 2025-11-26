@@ -1,0 +1,71 @@
+/*-------Gallery Styles Start -----------*/
+
+#modal-gallery-container {
+  @apply bg-[#000] #{!important};
+}
+.gallery2,
+.gallery3 {
+  .plain-container {
+    @apply items-center flex justify-around #{!important};
+
+    .image {
+      @apply w-[370px] #{!important};
+      @apply h-[260px] #{!important};
+    }
+  }
+}
+
+#modal-gallery-container {
+  @apply bg-black/90 #{!important};
+}
+
+// //gallery
+// .ng-image-slider .ng-image-slider-container .main .main-inner {
+//   @apply w-[1760px] p-0 h-full #{!important};
+
+//   .img-div {
+//     @apply w-[385px] #{!important};
+//   }
+// }
+
+.cdk-overlay-container {
+  @apply z-[51];
+
+  .g-backdrop {
+    @apply bg-black/50 #{!important};
+  }
+
+  lightbox[id="lightbox-lightbox"] {
+    @apply shadow-none #{!important};
+  }
+
+  gallery[ng-reflect-id="lightbox"] {
+    @apply bg-transparent #{!important};
+  }
+
+  gallery-thumbs {
+    @apply hidden #{!important};
+  }
+}
+
+@media (max-width: 575px) {
+  .gallery2,
+  .gallery3 {
+    .plain-container {
+      @apply items-center flex flex-col justify-around #{!important};
+
+      .image {
+        @apply w-[100%] h-[auto] #{!important};
+
+        &:not(:last-child) {
+          @apply mb-[20px] #{!important};
+        }
+      }
+    }
+  }
+}
+.buttons-container > .upper-button {
+  @apply rtl:me-[30px] #{!important};
+}
+
+/*--------Gallery Styles End--------------------*/

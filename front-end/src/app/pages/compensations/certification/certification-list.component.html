@@ -1,0 +1,32 @@
+<!-- certification-list.component.html -->
+<app-page-header
+  title="Human Resources"
+  title1="Excellence"
+  activeitem="Employee Certifications">
+</app-page-header>
+
+<app-search-bar
+  [(quickFilterText)]="quickFilterText"
+  [buttonLabel]="'Create Certification'"
+  (buttonClick)="createCertification()">
+</app-search-bar>
+
+<div style="height: 60vh" class="ag-grid-container">
+  <ag-grid-angular
+    style="width: 100%; height: 100%"
+    [rowData]="rowData()"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [pagination]="true"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    [class]="themeClass()"
+    [quickFilterText]="quickFilterText"
+    (gridReady)="onGridReady($event)"
+  />
+</div>
+
+<app-certification-form
+  [certificationToUpdate]="certificationToEdit"
+  (certificationSaved)="loadCertifications()">
+</app-certification-form>

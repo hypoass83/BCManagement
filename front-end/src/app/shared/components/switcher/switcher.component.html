@@ -1,0 +1,805 @@
+<!-- ========== Switcher  ========== -->
+<div
+  id="hs-overlay-switcher"
+  class="hs-overlay hidden ti-offcanvas ti-offcanvas-right"
+  tabindex="-1"
+>
+  <div class="ti-offcanvas-header z-10 relative">
+    <h3 class="ti-offcanvas-title">Switcher</h3>
+    <button
+      type="button"
+      class="ti-btn flex-shrink-0 p-0 transition-none text-gray-500 hover:text-gray-700 focus:ring-gray-400 focus:ring-offset-white dark:text-white/70 dark:hover:text-white/80 dark:focus:ring-white/10 dark:focus:ring-offset-white/10"
+      data-hs-overlay="#hs-overlay-switcher"
+    >
+      <span class="sr-only">Close modal</span>
+      <i class="ri-close-circle-line leading-none text-lg"></i>
+    </button>
+  </div>
+  <div
+    class="ti-offcanvas-body pt-0 border-b dark:border-white/10 z-10 relative"
+  >
+    <div
+      class="flex space-x-2 rtl:space-x-reverse"
+      aria-label="Tabs"
+      role="tablist"
+    >
+      <button
+        type="button"
+        class="hs-tab-active:bg-secondary/10 w-full hs-tab-active:border-b-transparent hs-tab-active:text-secondary dark:hs-tab-active:bg-black/20 dark:hs-tab-active:border-b-white/10 dark:hs-tab-active:text-secondary -mb-px py-2 px-3 bg-white text-xs font-medium text-center border text-gray-500 rounded-lg hover:text-gray-700 dark:bg-bgdark dark:border-white/10 dark:text-white/70 active"
+        id="switcher-item-1"
+        data-hs-tab="#switcher-1"
+        aria-controls="switcher-1"
+        role="tab"
+      >
+        Theme Style
+      </button>
+      <button
+        type="button"
+        class="hs-tab-active:bg-secondary/10 w-full hs-tab-active:border-b-transparent hs-tab-active:text-secondary dark:hs-tab-active:bg-black/20 dark:hs-tab-active:border-b-white/10 dark:hs-tab-active:text-secondary -mb-px py-2 px-3 bg-white text-xs font-medium text-center border text-gray-500 rounded-lg hover:text-gray-700 dark:bg-bgdark dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300"
+        id="switcher-item-2"
+        data-hs-tab="#switcher-2"
+        aria-controls="switcher-2"
+        role="tab"
+      >
+        Theme Colors
+      </button>
+    </div>
+  </div>
+  <div class="ti-offcanvas-body" id="switcher-body">
+    <div
+      id="switcher-1"
+      role="tabpanel"
+      aria-labelledby="switcher-item-1"
+      class="space-y-6"
+    >
+      <div class="space-y-6">
+        <p class="switcher-style-head">Theme Color Mode:</p>
+        <div class="grid grid-cols-3 gap-6 switcher-style">
+          <div class="flex">
+            <input
+              type="radio"
+              name="theme-style"
+              class="ti-form-radio"
+              id="switcher-light-theme"
+             (click)="themeChange('light','light')" [checked]="localdata['synto-theme-mode']!='dark'"
+            />
+            <label
+              for="switcher-light-theme"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Light</label>
+          </div>
+          <div class="flex">
+            <input
+              type="radio"
+              name="theme-style"
+              class="ti-form-radio"
+              id="switcher-dark-theme"
+             (click)="themeChange('dark','dark')" [checked]="localdata['synto-theme-mode']=='dark'"
+            />
+            <label
+              for="switcher-dark-theme"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Dark</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="space-y-6">
+        <p class="switcher-style-head">Directions:</p>
+        <div class="grid grid-cols-3 gap-6 switcher-style">
+          <div class="flex">
+            <input
+              type="radio"
+              name="direction"
+              class="ti-form-radio"
+              id="switcher-ltr"
+              (click)="DirectionsChange('ltr')"
+              [checked]="localdata['synto-dir'] != 'rtl'"
+            />
+            <label
+              for="switcher-ltr"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >LTR</label
+            >
+          </div>
+          <div class="flex">
+            <input
+              type="radio"
+              name="direction"
+              class="ti-form-radio"
+              id="switcher-rtl"
+              (click)="DirectionsChange('rtl')"
+              [checked]="localdata['synto-dir'] == 'rtl'"
+            />
+            <label
+              for="switcher-rtl"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >RTL</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="space-y-6">
+        <p class="switcher-style-head">Navigation Styles:</p>
+        <div class="grid grid-cols-3 gap-6 switcher-style">
+          <div class="flex">
+            <input
+              type="radio"
+              name="navigation-style"
+              class="ti-form-radio"
+              id="switcher-vertical"
+              (click)="NavigationChange('vertical')"
+              [checked]="localdata['synto-nav-mode'] != 'horizontal'"
+            />
+            <label
+              for="switcher-vertical"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Vertical</label
+            >
+          </div>
+          <div class="flex">
+            <input
+              type="radio"
+              name="navigation-style"
+              class="ti-form-radio"
+              id="switcher-horizontal"
+              [checked]="localdata['synto-nav-mode'] == 'horizontal'"
+              (click)="NavigationChange('horizontal')"
+
+            />
+            <label
+              for="switcher-horizontal"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Horizontal</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="space-y-6">
+        <p class="switcher-style-head">Navigation Menu Style:</p>
+        <div class="grid grid-cols-2 gap-6 switcher-style">
+          <div class="flex">
+            <input
+              type="radio"
+              name="navigation-data-menu-styles"
+              class="ti-form-radio"
+              id="switcher-menu-click"
+              (click)="Menus('menu-click-closed', 'menu-click')"
+              [checked]="localdata['synto-menu-style'] == 'menu-click'"
+
+            />
+            <label
+              for="switcher-menu-click"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Menu Click</label
+            >
+          </div>
+          <div class="flex">
+            <input
+              type="radio"
+              name="navigation-data-menu-styles"
+              class="ti-form-radio"
+              id="switcher-menu-hover"
+              (click)="Menus('menu-hover-closed', 'menu-hover')"
+              [checked]="localdata['synto-menu-style'] == 'menu-hover'"
+            />
+            <label
+              for="switcher-menu-hover"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Menu Hover</label
+            >
+          </div>
+          <div class="flex">
+            <input
+              type="radio"
+              name="navigation-data-menu-styles"
+              class="ti-form-radio"
+              id="switcher-icon-click"
+              (click)="Menus('icon-click-closed', 'icon-click')"
+              [checked]="localdata['synto-menu-style'] == 'icon-click'"
+            />
+            <label
+              for="switcher-icon-click"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Icon Click</label
+            >
+          </div>
+          <div class="flex">
+            <input
+              type="radio"
+              name="navigation-data-menu-styles"
+              class="ti-form-radio"
+              id="switcher-icon-hover"
+              (click)="Menus('icon-hover-closed', 'icon-hover')"
+             [checked]="localdata['synto-menu-style'] == 'menu-hover'"
+            />
+            <label
+              for="switcher-icon-hover"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Icon Hover</label
+            >
+          </div>
+        </div>
+        <div class="px-4 text-secondary text-xs">
+          <b class="lt:mr-2 rtl:ml-2">Note:</b>Works same for both Vertical and
+          Horizontal
+        </div>
+      </div>
+      <div class="space-y-6">
+        <p class="switcher-style-head">Page Styles:</p>
+        <div class="grid grid-cols-3 gap-6 switcher-style">
+          <div class="flex">
+            <input
+              type="radio"
+              name="data-page-styles"
+              class="ti-form-radio"
+              id="switcher-regular"
+              (click)="PageChange('regular')"
+              [checked]="localdata['synto-page-mode'] != 'classic'"
+            />
+            <label
+              for="switcher-regular"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Regular</label
+            >
+          </div>
+          <div class="flex">
+            <input
+              type="radio"
+              name="data-page-styles"
+              class="ti-form-radio"
+              id="switcher-classic"
+              (click)="PageChange('classic')"
+              [checked]="localdata['synto-page-mode'] == 'classic'"
+            />
+            <label
+              for="switcher-classic"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Classic</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="space-y-6">
+        <p class="switcher-style-head">Layout Width Styles:</p>
+        <div class="grid grid-cols-3 gap-6 switcher-style">
+          <div class="flex">
+            <input
+              type="radio"
+              name="layout-width"
+              class="ti-form-radio"
+              id="switcher-full-width"
+              (click)="WidthChange('full-width')"
+              [checked]="localdata['synto-width-mode'] != 'boxed'"
+            />
+            <label
+              for="switcher-full-width"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >FullWidth</label
+            >
+          </div>
+          <div class="flex">
+            <input
+              type="radio"
+              name="layout-width"
+              class="ti-form-radio"
+              id="switcher-boxed"
+              (click)="WidthChange('boxed')"
+              [checked]="localdata['synto-width-mode'] == 'boxed'"
+            />
+            <label
+              for="switcher-boxed"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Boxed</label
+            >
+          </div>
+        </div>
+      </div>
+      <div class="space-y-6">
+        <p class="switcher-style-head">Menu Positions:</p>
+        <div class="grid grid-cols-3 gap-6 switcher-style">
+          <div class="flex">
+            <input
+              type="radio"
+              name="data-menu-positions"
+              class="ti-form-radio"
+              id="switcher-menu-fixed"
+              (click)="MenuChange('fixed')"
+              [checked]="localdata['synto-menu-mode'] != 'scrollable'"
+            />
+            <label
+              for="switcher-menu-fixed"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Fixed</label
+            >
+          </div>
+          <div class="flex">
+            <input
+              type="radio"
+              name="data-menu-positions"
+              class="ti-form-radio"
+              id="switcher-menu-scroll"
+              (click)="MenuChange('scrollable')"
+              [checked]="localdata['synto-menu-mode'] == 'scrollable'"
+            />
+            <label
+              for="switcher-menu-scroll"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Scrollable
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="space-y-6">
+        <p class="switcher-style-head">Header Positions:</p>
+        <div class="grid grid-cols-3 gap-6 switcher-style">
+          <div class="flex">
+            <input
+              type="radio"
+              name="data-header-positions"
+              class="ti-form-radio"
+              id="switcher-header-fixed"
+              (click)="HeaderChange('fixed')"
+              [checked]="localdata['synto-header-mode'] != 'scrollable'"
+            />
+            <label
+              for="switcher-header-fixed"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+            >
+              Fixed</label
+            >
+          </div>
+          <div class="flex">
+            <input
+              type="radio"
+              name="data-header-positions"
+              class="ti-form-radio"
+              id="switcher-header-scroll"
+              (click)="HeaderChange('scrollable')"
+              [checked]="localdata['synto-header-mode'] == 'scrollable'"
+            />
+            <label
+              for="switcher-header-scroll"
+              class="text-xs text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70"
+              >Scrollable
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      id="switcher-2"
+      class="hidden space-y-6"
+      role="tabpanel"
+      aria-labelledby="switcher-item-2"
+    >
+      <div class="theme-colors">
+        <p class="switcher-style-head">Menu Colors:</p>
+        <div class="flex switcher-style space-x-3 rtl:space-x-reverse">
+          <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select">
+            <input
+              class="hs-tooltip-toggle ti-form-radio color-input color-white"
+              type="radio"
+              name="menu-colors"
+              id="switcher-menu-light"
+              (click)="menuTheme('light')"
+              [checked]="localdata['synto-menu-mode'] == 'light'"
+            />
+            <span
+              class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+              role="tooltip"
+            >
+              Light Menu
+            </span>
+          </div>
+          <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select">
+            <input
+              class="hs-tooltip-toggle ti-form-radio color-input color-dark"
+              type="radio"
+              name="menu-colors"
+              id="switcher-menu-dark"
+              (click)="menuTheme('dark')"
+              [checked]="localdata['synto-menu-mode'] == 'dark'"
+            />
+            <span
+              class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+              role="tooltip"
+            >
+              Dark Menu
+            </span>
+          </div>
+          <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select">
+            <input
+              class="hs-tooltip-toggle ti-form-radio color-input color-primary"
+              type="radio"
+              name="menu-colors"
+              id="switcher-menu-primary"
+              (click)="menuTheme('color')"
+              [checked]="localdata['synto-menu-mode'] == 'color'"
+            />
+            <span
+              class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+              role="tooltip"
+            >
+              Color Menu
+            </span>
+          </div>
+          <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select">
+            <input
+              class="hs-tooltip-toggle ti-form-radio color-input color-gradient"
+              type="radio"
+              name="menu-colors"
+              id="switcher-menu-gradient"
+              (click)="menuTheme('gradient')"
+              [checked]="localdata['synto-menu-mode'] == 'gradient'"
+            />
+            <span
+              class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+              role="tooltip"
+            >
+              Gradient Menu
+            </span>
+          </div>
+          <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select">
+            <input
+              class="hs-tooltip-toggle ti-form-radio color-input color-transparent"
+              type="radio"
+              name="menu-colors"
+              id="switcher-menu-transparent"
+              (click)="menuTheme('transparent')"
+              [checked]="localdata['synto-menu-mode'] == 'transparent'"
+            />
+            <span
+              class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+              role="tooltip"
+            >
+              Transparent Menu
+            </span>
+          </div>
+        </div>
+        <div class="px-4 text-secondary text-xs">
+          <b class="ltr:mr-2 rtl:ml-2">Note:</b>If you want to change color Menu
+          dynamically change from below Theme Primary color picker.
+        </div>
+      </div>
+      <div class="theme-colors">
+        <p class="switcher-style-head">Header Colors:</p>
+        <div class="flex switcher-style space-x-3 rtl:space-x-reverse">
+          <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select">
+            <input
+              class="hs-tooltip-toggle ti-form-radio color-input color-white"
+              type="radio"
+              name="header-colors"
+              id="switcher-header-light"
+              (click)="headerTheme('light')"
+              [checked]="localdata['synto-header-mode'] == 'light'"
+            />
+            <span
+              class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+              role="tooltip"
+            >
+              Light Header
+            </span>
+          </div>
+          <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select">
+            <input
+              class="hs-tooltip-toggle ti-form-radio color-input color-dark"
+              type="radio"
+              name="header-colors"
+              id="switcher-header-dark"
+              (click)="headerTheme('dark')"
+              [checked]="localdata['synto-header-mode'] == 'dark'"
+            />
+            <span
+              class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+              role="tooltip"
+            >
+              Dark Header
+            </span>
+          </div>
+          <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select">
+            <input
+              class="hs-tooltip-toggle ti-form-radio color-input color-primary"
+              type="radio"
+              name="header-colors"
+              id="switcher-header-primary"
+              (click)="headerTheme('color')"
+              [checked]="localdata['synto-header-mode'] == 'color'"
+            />
+            <span
+              class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+              role="tooltip"
+            >
+              Color Header
+            </span>
+          </div>
+          <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select">
+            <input
+              class="hs-tooltip-toggle ti-form-radio color-input color-gradient"
+              type="radio"
+              name="header-colors"
+              id="switcher-header-gradient"
+              (click)="headerTheme('gradient')"
+              [checked]="localdata['synto-header-mode'] == 'gradient'"
+            />
+            <span
+              class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+              role="tooltip"
+            >
+              Gradient Header
+            </span>
+          </div>
+          <div class="hs-tooltip ti-main-tooltip ti-form-radio switch-select">
+            <input
+              class="hs-tooltip-toggle ti-form-radio color-input color-transparent"
+              type="radio"
+              name="header-colors"
+              id="switcher-header-transparent"
+              (click)="headerTheme('transparent')"
+              [checked]="localdata['synto-header-mode'] == 'transparent'"
+            />
+            <span
+              class="hs-tooltip-content ti-main-tooltip-content py-1 px-2 bg-gray-900 text-xs font-medium text-white shadow-sm dark:bg-slate-700"
+              role="tooltip"
+            >
+              Transparent Header
+            </span>
+          </div>
+        </div>
+        <div class="px-4 text-secondary text-xs">
+          <b class="ltr:mr-2 rtl:ml-2">Note:</b>If you want to change color
+          Header dynamically change from below Theme Primary color picker.
+        </div>
+      </div>
+      <div class="theme-colors">
+        <p class="switcher-style-head">Theme Primary:</p>
+        <div class="flex switcher-style space-x-3 rtl:space-x-reverse">
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio color-input color-primary-1"
+              type="radio"
+              name="theme-primary"
+              id="switcher-primary"
+              (click)="primary('58 88 146')"
+              checked
+            />
+          </div>
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio color-input color-primary-2"
+              type="radio"
+              name="theme-primary"
+              id="switcher-primary1"
+              (click)="primary('92 144 163')"
+              [checked]="localdata['synto-primary-mode'] == '92 144 163'"
+            />
+          </div>
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio color-input color-primary-3"
+              type="radio"
+              name="theme-primary"
+              id="switcher-primary2"
+              (click)="primary('172 172 80')"
+              [checked]="localdata['synto-primary-mode'] == '172 172 80'"
+            />
+          </div>
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio color-input color-primary-4"
+              type="radio"
+              name="theme-primary"
+              id="switcher-primary3"
+              (click)="primary('165 94 131')"
+              [checked]="localdata['synto-primary-mode'] == '165 94 131'"
+            />
+          </div>
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio color-input color-primary-5"
+              type="radio"
+              name="theme-primary"
+              id="switcher-primary4"
+              (click)="primary('87 68 117')"
+              [checked]="localdata['synto-primary-mode'] == '87 68 117'"
+            />
+          </div>
+          <div for="lightPrimaryColorID"
+            class="ti-form-radio switch-select ltr:pl-0 rtl:pr-0 mt-1 color-primary-light color-picker-input"
+          >
+            <input
+              class="color-primary-light"
+              id="lightPrimaryColorID"
+              data-id="primary"
+              data-id1="primary-rgb"
+              [style.background]="color1"
+              [cpAlphaChannel]="'disabled'"
+              [cpOutputFormat]="'hex'"
+              [(colorPicker)]="color1"
+              (cpSliderDragEnd)="dynamicLightPrimary($event)"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="theme-colors">
+        <p class="switcher-style-head">Theme Background:</p>
+        <div class="flex switcher-style space-x-3 rtl:space-x-reverse">
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio color-input color-bg-1"
+              type="radio"
+              name="theme-background"
+              id="switcher-background"
+              (click)="
+                background(
+                  '64 76 107','50 62 93',
+                  'dark',
+                  'dark'
+                )
+              "
+              [checked]="localdata['synto-background-mode-dark'] == '50 62 93'"
+            />
+          </div>
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio color-input color-bg-2"
+              type="radio"
+              name="theme-background"
+              id="switcher-background1"
+              (click)="
+                background(
+                  '95 107 64','81 93 50',
+                  'dark',
+                  'dark'
+                )
+              "
+              [checked]="localdata['synto-background-mode-dark'] == '81 93 50'"
+            />
+          </div>
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio color-input color-bg-3"
+              type="radio"
+              name="theme-background"
+              id="switcher-background2"
+              (click)="
+                background(
+                  '93 64 107','79 50 93',
+                  'dark',
+                  'dark'
+                )
+              "
+              [checked]="localdata['synto-background-mode-dark'] == '79 50 93'"
+            />
+          </div>
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio color-input color-bg-4"
+              type="radio"
+              name="theme-background"
+              id="switcher-background3"
+              (click)="
+                background(
+                  '64 101 107','50 87 93',
+                  'dark',
+                  'dark'
+                )
+              "
+              [checked]="localdata['synto-background-mode-dark'] == '50 87 93'"
+            />
+          </div>
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio color-input color-bg-5"
+              type="radio"
+              name="theme-background"
+              id="switcher-background4"
+              (click)="
+                background(
+                  '107 64 64','93 50 50',
+                  'dark',
+                  'dark'
+                )
+              "
+              [checked]="localdata['synto-background-mode-dark'] == '93 50 50'"
+            />
+          </div>
+          <div
+            class="ti-form-radio switch-select ltr:pl-0 rtl:pr-0 mt-1 color-bg-transparent color-picker-input"
+          >
+            <div for="transparentBgColorID" class="theme-container-background">
+              <input
+                class="color-bg-transparent"
+                id="transparentBgColorID"
+                data-id5="bg"
+                data-id6="bg"
+                [cpToggle]="true"
+                [style.background]="color4"
+                [cpAlphaChannel]="'disabled'"
+                [cpOutputFormat]="'hex'"
+                [(colorPicker)]="color4"
+                (cpSliderDragEnd)="dynamicTranparentBgPrimary($event)"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-image theme-colors">
+        <p class="switcher-style-head">Menu With Background Image:</p>
+        <div class="flex switcher-style space-x-3 rtl:space-x-reverse">
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio bgimage-input bg-img1"
+              type="radio"
+              name="theme-images"
+              id="switcher-bg-img"
+              (click)="ImageTheme('bgimg1')"
+              [checked]="localdata['synto-image'] == 'bgimg1'"
+            />
+          </div>
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio bgimage-input bg-img2"
+              type="radio"
+              name="theme-images"
+              id="switcher-bg-img1"
+              (click)="ImageTheme('bgimg2')"
+              [checked]="localdata['synto-image'] == 'bgimg2'"
+            />
+          </div>
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio bgimage-input bg-img3"
+              type="radio"
+              name="theme-images"
+              id="switcher-bg-img2"
+              (click)="ImageTheme('bgimg3')"
+              [checked]="localdata['synto-image'] == 'bgimg3'"
+            />
+          </div>
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio bgimage-input bg-img4"
+              type="radio"
+              name="theme-images"
+              id="switcher-bg-img3"
+              (click)="ImageTheme('bgimg4')"
+              [checked]="localdata['synto-image'] == 'bgimg4'"
+            />
+          </div>
+          <div class="ti-form-radio switch-select">
+            <input
+              class="ti-form-radio bgimage-input bg-img5"
+              type="radio"
+              name="theme-images"
+              id="switcher-bg-img4"
+              (click)="ImageTheme('bgimg5')"
+              [checked]="localdata['synto-image'] == 'bgimg5'"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ti-offcanvas-footer">
+    <a
+      class="ti-btn ti-btn-primary" target="_blank"
+      href="https://themeforest.net/user/spruko/portfolio"
+      data-hs-overlay="#Buynow"
+      >Try Now</a
+    >
+    <a
+      class="ti-btn ti-btn-secondary" target="_blank"
+      href="https://themeforest.net/user/spruko/portfolio"
+      >Our Portfolio</a
+    >
+    <a
+      id="reset-all"
+      href="javascript:void(0);"
+      class="ti-btn ti-btn-danger"
+      (click)="reset()"
+      >Reset</a
+    >
+  </div>
+</div>
+<!-- ========== END Switcher  ========== -->

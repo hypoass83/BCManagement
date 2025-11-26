@@ -1,0 +1,51 @@
+// contract-print.component.scss
+
+// Print Styles
+@media print {
+  body {
+    background: white !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .contract-print-wrapper {
+    background: white;
+    padding: 0;
+  }
+
+  // Force proper page breaks
+  .space-y-6 > div {
+    page-break-inside: avoid;
+  }
+
+  // Ensure signatures stay on same page
+  .grid.grid-cols-2.gap-12 {
+    page-break-inside: avoid;
+  }
+
+  // Print colors properly
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
+
+// Screen only - smooth appearance
+@media screen {
+  .contract-print-wrapper {
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

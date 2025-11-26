@@ -1,0 +1,126 @@
+<div *ngIf="inputType !== 'date' && inputType !== 'checkbox'&& inputType !== 'textarea'"
+  class="col-span-12 sm:inline-flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full">
+
+  <label [for]="controlName" class="w-32 ti-form-label mb-0">
+    {{ label }}
+    <span *ngIf="required" class="text-red-500">*</span>
+  </label>
+
+
+  <div class="relative w-full">
+    <input [id]="controlName" [type]="inputType" [placeholder]="placeholder || label" class="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm
+             focus:border-primary focus:ring-primary
+             dark:bg-bgdark dark:border-white/10 dark:text-white/70" [formControl]="control" [ngClass]="
+        submitted && control.errors
+          ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+          : ''
+      " />
+
+    <div *ngIf="submitted && control.errors" class="invalid-feedback w-full mt-1">
+      <p *ngIf="control.errors['required']" class="text-sm text-red-600 mt-2">
+        This field is required.
+      </p>
+    </div>
+  </div>
+</div>
+
+
+
+<div *ngIf="inputType === 'date'"
+  class="col-span-12 sm:inline-flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full">
+
+  <label [for]="controlName" class="w-32 ti-form-label mb-0">
+    {{ label }}
+    <span *ngIf="required" class="text-red-500">*</span>
+  </label>
+
+  <div class="relative w-full">
+    <input matInput [matDatepicker]="picker" [id]="controlName" [placeholder]="placeholder || label"
+      [formControl]="control" class="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm
+             focus:border-primary focus:ring-primary
+             dark:bg-bgdark dark:border-white/10 dark:text-white/70" [ngClass]="submitted && control.errors
+        ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+        : ''" />
+
+    <mat-datepicker-toggle matSuffix [for]="picker"
+      class="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+    </mat-datepicker-toggle>
+
+    <mat-datepicker #picker></mat-datepicker>
+    <div *ngIf="submitted && control.errors" class="invalid-feedback w-full mt-1">
+      <p *ngIf="control.errors['required']" class="text-sm text-red-600 mt-2">
+        This field is required.
+      </p>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+<div *ngIf="inputType === 'checkbox'"
+  class="col-span-12 sm:inline-flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full">
+  <!-- Label à gauche -->
+  <label [for]="controlName" class="w-32 ti-form-label mb-0">
+    {{ label }}
+    <span *ngIf="required" class="text-red-500">*</span>
+  </label>
+
+  <!-- Radios à droite -->
+  <div class="relative w-full">
+    <div class="grid sm:grid-cols-2 gap-2 w-full">
+      <label
+        [ngClass]="submitted && control.errors ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-200'"
+        class="flex p-3 w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70">
+        <input type="radio" [formControl]="control" [value]="true" class="ti-form-radio"
+          [name]="controlName + '_' + uniqueId">
+        <span class="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">Yes</span>
+      </label>
+
+      <label
+        [ngClass]="submitted && control.errors ? 'border-red-500 focus:border-red-500 focus:ring-red-500' : 'border-gray-200'"
+        class="flex p-3 w-full bg-white border border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70">
+
+        <input type="radio" [formControl]="control" [value]="false" class="ti-form-radio"
+          [name]="controlName + '_' + uniqueId">
+        <span class="text-sm text-gray-500 ltr:ml-2 rtl:mr-2 dark:text-white/70">No</span>
+      </label>
+    </div>
+
+
+    <!-- Erreurs si nécessaire -->
+    <div *ngIf="submitted && control.errors" class="invalid-feedback w-full mt-1 col-span-2">
+      <p *ngIf="control.errors['required']" class="text-sm text-red-600 mt-2">
+        This field is required.
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="inputType === 'textarea'"
+  class="col-span-12 sm:inline-flex sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 w-full">
+
+  <label [for]="controlName" class="w-32 ti-form-label mb-0">
+    {{ label }}
+    <span *ngIf="required" class="text-red-500">*</span>
+  </label>
+
+
+  <div class="relative w-full">
+    <textarea [id]="controlName" [placeholder]="placeholder || label" class="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm
+             focus:border-primary focus:ring-primary
+             dark:bg-bgdark dark:border-white/10 dark:text-white/70" [formControl]="control" [ngClass]="
+        submitted && control.errors
+          ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+          : ''
+      "></textarea>
+
+    <div *ngIf="submitted && control.errors" class="invalid-feedback w-full mt-1">
+      <p *ngIf="control.errors['required']" class="text-sm text-red-600 mt-2">
+        This field is required.
+      </p>
+    </div>
+  </div>
+</div>

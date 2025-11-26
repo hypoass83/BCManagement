@@ -1,0 +1,25 @@
+<app-page-header title="Parameters" title1="Company" activeitem="Study Home">
+
+</app-page-header>
+
+<app-search-bar
+  [(quickFilterText)]="quickFilterText"
+  [buttonLabel]="'Create Study'"
+  (buttonClick)="getCreateStudyField()">
+</app-search-bar>
+
+
+
+<div style="height: 60vh" class="ag-grid-container">
+  <ag-grid-angular #agGrid style="width: 100%; height: 100%" [rowData]="rowData" [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef" [pagination]="true" [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector" [class]="themeClass()" [quickFilterText]="quickFilterText"
+    (gridReady)="onGridReady($event)" />
+</div>
+
+
+
+
+
+<app-study-form [studyFieldToUpdate]="studyFieldToEdit" [rowData]="rowData"
+  (rowDataChange)="handleRowDataChange($event)"></app-study-form>

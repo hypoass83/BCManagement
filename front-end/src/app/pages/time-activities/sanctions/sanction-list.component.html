@@ -1,0 +1,73 @@
+<app-page-header
+  title="Human Resources"
+  title1="Discipline"
+  activeitem="Employee Sanctions">
+</app-page-header>
+
+<!-- Filter Buttons -->
+<div class="box p-3 mb-3">
+  <div class="flex gap-2 flex-wrap">
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'all' ? 'ti-btn-primary' : 'ti-btn-outline-primary')"
+      (click)="onFilterChange('all')">
+      <i class="ti ti-list"></i> All Sanctions
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'avertissement' ? 'ti-btn-warning' : 'ti-btn-outline-warning')"
+      (click)="onFilterChange('avertissement')">
+      <i class="ti ti-alert-triangle"></i> Avertissement
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'blame' ? 'ti-btn-orange' : 'ti-btn-outline-orange')"
+      (click)="onFilterChange('blame')">
+      <i class="ti ti-alert-circle"></i> Blâme
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'misepied' ? 'ti-btn-danger' : 'ti-btn-outline-danger')"
+      (click)="onFilterChange('misepied')">
+      <i class="ti ti-ban"></i> Mise à pied
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'reduction' ? 'ti-btn-purple' : 'ti-btn-outline-purple')"
+      (click)="onFilterChange('reduction')">
+      <i class="ti ti-cash-off"></i> Réduction Salaire
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'licenciement' ? 'ti-btn-dark' : 'ti-btn-outline-dark')"
+      (click)="onFilterChange('licenciement')">
+      <i class="ti ti-door-exit"></i> Licenciement
+    </button>
+  </div>
+</div>
+
+<app-search-bar
+  [(quickFilterText)]="quickFilterText"
+  [buttonLabel]="'Create Sanction'"
+  (buttonClick)="createSanction()">
+</app-search-bar>
+
+<div style="height: 60vh" class="ag-grid-container">
+  <ag-grid-angular
+    style="width: 100%; height: 100%"
+    [rowData]="rowData()"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [pagination]="true"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    [class]="themeClass()"
+    [quickFilterText]="quickFilterText"
+    (gridReady)="onGridReady($event)"
+  />
+</div>
+
+<app-sanction-form
+  [sanctionToUpdate]="sanctionToEdit"
+  (sanctionSaved)="loadSanctions()">
+</app-sanction-form>

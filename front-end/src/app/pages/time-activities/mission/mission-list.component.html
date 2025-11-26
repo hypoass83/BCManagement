@@ -1,0 +1,61 @@
+<app-page-header
+  title="Human Resources"
+  title1="Operations"
+  activeitem="Employee Missions">
+</app-page-header>
+
+<!-- Filter Buttons -->
+<div class="box p-3 mb-3">
+  <div class="flex gap-2">
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'all' ? 'ti-btn-primary' : 'ti-btn-outline-primary')"
+      (click)="onFilterChange('all')">
+      <i class="ti ti-list"></i> All Missions
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'planned' ? 'ti-btn-warning' : 'ti-btn-outline-warning')"
+      (click)="onFilterChange('planned')">
+      <i class="ti ti-clock"></i> Planned
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'active' ? 'ti-btn-info' : 'ti-btn-outline-info')"
+      (click)="onFilterChange('active')">
+      <i class="ti ti-player-play"></i> Active
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'completed' ? 'ti-btn-success' : 'ti-btn-outline-success')"
+      (click)="onFilterChange('completed')">
+      <i class="ti ti-check"></i> Completed
+    </button>
+  </div>
+</div>
+
+<app-search-bar
+  [(quickFilterText)]="quickFilterText"
+  [buttonLabel]="'Create Mission'"
+  (buttonClick)="createMission()">
+</app-search-bar>
+
+<div style="height: 60vh" class="ag-grid-container">
+  <ag-grid-angular
+    style="width: 100%; height: 100%"
+    [rowData]="rowData()"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [pagination]="true"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    [class]="themeClass()"
+    [quickFilterText]="quickFilterText"
+    (gridReady)="onGridReady($event)"
+  />
+</div>
+
+<app-mission-form 
+  [missionToUpdate]="missionToEdit"
+  (missionSaved)="loadMissions()">
+</app-mission-form>

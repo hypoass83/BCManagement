@@ -1,0 +1,22 @@
+/*-----Select Styles Start------*/
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value .ng-value-icon.left {
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+.ng-select.ng-select-opened .ng-select-container {
+  z-index: 47 !important;
+}
+.ng-dropdown-panel.ng-select-bottom {
+  border-radius: inherit !important;
+}
+.Profile-post-footer .ng-select {
+  margin: auto;
+}
+.ng-select {
+  padding: 0px !important;
+}
+.ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  border-color: rgb(var(--color-primary)) !important;
+  background-color: rgb(var(--color-primary)) !important;
+  color: #fff !important;
+}
+/*# sourceMappingURL=select.css.map */

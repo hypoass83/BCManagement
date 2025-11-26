@@ -1,0 +1,108 @@
+// Company Form Component Styles
+
+.box {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  .box-header {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+
+    .box-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #374151;
+      margin: 0;
+    }
+  }
+
+  .box-body {
+    padding: 1rem;
+  }
+}
+
+ngx-dropzone {
+  border: 2px dashed #d1d5db !important;
+  border-radius: 8px;
+  background: #f9fafb;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: #9ca3af !important;
+    background: #f3f4f6;
+  }
+
+  ngx-dropzone-label {
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+}
+
+.preview {
+  margin: 0.5rem;
+}
+
+// Dark mode support
+:host-context(.dark) {
+  .box {
+    background: #1f2937;
+
+    .box-header {
+      border-bottom-color: #374151;
+
+      .box-title {
+        color: #f3f4f6;
+      }
+    }
+  }
+
+  ngx-dropzone {
+    border-color: #4b5563 !important;
+    background: #111827;
+
+    &:hover {
+      border-color: #6b7280 !important;
+      background: #1f2937;
+    }
+
+    ngx-dropzone-label {
+      color: #9ca3af;
+    }
+  }
+}
+
+// Logo preview styles
+.relative {
+  position: relative;
+
+  img {
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    padding: 0.5rem;
+    background: white;
+  }
+
+  button {
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+// Form validation styles
+.ng-invalid.ng-touched {
+  border-color: #ef4444 !important;
+}
+
+.error-message {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}

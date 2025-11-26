@@ -1,0 +1,21 @@
+/*-----Date Picker Styles Start------*/
+
+dp-date-picker .dp-input-container {
+  input {
+    @apply border-0 bg-white focus:border-primary w-full #{!important};
+  }
+}
+
+
+.md-drppicker {
+  @apply z-[20] #{!important};
+}
+.md-drppicker th {
+  @apply  dark:text-white/50 text-gray-700 #{!important};
+}
+[dir="rtl"] {
+  dp-date-picker .dp-input-container input {
+    @apply text-end;
+  }
+}
+/*-----Date Picker Styles End------*/

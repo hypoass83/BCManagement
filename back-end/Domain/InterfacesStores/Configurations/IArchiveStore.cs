@@ -1,0 +1,10 @@
+using Domain.Entities.Configurations;
+using Domain.InterfacesStores;
+
+namespace Domain.InterfacesStores.Configurations
+{
+    public interface IArchiveStore : IStore<Archive>
+    {
+    }
+}
+

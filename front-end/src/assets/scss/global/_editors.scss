@@ -1,0 +1,102 @@
+/*-----Editers Styles Start------*/
+
+
+/*** rtl ***/
+[dir="rtl"] {
+  .NgxEditor__Dropdown .NgxEditor__Dropdown--Text:after {
+    @apply mr-[24px] ml-[inheirt];
+  }
+
+  .invoice-list {
+    .input-date-picker {
+      .dp-input-container input {
+        @apply text-right;
+      }
+    }
+  }
+
+  .ngx-slider.vertical .ngx-slider-pointer {
+    @apply -left-[2px] top-auto bottom-0 #{!important};
+  }
+
+  .clear-all {
+    @apply left-[30px] right-auto #{!important};
+  }
+
+  .dropdown-list ul li {
+    @apply text-right #{!important};
+  }
+
+  .pure-checkbox input[type="checkbox"] + label {
+    @apply pr-8 pl-0 #{!important};
+  }
+
+  .pure-checkbox {
+    input[type="checkbox"] + label {
+      &::before {
+        @apply right-0 left-auto #{!important};
+      }
+
+      &::after {
+        @apply right-[3px] left-auto;
+      }
+    }
+  }
+
+  .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+    @apply right-[15px] left-auto #{!important};
+  }
+}
+/*** rtl ***/
+
+.ql-snow.ql-toolbar button.ql-active .ql-stroke {
+  fill: none !important;
+}
+
+#hs-basic-modal {
+  .quill-snow-editor {
+    @apply max-w-[70rem] #{!important};
+  }
+}
+
+.productive-description {
+  .ql-toolbar.ql-snow {
+    .ql-formats {
+      .ql-size.ql-picker {
+        @apply hidden #{!important};
+      }
+    }
+  }
+}
+
+//ngx-editor 
+.NgxEditor__MenuBar,
+.NgxEditor {
+  @apply dark:bg-bgdark dark:border-white/10 #{!important};
+}.ng-invalid{
+  @apply dark:bg-bgdark dark:border-white/10 dark:focus-visible:outline-0 #{!important};
+}
+.NgxEditor__Seperator,
+.NgxEditor__Wrapper {
+  @apply dark:border-white/10;
+}
+.NgxEditor__Content {
+
+  @apply dark:text-white;
+}
+.NgxEditor__Dropdown .NgxEditor__Dropdown--Selected,
+.NgxEditor__Dropdown .NgxEditor__Dropdown--Open,
+.NgxEditor__MenuItem.NgxEditor__MenuItem--Active,
+.NgxEditor__MenuItem .NgxEditor__MenuItem--Active {
+  @apply dark:bg-bodybg dark:text-white;
+}
+.NgxEditor__Dropdown:hover,
+.NgxEditor__Dropdown .NgxEditor__Dropdown--Item:hover,
+.NgxEditor__MenuItem:hover {
+  @apply dark:bg-bodybg;
+}
+.NgxEditor__Dropdown .NgxEditor__Dropdown--DropdownMenu,.NgxEditor__Popup {
+  @apply dark:bg-bgdark dark:shadow-[0_2px_6px_2px] dark:shadow-white/10;
+}
+
+/*-----Editers Styles End------*/

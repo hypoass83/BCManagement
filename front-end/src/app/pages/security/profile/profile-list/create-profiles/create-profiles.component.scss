@@ -1,0 +1,24 @@
+/* Style pour les onglets */
+.tab {
+  display: flex;
+  align-items: center; /* Aligne l'icône et le texte verticalement */
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 3px solid transparent; /* Bordure par défaut pour les onglets non actifs */
+}
+
+.tab svg {
+  margin-right: 8px; /* Espace entre l'icône et le texte */
+}
+
+/* Style pour les onglets actifs */
+.active-tab {
+  font-weight: bold;
+  border-bottom: 3px solid blue; /* Bordure pour l'onglet actif */
+  color: blue;
+}
+
+.hidden {
+  display: none;
+}
+

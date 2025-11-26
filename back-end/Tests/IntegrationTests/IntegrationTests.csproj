@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <ParallelizeTestCollections>false</ParallelizeTestCollections>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Test specific packages -->
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    
+    <!-- Testing utilities -->
+    <PackageReference Include="FluentAssertions" Version="6.12.0" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    
+    <!-- EF Core test packages (versions managed by Directory.Build.props) -->
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="9.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Insfrastructure\Insfrastructure.csproj" />
+    <ProjectReference Include="..\..\Domain\Domain.csproj" />
+    <ProjectReference Include="..\..\WebApi\WebApi.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="API\Search\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestData\2025_5100_13028_003.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

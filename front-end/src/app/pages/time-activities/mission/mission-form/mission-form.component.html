@@ -1,0 +1,253 @@
+<app-modal 
+  modalId="mission-create-form" 
+  [title]="missionToUpdate ? 'Edit Mission' : 'Create a new Mission'" 
+  (close)="closePopup()" 
+  width="80%">
+
+  <form [formGroup]="missionForm" (ngSubmit)="createOrUpdateMission()" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-4 p-4">
+
+      <!-- Title -->
+      <div class="col-span-8">
+        <app-form-input
+          [form]="missionForm"
+          controlName="title"
+          inputId="title"
+          label="Mission Title (*)"
+          placeholder="Ex: Supervision du projet à Douala"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Status -->
+      <div class="col-span-4">
+        <app-form-select
+          [form]="missionForm"
+          controlName="status"
+          label="Status (*)"
+          [options]="missionStatusOptions"
+          optionLabel="label"
+          optionValue="value"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Description -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="missionForm"
+          controlName="description"
+          inputId="description"
+          label="Description (*)"
+          placeholder="Détails de la mission..."
+          inputType="textarea"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Employee -->
+      <div class="col-span-6">
+        <app-form-select
+          [form]="missionForm"
+          controlName="employeeId"
+          label="Employee (*)"
+          placeholder="Select an employee"
+          [options]="employees"
+          optionLabel="name"
+          optionValue="globalPersonID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Destination -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="missionForm"
+          controlName="destination"
+          inputId="destination"
+          label="Destination"
+          placeholder="Ex: Douala, Cameroun"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Start Date -->
+      <div class="col-span-4">
+        <app-form-input
+          [form]="missionForm"
+          controlName="startDate"
+          inputId="startDate"
+          label="Start Date (*)"
+          inputType="date"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- End Date -->
+      <div class="col-span-4">
+        <app-form-input
+          [form]="missionForm"
+          controlName="endDate"
+          inputId="endDate"
+          label="End Date (*)"
+          inputType="date"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Number of Days with Auto-fill -->
+      <div class="col-span-4">
+        <label class="ti-form-label">Number of Days (*)</label>
+        <div class="flex gap-2">
+          <app-form-input
+            [form]="missionForm"
+            controlName="numberOfDays"
+            inputId="numberOfDays"
+            inputType="number"
+            placeholder="5"
+            [required]="true"
+            [submitted]="isSubmitted">
+          </app-form-input>
+          <button
+            type="button"
+            class="ti-btn ti-btn-info"
+            (click)="autoFillDays()"
+            [disabled]="calculatedDays === 0"
+            title="Auto-fill with calculated days">
+            <i class="ti ti-reload"></i> Auto ({{ calculatedDays }})
+          </button>
+        </div>
+        <small class="text-muted">
+          Calculated: {{ calculatedDays }} days | You can edit to exclude weekends
+        </small>
+      </div>
+
+      <!-- Mission Expenses -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="missionForm"
+          controlName="missionExpenses"
+          inputId="missionExpenses"
+          label="Mission Expenses (XAF) (*)"
+          inputType="number"
+          placeholder="250000"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Payment Mode -->
+      <div class="col-span-6">
+        <label class="ti-form-label mb-2">Payment Mode (*)</label>
+        <div class="grid grid-cols-3 gap-2">
+          <label 
+            *ngFor="let mode of paymentModeOptions"
+            class="cursor-pointer">
+            <input
+              type="radio"
+              formControlName="paymentMode"
+              [value]="mode.value"
+              class="hidden">
+            <div 
+              [class]="'border-2 rounded-lg p-3 text-center transition-all h-full ' + 
+                      (form['paymentMode'].value === mode.value 
+                        ? 'border-primary bg-primary-50' 
+                        : 'border-gray-300 hover:border-gray-400')">
+              <i [class]="'ti ' + mode.icon + ' text-2xl mb-1'"></i>
+              <div class="font-semibold text-sm">{{ mode.label }}</div>
+              <div class="text-xs text-gray-500 mt-1">{{ mode.description }}</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="missionForm"
+          controlName="notes"
+          inputId="notes"
+          label="Notes"
+          placeholder="Additional notes (optional)"
+          inputType="textarea"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Mission Summary -->
+      <div class="col-span-12" *ngIf="missionForm.get('numberOfDays')?.value && missionForm.get('missionExpenses')?.value">
+        <div class="box bg-gradient p-4">
+          <h6 class="font-semibold mb-3 flex items-center gap-2">
+            <i class="ti ti-info-circle"></i> Mission Summary
+          </h6>
+          <div class="grid grid-cols-4 gap-4 text-center">
+            <div class="summary-card">
+              <div class="summary-icon">
+                <i class="ti ti-calendar-stats"></i>
+              </div>
+              <div class="summary-value">{{ missionForm.get('numberOfDays')?.value }} days</div>
+              <div class="summary-label">Duration</div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-icon">
+                <i class="ti ti-cash"></i>
+              </div>
+              <div class="summary-value">{{ missionForm.get('missionExpenses')?.value | number:'1.0-0' }} XAF</div>
+              <div class="summary-label">Total Expenses</div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-icon">
+                <i class="ti ti-coin"></i>
+              </div>
+              <div class="summary-value">{{ dailyRate | number:'1.0-0' }} XAF</div>
+              <div class="summary-label">Daily Rate</div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-icon">
+                <i class="ti ti-map-pin"></i>
+              </div>
+              <div class="summary-value text-sm">{{ missionForm.get('destination')?.value || 'N/A' }}</div>
+              <div class="summary-label">Destination</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Alert -->
+      <div class="col-span-12">
+        <div class="alert alert-info">
+          <i class="ti ti-bulb"></i>
+          <div>
+            <strong>Tip:</strong> The system calculates the number of days automatically, 
+            but you can edit it manually to exclude weekends or holidays.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button 
+      type="button" 
+      (click)="closePopup()"
+      class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm">
+      Close
+    </button>
+    <button 
+      class="ti-btn ti-btn-primary" 
+      type="submit" 
+      (click)="createOrUpdateMission()">
+      {{ missionToUpdate ? 'Save changes' : 'Create Mission' }}
+    </button>
+  </div>
+
+</app-modal>

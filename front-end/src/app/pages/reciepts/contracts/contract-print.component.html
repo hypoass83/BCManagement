@@ -1,0 +1,240 @@
+<!-- contract-print.component.html -->
+<div class="min-h-screen bg-gray-50">
+
+  <!-- Print Actions (Hidden when printing) -->
+  <div class="no-print flex justify-between items-center p-4 bg-white shadow-sm mb-6">
+    <button (click)="goBack()" class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded hover:bg-gray-50">
+      <i class="ti ti-arrow-left"></i>
+      Back
+    </button>
+    <button (click)="printContract()" class="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+      <i class="ti ti-printer"></i>
+      Print Contract
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex flex-col items-center justify-center min-h-[400px]">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+    <p class="mt-4 text-gray-600">Loading contract information...</p>
+  </div>
+
+  <!-- Contract Document -->
+  <div *ngIf="!isLoading && contract" class="max-w-4xl mx-auto bg-white shadow-lg p-8 print:shadow-none print:p-0">
+
+    <!-- Header -->
+    <div class="flex justify-between items-start pb-6 border-b-2 border-gray-900">
+      <!-- Company Info -->
+      <div class="flex gap-4 items-start">
+        <img
+          *ngIf="getCompanyLogo()"
+          [src]="getCompanyLogo()"
+          alt="Company Logo"
+          class="w-16 h-16 object-contain border border-gray-200 rounded p-1">
+        <div>
+          <h1 class="text-xl font-bold text-gray-900">{{ contract?.company?.companyName }}</h1>
+          <p class="text-sm text-gray-600 mt-1">{{ contract?.company?.adress?.adressEmail }}</p>
+          <p class="text-sm text-gray-600">{{ contract?.company?.adress?.adressPhoneNumber }}</p>
+        </div>
+      </div>
+
+      <!-- Contract Reference -->
+      <div class="text-right">
+        <p class="text-xs text-gray-500 uppercase">Contract Reference</p>
+        <p class="text-lg font-bold text-gray-900">{{ contract?.contractReference || 'N/A' }}</p>
+        <p class="text-xs text-gray-500 mt-1">{{ formatDate(contract?.creationDate) }}</p>
+      </div>
+    </div>
+
+    <!-- Contract Title -->
+    <div class="text-center py-6">
+      <h2 class="text-2xl font-bold text-gray-900 uppercase tracking-wide">Employment Contract</h2>
+      <p class="text-sm text-gray-600 mt-1">{{ contract?.contractType?.contractTypeName }}</p>
+    </div>
+
+    <!-- Parties -->
+    <div class="space-y-6 mb-8">
+
+      <!-- Employer -->
+      <div>
+        <h3 class="text-sm font-bold text-gray-900 uppercase mb-3 pb-1 border-b border-gray-300">The Employer</h3>
+        <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+          <div class="flex">
+            <span class="text-gray-600 w-32">Company:</span>
+            <span class="font-semibold text-gray-900">{{ contract?.company?.companyName }}</span>
+          </div>
+          <div class="flex">
+            <span class="text-gray-600 w-32">Code:</span>
+            <span class="font-semibold text-gray-900">{{ contract?.company?.companyCode }}</span>
+          </div>
+          <div class="flex">
+            <span class="text-gray-600 w-32">Branch:</span>
+            <span class="font-semibold text-gray-900">{{ contract?.branch?.branchName }}</span>
+          </div>
+          <div class="flex">
+            <span class="text-gray-600 w-32">Email:</span>
+            <span class="font-semibold text-gray-900">{{ contract?.company?.adress?.adressEmail }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Employee -->
+      <div>
+        <h3 class="text-sm font-bold text-gray-900 uppercase mb-3 pb-1 border-b border-gray-300">The Employee</h3>
+        <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+          <div class="flex">
+            <span class="text-gray-600 w-32">Full Name:</span>
+            <span class="font-semibold text-gray-900">{{ contract?.employee?.name }} {{ contract?.employee?.description }}</span>
+          </div>
+          <div class="flex">
+            <span class="text-gray-600 w-32">CNI:</span>
+            <span class="font-semibold text-gray-900">{{ contract?.employee?.cni }}</span>
+          </div>
+          <div class="flex">
+            <span class="text-gray-600 w-32">Birth Date:</span>
+            <span class="font-semibold text-gray-900">{{ formatDate(contract?.employee?.birthDate) }}</span>
+          </div>
+          <div class="flex">
+            <span class="text-gray-600 w-32">Age:</span>
+            <span class="font-semibold text-gray-900">{{ contract?.employee?.age }} years</span>
+          </div>
+          <div class="flex">
+            <span class="text-gray-600 w-32">CNPS:</span>
+            <span class="font-semibold text-gray-900">{{ contract?.employee?.cnpsNumber || 'N/A' }}</span>
+          </div>
+          <div class="flex">
+            <span class="text-gray-600 w-32">Phone:</span>
+            <span class="font-semibold text-gray-900">{{ contract?.employee?.adress?.adressPhoneNumber }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Articles -->
+    <div class="space-y-6">
+
+      <!-- Article 1: Position -->
+      <div>
+        <h3 class="text-sm font-bold text-gray-900 uppercase mb-2">Article 1: Position and Duties</h3>
+        <p class="text-sm text-gray-700 leading-relaxed">
+          The Employee is hired for the position of <span class="font-semibold">{{ contract?.employee?.job?.jobLabel }}</span>
+          in the <span class="font-semibold">{{ contract?.employee?.department?.departmentName }}</span> department,
+          based at <span class="font-semibold">{{ contract?.branch?.branchName }}</span>.
+        </p>
+      </div>
+
+      <!-- Article 2: Duration -->
+      <div>
+        <h3 class="text-sm font-bold text-gray-900 uppercase mb-2">Article 2: Contract Duration</h3>
+        <div class="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+          <div class="flex">
+            <span class="text-gray-600 w-32">Start Date:</span>
+            <span class="font-semibold text-gray-900">{{ formatDate(contract?.startDate) }}</span>
+          </div>
+          <div class="flex">
+            <span class="text-gray-600 w-32">End Date:</span>
+            <span class="font-semibold text-gray-900">{{ contract?.endDate ? formatDate(contract?.endDate ??'') : 'Permanent' }}</span>
+          </div>
+          <div class="flex" *ngIf="contract?.probationPeriodMonths">
+            <span class="text-gray-600 w-32">Probation:</span>
+            <span class="font-semibold text-gray-900">{{ contract?.probationPeriodMonths }} months</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 3: Compensation -->
+      <div>
+        <h3 class="text-sm font-bold text-gray-900 uppercase mb-2">Article 3: Compensation</h3>
+        <p class="text-sm text-gray-700 mb-3">
+          Monthly compensation effective from <span class="font-semibold">{{ formatDate(contract?.currentSalary?.effectiveDate) }}</span>:
+        </p>
+
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-gray-900">
+              <th class="text-left py-2 font-semibold">Component</th>
+              <th class="text-right py-2 font-semibold">Amount (XAF)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <tr>
+              <td class="py-2">Base Salary</td>
+              <td class="text-right py-2">{{ formatCurrency(contract?.currentSalary?.baseSalary) }}</td>
+            </tr>
+            <tr *ngIf="contract?.currentSalary?.transportAllowance">
+              <td class="py-2">Transport Allowance</td>
+              <td class="text-right py-2">{{ formatCurrency(contract?.currentSalary?.transportAllowance) }}</td>
+            </tr>
+            <tr *ngIf="contract?.currentSalary?.housingAllowance">
+              <td class="py-2">Housing Allowance</td>
+              <td class="text-right py-2">{{ formatCurrency(contract?.currentSalary?.housingAllowance) }}</td>
+            </tr>
+            <tr *ngIf="contract?.currentSalary?.functionAllowance">
+              <td class="py-2">Function Allowance</td>
+              <td class="text-right py-2">{{ formatCurrency(contract?.currentSalary?.functionAllowance) }}</td>
+            </tr>
+            <tr *ngIf="contract?.currentSalary?.dutyAllowance">
+              <td class="py-2">Duty Allowance</td>
+              <td class="text-right py-2">{{ formatCurrency(contract?.currentSalary?.dutyAllowance) }}</td>
+            </tr>
+            <tr *ngIf="contract?.currentSalary?.riskAllowance">
+              <td class="py-2">Risk Allowance</td>
+              <td class="text-right py-2">{{ formatCurrency(contract?.currentSalary?.riskAllowance) }}</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="border-t-2 border-gray-900 font-bold">
+              <td class="py-3">TOTAL GROSS MONTHLY SALARY</td>
+              <td class="text-right py-3 text-lg">{{ formatCurrency(contract?.currentSalary?.grossMonthlyBaseSalary) }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Article 4: Terms -->
+      <div *ngIf="contract?.terms">
+        <h3 class="text-sm font-bold text-gray-900 uppercase mb-2">Article 4: Terms and Conditions</h3>
+        <p class="text-sm text-gray-700 leading-relaxed">{{ contract?.terms }}</p>
+      </div>
+
+      <!-- Article 5: General -->
+      <div>
+        <h3 class="text-sm font-bold text-gray-900 uppercase mb-2">Article 5: General Provisions</h3>
+        <ul class="text-sm text-gray-700 space-y-1 list-decimal list-inside">
+          <li>The Employee agrees to comply with all company policies and regulations.</li>
+          <li>Working hours shall be in accordance with applicable labor laws.</li>
+          <li>The Employee is entitled to annual leave as per the Labor Code.</li>
+          <li>Either party may terminate this contract by giving written notice as required by law.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Signatures -->
+    <div class="grid grid-cols-2 gap-12 mt-12 pt-8 border-t border-gray-300">
+      <div class="text-center">
+        <div class="h-16 mb-2"></div>
+        <div class="border-t-2 border-gray-900 pt-2">
+          <p class="text-xs font-bold text-gray-900 uppercase">For The Employer</p>
+          <p class="text-sm text-gray-700 mt-1">{{ contract?.company?.companyName }}</p>
+          <p class="text-xs text-gray-500 mt-2">Date: _______________</p>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <div class="h-16 mb-2"></div>
+        <div class="border-t-2 border-gray-900 pt-2">
+          <p class="text-xs font-bold text-gray-900 uppercase">The Employee</p>
+          <p class="text-sm text-gray-700 mt-1">{{ contract?.employee?.name }} {{ contract?.employee?.description }}</p>
+          <p class="text-xs text-gray-500 mt-2">Date: _______________</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-8 pt-4 border-t border-gray-200 text-center text-xs text-gray-500">
+      <p>This contract has been prepared in duplicate, each party having received one original copy.</p>
+      <p class="mt-1">Generated on {{ formatDate(currentDate) }} by {{ contract?.company?.companyName }} HR System</p>
+    </div>
+
+  </div>
+</div>

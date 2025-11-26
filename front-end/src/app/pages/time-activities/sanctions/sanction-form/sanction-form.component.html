@@ -1,0 +1,224 @@
+<app-modal
+  modalId="sanction-create-form"
+  [title]="sanctionToUpdate ? 'Edit Sanction' : 'Create a new Sanction'"
+  (close)="closePopup()"
+  width="75%">
+
+  <form [formGroup]="sanctionForm" (ngSubmit)="createOrUpdateSanction()" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-4 p-4">
+
+      <!-- Sanction Type avec Visual Cards -->
+      <div class="col-span-12">
+        <label class="ti-form-label mb-2">Sanction Type (*)</label>
+        <div class="grid grid-cols-5 gap-3">
+          <label
+            *ngFor="let option of sanctionTypeOptions"
+            class="cursor-pointer">
+            <input
+              type="radio"
+              formControlName="sanctionType"
+              [value]="option.value"
+              class="hidden">
+            <div
+              [class]="'sanction-type-card ' +
+                      (form['sanctionType'].value === option.value ? 'selected border-' + option.color : '')"
+              [attr.data-color]="option.color">
+              <i [class]="'ti ' + option.icon + ' icon'"></i>
+              <div class="label">{{ option.label }}</div>
+              <div class="description">{{ option.description }}</div>
+            </div>
+          </label>
+        </div>
+        <small class="text-red-500" *ngIf="isSubmitted && form['sanctionType'].errors">
+          Sanction type is required
+        </small>
+      </div>
+
+      <!-- Employee -->
+      <div class="col-span-6">
+        <app-form-select
+          [form]="sanctionForm"
+          controlName="employeeId"
+          label="Employee (*)"
+          placeholder="Select an employee"
+          [options]="employees"
+          optionLabel="name"
+          optionValue="globalPersonID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Sanction Date -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="sanctionForm"
+          controlName="sanctionDate"
+          inputId="sanctionDate"
+          label="Sanction Date (*)"
+          inputType="date"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Reason -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="sanctionForm"
+          controlName="reason"
+          inputId="reason"
+          label="Reason (*)"
+          placeholder="Enter the reason for this sanction..."
+          inputType="textarea"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Description -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="sanctionForm"
+          controlName="description"
+          inputId="description"
+          label="Description (*)"
+          placeholder="Detailed description of the incident..."
+          inputType="textarea"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Financial Penalty (si applicable) -->
+      <div class="col-span-6" *ngIf="form['sanctionType'].value === 3 || form['sanctionType'].value === 1">
+        <app-form-input
+          [form]="sanctionForm"
+          controlName="financialPenalty"
+          inputId="financialPenalty"
+          label="Financial Penalty (XAF)"
+          inputType="number"
+          placeholder="50000"
+          [required]="form['sanctionType'].value === 3"
+          [submitted]="isSubmitted">
+        </app-form-input>
+        <small class="text-muted">
+          <i class="ti ti-info-circle"></i>
+          {{ form['sanctionType'].value === 3 ? 'Required for salary reduction' : 'Optional penalty amount' }}
+        </small>
+      </div>
+
+      <!-- Suspension Days (si Mise à pied) -->
+      <div class="col-span-6" *ngIf="form['sanctionType'].value === 2">
+        <app-form-input
+          [form]="sanctionForm"
+          controlName="suspensionDays"
+          inputId="suspensionDays"
+          label="Suspension Days (*)"
+          inputType="number"
+          placeholder="3"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+        <small class="text-muted">
+          <i class="ti ti-info-circle"></i>
+          Number of days for suspension
+        </small>
+      </div>
+
+      <!-- Comment -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="sanctionForm"
+          controlName="comment"
+          inputId="comment"
+          label="Additional Comments"
+          placeholder="Any additional comments (optional)..."
+          inputType="textarea"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Info Alert for Edit Mode -->
+      <div class="col-span-12" *ngIf="sanctionToUpdate">
+        <div class="alert alert-info">
+          <i class="ti ti-info-circle"></i>
+          <div>
+            <strong>Note:</strong> You can modify the sanction details.
+            The employee assignment cannot be changed after creation.
+          </div>
+        </div>
+      </div>
+
+      <!-- Sanction Summary -->
+      <div class="col-span-12" *ngIf="selectedSanctionType">
+        <div class="box bg-gradient p-4">
+          <h6 class="font-semibold mb-3 flex items-center gap-2">
+            <i [class]="'ti ' + selectedSanctionType.icon"></i> Sanction Summary
+          </h6>
+          <div class="grid grid-cols-4 gap-4 text-center">
+            <div class="summary-card">
+              <div class="summary-icon">
+                <i [class]="'ti ' + selectedSanctionType.icon"></i>
+              </div>
+              <div class="summary-value">{{ selectedSanctionType.label }}</div>
+              <div class="summary-label">Type</div>
+            </div>
+            <div class="summary-card" *ngIf="form['financialPenalty'].value > 0">
+              <div class="summary-icon">
+                <i class="ti ti-cash-off"></i>
+              </div>
+              <div class="summary-value">{{ form['financialPenalty'].value | number:'1.0-0' }} XAF</div>
+              <div class="summary-label">Penalty</div>
+            </div>
+            <div class="summary-card" *ngIf="form['suspensionDays'].value">
+              <div class="summary-icon">
+                <i class="ti ti-calendar-off"></i>
+              </div>
+              <div class="summary-value">{{ form['suspensionDays'].value }} days</div>
+              <div class="summary-label">Suspension</div>
+            </div>
+            <div class="summary-card">
+              <div class="summary-icon">
+                <i class="ti ti-calendar-event"></i>
+              </div>
+              <div class="summary-value text-sm">{{ form['sanctionDate'].value | date:'dd/MM/yyyy' }}</div>
+              <div class="summary-label">Date</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warning Alert -->
+      <div class="col-span-12">
+        <div class="alert alert-warning">
+          <i class="ti ti-alert-triangle"></i>
+          <div>
+            <strong>Important:</strong>
+            Sanctions are serious disciplinary actions that can have significant impact on the employee's record and career.
+            Please ensure all details are accurate and justified.
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button
+      type="button"
+      (click)="closePopup()"
+      class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm">
+      Close
+    </button>
+    <button
+      class="ti-btn ti-btn-danger"
+      type="submit"
+      (click)="createOrUpdateSanction()">
+      {{ sanctionToUpdate ? 'Save changes' : 'Create Sanction' }}
+    </button>
+  </div>
+
+</app-modal>

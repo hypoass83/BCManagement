@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\pages",
+    "\\src\\app\\pages\\parameters",
+    "\\src\\app\\pages\\parameters\\budget",
+    "\\src\\app\\pages\\parameters\\budget\\budget-allocated"
+  ],
+  "SelectedNode": "\\src\\app\\pages\\parameters\\budget\\budget-allocated\\budget-allocated.component.html",
+  "PreviewInSolutionExplorer": false
+}

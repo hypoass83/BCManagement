@@ -1,0 +1,62 @@
+/*-----Media Styles Starts ---------------*/
+
+@media (min-width: 1800px) {
+  .xxxl\:col-span-2 {
+    @apply col-span-2;
+  }
+
+  .xxxl\:col-span-4 {
+    @apply col-span-4;
+  }
+
+  .xxxl\:col-span-8 {
+    @apply col-span-8;
+  }
+}
+
+@media (min-width: 1400px) {
+  .xxl\:col-span-3 {
+    @apply col-span-3;
+  }
+}
+
+@media (min-width: 1200px) {
+  .xl\:col-span-4 {
+    @apply col-span-4;
+  }
+}
+
+@media (min-width: 1800px) {
+  .xxxl\:\!col-span-3 {
+    @apply col-span-3 #{!important};
+  }
+}
+
+@media (min-width: 992px) {
+  .lg\:hidden {
+    display: block !important;
+  }
+}
+
+@media (min-width: 1601px) {
+  .lg\:hidden {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1800px) {
+  .xxxxl\:col-span-3 {
+    @apply col-span-3;
+  }
+
+  .xxxxl\:col-span-9 {
+    @apply col-span-9;
+  }
+}
+
+/*-----Global scss styles --*/
+
+
+
+
+/*-----Media Styles End---------------*/

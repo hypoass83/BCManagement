@@ -1,0 +1,168 @@
+<app-modal modalId="company-create-form" title="Create a new Company" (close)="closePopup()" width="80%">
+
+  <form [formGroup]="companyForm" (ngSubmit)="createOrUpdateCompany()" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-4 p-4">
+
+      <!-- Left Column - Form Fields -->
+      <div class="col-span-8">
+        <div class="grid grid-cols-12 gap-4">
+
+          <div class="col-span-6">
+            <app-form-input [form]="companyForm" controlName="companyName" inputId="companyName" label="Name"
+              placeholder="Company Name" [required]="true" [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-6" formGroupName="adress">
+            <app-form-input [form]="$any(companyForm.get('adress'))" controlName="adressPhoneNumber"
+              inputId="adressPhoneNumber" label="Address Phone Number" placeholder="Phone Number" [required]="true"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-6">
+            <app-form-input [form]="companyForm" controlName="companyCode" inputId="companyCode" label="Code"
+              placeholder="Company Code" [required]="true" [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-6" formGroupName="adress">
+            <app-form-input [form]="$any(companyForm.get('adress'))" controlName="adressCellNumber"
+              inputId="adressCellNumber" label="Address Cell Number" placeholder="Cell Number"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-6">
+            <app-form-input [form]="companyForm" controlName="companyAbbreviation" inputId="companyAbbreviation"
+              label="Abbreviation" placeholder="Company Abbreviation" [required]="true" [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-6" formGroupName="adress">
+            <app-form-input [form]="$any(companyForm.get('adress'))" controlName="adressEmail" inputId="adressEmail"
+              label="Address Email" placeholder="Email Address" inputType="email" [required]="true"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-12">
+            <app-form-input [form]="companyForm" controlName="companyDescription" inputId="companyDescription"
+              label="Description" placeholder="Company Description" inputType="textarea" [required]="true"
+              [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-6" formGroupName="adress">
+            <app-form-input [form]="$any(companyForm.get('adress'))" controlName="adressPOBox" inputId="adressPOBox"
+              label="Address PO Box" placeholder="PO Box" [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <div class="col-span-6" formGroupName="adress">
+            <app-form-input [form]="$any(companyForm.get('adress'))" controlName="adressWebSite" inputId="adressWebSite"
+              label="Website" placeholder="Website URL" [submitted]="isSubmitted">
+            </app-form-input>
+          </div>
+
+          <!-- Location Selects - Full Width Section -->
+          <div class="col-span-12" formGroupName="adress">
+            <div class="grid grid-cols-12 gap-4">
+
+              <div class="col-span-6">
+                <app-form-select [form]="$any(companyForm.get('adress'))" controlName="countryID" inputId="countryID"
+                  label="Country (*)" placeholder="Select a country" [options]="countries" optionLabel="countryLabel"
+                  optionValue="countryID" [required]="true" [submitted]="isSubmitted">
+                </app-form-select>
+              </div>
+
+              <div class="col-span-6">
+                <app-form-select [form]="$any(companyForm.get('adress'))" controlName="regionID" inputId="regionID"
+                  label="Region (*)" placeholder="Select a region" [options]="regions" optionLabel="regionLabel"
+                  optionValue="regionID" [required]="true" [submitted]="isSubmitted">
+                </app-form-select>
+              </div>
+
+              <div class="col-span-6">
+                <app-form-select [form]="$any(companyForm.get('adress'))" controlName="townID" inputId="townID"
+                  label="Town (*)" placeholder="Select a town" [options]="towns" optionLabel="townLabel"
+                  optionValue="townID" [required]="true" [submitted]="isSubmitted">
+                </app-form-select>
+              </div>
+
+              <div class="col-span-6">
+                <app-form-select [form]="$any(companyForm.get('adress'))" controlName="quarterID" inputId="quarterID"
+                  label="Quarter (*)" placeholder="Select a quarter" [options]="quarters" optionLabel="quarterLabel"
+                  optionValue="quarterID" [required]="true" [submitted]="isSubmitted">
+                </app-form-select>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right Column - Logo Upload -->
+      <div class="col-span-4">
+        <div class="p-2">
+          <div class="box">
+            <div class="box-header">
+              <h5 class="box-title">Company Logo</h5>
+            </div>
+            <div class="box-body">
+              <!-- Display existing logo if in edit mode -->
+              <div *ngIf="companyToUpdate && existingLogoUrl && files.length === 0" class="mb-4">
+                <p class="text-sm text-gray-600 mb-2">Current Logo:</p>
+                <div class="relative">
+                  <img [src]="existingLogoUrl" alt="Current Company Logo" class="w-full h-auto max-h-48 object-contain border rounded">
+                  <button type="button" (click)="removeExistingLogo()"
+                    class="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                  </button>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">Upload a new logo to replace the current one</p>
+              </div>
+
+              <!-- Upload new logo -->
+              <ngx-dropzone
+                class="filepond multiple-filepond circlefile !border"
+                (change)="onLogoSelect($event)"
+                [accept]="'image/*'"
+                [multiple]="false"
+              >
+                <ngx-dropzone-label>Drop Logo here to upload</ngx-dropzone-label>
+                <ngx-dropzone-image-preview
+                  class="preview"
+                  *ngFor="let f of files"
+                  [file]="f"
+                  [removable]="true"
+                  (removed)="onLogoRemove(f)"
+                >
+                  <ngx-dropzone-label>{{ f.name }}</ngx-dropzone-label>
+                </ngx-dropzone-image-preview>
+              </ngx-dropzone>
+              <p class="text-xs text-gray-500 mt-2">Accepted formats: JPG, PNG, GIF (Max 5MB)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button type="button" (click)="closePopup()"
+      class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10">
+      Close
+    </button>
+    <button class="ti-btn ti-btn-primary" type="submit" (click)="createOrUpdateCompany()">
+      Save changes
+    </button>
+  </div>
+
+</app-modal>

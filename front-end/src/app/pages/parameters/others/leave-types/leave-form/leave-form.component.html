@@ -1,0 +1,51 @@
+<app-modal modalId="leave-type-create-form" title="Create a leave type" wi (close)="closePopup()">
+
+  <form [formGroup]="leaveTypeForm" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-y-4 p-4">
+
+      <div class="col-span-12">
+        <app-form-input [form]="leaveTypeForm" controlName="code" label="code" placeholder="Enter code"
+          [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+       <div class="col-span-12">
+        <app-form-input [form]="leaveTypeForm" controlName="name" label="name" placeholder="Enter name"
+          [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12">
+        <app-form-input [form]="leaveTypeForm" inputType="checkbox" controlName="isPaid" label="isPaid" placeholder="Enter isPaid"
+          [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12">
+        <app-form-input [form]="leaveTypeForm" controlName="defaultDurationDays" label="default Duration Days" placeholder="Enter defaultDurationDays"
+          [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12">
+        <app-form-input [form]="leaveTypeForm" controlName="description" label="description" placeholder="Enter description"
+          [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+
+
+
+
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button type="button" class="ti-btn ti-border bg-white text-gray-700" (click)="closePopup()">Close</button>
+    <button type="submit" (click)="createOrUpdateLeaveType()" class="ti-btn ti-btn-primary">Save changes</button>
+  </div>
+
+</app-modal>

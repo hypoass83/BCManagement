@@ -1,0 +1,63 @@
+<app-page-header
+  title="Securty"
+  title1="Profiles"
+  activeitem="Set Profile"></app-page-header>
+
+<div ><div class="col-span-12 " *ngFor="let module of groupedModules | keyvalue">
+  <h2>{{ module.key }}</h2>
+  <div class="mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+    <div class="box mb-0 mt-0 rounded-none" *ngFor="let menu of module.value | keyvalue">
+      <div class="box-header bg-gray-200 w-100 h-100">
+        <h5 class="box-title">{{ menu.key }}</h5> <!-- menuName -->
+      </div>
+      <div class="box-body">
+        <div class="grid space-y-2" *ngFor="let sub of menu.value">
+          <label class="max-w-xs flex p-3 w-full bg-white border-gray-200 rounded-md text-sm">
+            <input type="checkbox"
+                   class="shrink-0 mt-0.5 border-gray-200 rounded text-primary"
+                   [checked]="sub.add"
+                   (change)="onCheckboxChange($event,sub.isSubMenu,sub.actionMenuProfile, 'add')">
+            <span class="text-sm text-gray-500 ltr:ml-2">Add</span>
+          </label>
+
+          <label class="max-w-xs flex p-3 w-full bg-white border-gray-200 rounded-md text-sm">
+            <input type="checkbox"
+                   class="shrink-0 mt-0.5 border-gray-200 rounded text-primary"
+                   [checked]="sub.update"
+                   (change)="onCheckboxChange($event, sub.isSubMenu,sub.actionMenuProfile, 'update')">
+            <span class="text-sm text-gray-500 ltr:ml-2">Update</span>
+          </label>
+
+          <label class="max-w-xs flex p-3 w-full bg-white border-gray-200 rounded-md text-sm">
+            <input type="checkbox"
+                   class="shrink-0 mt-0.5 border-gray-200 rounded text-primary"
+                   [checked]="sub.remove"
+                   (change)="onCheckboxChange($event, sub.isSubMenu,sub.actionMenuProfile, 'remove')">
+            <span class="text-sm text-gray-500 ltr:ml-2">Delete</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button (click)="saveAll()" class="ti-btn ti-btn-primary floating-button" >save </button>
+</div>
+
+<div class="auth" *ngIf="modules.length<=0">
+  <div class="authentication-page">
+          <main id="content" class="mx-auto">
+          <canvas class="error-basic-background" width="1920" height="468" style="width: 100%; height: 100%;"></canvas>
+              <div class="text-center py-10 px-4 sm:px-6 lg:px-8">
+                  <p class="mt-3 text-2xl font-bold text-gray-800 dark:text-white">Oops, this profile dosn't have any access</p>
+                  <p class="text-gray-600 dark:text-white/70">Assign pages to the profile</p>
+                  <div class="mt-5 flex flex-col justify-center items-center gap-2 sm:flex-row sm:gap-3">
+                      <a routerLink="/admin/profile/advanced" class="w-full sm:w-auto inline-flex justify-center items-center gap-x-3 text-center bg-primary hover:bg-primary border border-transparent text-white text-sm font-medium rounded-sm focus:outline-none focus:ring-0 focus:ring-primary focus:ring-offset-0 focus:ring-offset-white transition py-2 px-3 dark:focus:ring-offset-white/10" href="/dashboard/sales">
+                          <i class="ri-arrow-left-line"></i>
+                          Go Back
+                      </a>
+                  </div>
+              </div>
+          </main>
+      </div>
+      </div>

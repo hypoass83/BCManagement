@@ -1,0 +1,34 @@
+<Project>
+  <PropertyGroup>
+      <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+   
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <!-- Common package versions for all projects -->
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.11" />
+    
+    <!-- ASP.NET Core packages -->
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.11" />
+    
+    <!-- Identity packages -->
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.11" />
+    
+    <!-- Common extensions - UPDATED VERSIONS -->
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />
+
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,107 @@
+<app-modal
+  modalId="transfer-create-form"
+  [title]="transferToUpdate ? 'Edit Transfer' : 'Create a new Transfer'"
+  (close)="closePopup()"
+  width="70%">
+
+  <form [formGroup]="transferForm"  class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-4 p-4">
+
+      <!-- Employee Selection -->
+      <div class="col-span-6">
+        <app-form-select
+          [form]="transferForm"
+          controlName="employeeId"
+          label="Employee (*)"
+          placeholder="Select an employee"
+          [options]="employees"
+          optionLabel="name"
+          optionValue="globalPersonID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Destination Branch -->
+      <div class="col-span-6">
+        <app-form-select
+          [form]="transferForm"
+          controlName="destinationBranchId"
+          label="Destination Branch (*)"
+          placeholder="Select destination branch"
+          [options]="branches"
+          optionLabel="branchName"
+          optionValue="branchID"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-select>
+      </div>
+
+      <!-- Transfer Date -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="transferForm"
+          controlName="transferDate"
+          inputId="transferDate"
+          label="Transfer Date (*)"
+          inputType="date"
+          [required]="true"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Transfer Expenses -->
+      <div class="col-span-6">
+        <app-form-input
+          [form]="transferForm"
+          controlName="transferExpenses"
+          inputId="transferExpenses"
+          label="Transfer Expenses (XAF)"
+          inputType="number"
+          placeholder="0"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Reason -->
+      <div class="col-span-12">
+        <app-form-input
+          [form]="transferForm"
+          controlName="reason"
+          inputId="reason"
+          label="Reason"
+          placeholder="Enter transfer reason"
+          inputType="textarea"
+          [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <!-- Info Alert when editing -->
+      <div class="col-span-12" *ngIf="transferToUpdate">
+        <div class="alert alert-info">
+          <strong>Note:</strong> You can only modify the transfer date, expenses, and reason.
+          The employee and destination branch cannot be changed.
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button
+      type="button"
+      (click)="closePopup()"
+      class="ti-btn ti-border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:ring-offset-white focus:ring-primary dark:bg-bgdark dark:hover:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-white dark:focus:ring-offset-white/10">
+      Close
+    </button>
+    <button
+      class="ti-btn ti-btn-primary"
+
+      (click)="createOrUpdateTransfer()">
+      {{ transferToUpdate ? 'Save changes' : 'Create Transfer' }}
+    </button>
+  </div>
+
+</app-modal>

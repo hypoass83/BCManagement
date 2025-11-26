@@ -1,0 +1,228 @@
+<app-page-header
+  title="Security"
+  title1="Profile"
+  activeitem="Profile Setting"
+></app-page-header>
+
+<!-- Start::row-1 -->
+<div class="grid grid-cols-12 gap-x-6">
+  <div class="col-span-12 xl:col-span-3">
+    <div class="box">
+      <div class="box-body pt-0">
+        <nav
+          class="flex flex-col space-y-2"
+          aria-label="Tabs"
+          role="tablist"
+          data-hs-tabs-vertical="true"
+        >
+          <button
+            type="button"
+            class="hs-tab-active:bg-primary hs-tab-active:border-primary hs-tab-active:text-white dark:hs-tab-active:bg-primary dark:hs-tab-active:border-primary dark:hs-tab-active:text-white -mr-px py-3 px-3 inline-flex items-center gap-2 bg-gray-50 text-sm font-medium text-center border text-gray-500 rounded-sm hover:text-gray-700 dark:bg-black/20 dark:border-white/10 dark:text-white/70 dark:hover:text-gray-300 mt-2 active"
+            id="profile-settings-item-1"
+            data-hs-tab="#profile-settings-1"
+            aria-controls="profile-settings-1"
+            role="tab"
+          >
+            <i class="ri ri-lock-line"></i> Password Settings
+          </button>
+        </nav>
+      </div>
+    </div>
+  </div>
+  <form
+    [formGroup]="changePasswordForm"
+    (ngSubmit)="Submit()"
+    class="col-span-12 xl:col-span-9"
+  >
+    <div class="col-span-12 xl:col-span-9">
+      <div class="box">
+        <div class="box-body p-0">
+          <div
+            id="profile-settings-1"
+            role="tabpanel"
+            aria-labelledby="profile-settings-item-1"
+          >
+            <div class="box border-0 shadow-none mb-0">
+              <div class="box-header">
+                <h5 class="box-title leading-none flex">
+                  <i class="ri ri-lock-line ltr:mr-2 rtl:ml-2"></i> Password
+                  Settings
+                </h5>
+              </div>
+
+              <div class="box-body p-0">
+                <div class="grid grid-cols-12">
+                  <div
+                    class="col-span-12 xl:col-span-12 xl:ltr:border-r xl:rtl:border-l xl:border-b-0 border-b p-6 border-gray-200 dark:border-white/10"
+                  >
+                    <p
+                      *ngIf="error"
+                      class="text-sm text-red-600 mt-2 text-center"
+                      id="hs-validation-name-error-helper"
+                    >
+                      {{ error }}
+                    </p>
+                    <div class="space-y-4">
+                      <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                          <label
+                            for="password"
+                            class="block text-sm mb-2 dark:text-white"
+                            >Current Password
+                            <sup class="text-danger">*</sup></label
+                          >
+                        </div>
+                        <div class="relative">
+                          <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70"
+                            placeholder="Password"
+                            autocomplete
+                            formControlName="password"
+                            [ngClass]="
+                              isSubmitted && form['password'].errors
+                                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                                : ''
+                            "
+                          />
+                          <div
+                            *ngIf="isSubmitted && form['password'].errors"
+                            class="invalid-feedback"
+                          >
+                            <p
+                              *ngIf="form['password'].errors['required']"
+                              class="text-sm text-red-600 mt-2"
+                              id="hs-validation-name-error-helper"
+                            >
+                              This field is required.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                          <label
+                            for="password"
+                            class="block text-sm mb-2 dark:text-white"
+                            >New Password
+                            <sup class="text-danger">*</sup></label
+                          >
+                        </div>
+                        <div class="relative">
+                          <input
+                            type="password"
+                            id="newPassword"
+                            name="newPassword"
+                            class="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70"
+                            placeholder="newPassword"
+                            autocomplete
+                            formControlName="newPassword"
+                            [ngClass]="
+                              isSubmitted && form['newPassword'].errors
+                                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                                : ''
+                            "
+                          />
+                          <div
+                            *ngIf="isSubmitted && form['newPassword'].errors"
+                            class="invalid-feedback"
+                          >
+                            <p
+                              *ngIf="form['newPassword'].errors['required']"
+                              class="text-sm text-red-600 mt-2"
+                              id="hs-validation-name-error-helper"
+                            >
+                              This field is required.
+                            </p>
+                            <p
+                              *ngIf="form['newPassword'].errors['minlength']"
+                              class="text-sm text-red-600 mt-2"
+                              id="hs-validation-name-error-helper"
+                            >
+                              Minimum length is 8 characters.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                          <label
+                            for="password"
+                            class="block text-sm mb-2 dark:text-white"
+                            >Confirm Password
+                            <sup class="text-danger">*</sup></label
+                          >
+                        </div>
+                        <div class="relative">
+                          <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            class="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70"
+                            placeholder="confirmPassword"
+                            autocomplete
+                            formControlName="confirmPassword"
+                            [ngClass]="
+                              isSubmitted && form['confirmPassword'].errors
+                                ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                                : ''
+                            "
+                          />
+                          <div
+                            *ngIf="
+                              isSubmitted && form['confirmPassword'].errors
+                            "
+                            class="invalid-feedback"
+                          >
+                            <p
+                              *ngIf="form['confirmPassword'].errors['required']"
+                              class="text-sm text-red-600 mt-2"
+                              id="hs-validation-name-error-helper"
+                            >
+                              This field is required.
+                            </p>
+
+                            <p
+                              *ngIf="
+                                form['confirmPassword'].errors[
+                                  'passwordMismatch'
+                                ]
+                              "
+                              class="text-sm text-red-600 mt-2"
+                              id="hs-validation-name-error-helper"
+                            >
+                              The confirm password should be the same as the
+                              password.
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p class="text-xs text-gray-500 dark:text-white/70">
+                        Password should be min of
+                        <b class="text-success">8 characters <sup>*</sup> </b>
+                        (and up to 100 characters),
+
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="box-footer text-end space-x-3 rtl:space-x-reverse">
+                  <button type="submit" class="ti-btn m-0 ti-btn-soft-primary">
+                    <i class="ri ri-refresh-line"></i> Update
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End::row-1 -->
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

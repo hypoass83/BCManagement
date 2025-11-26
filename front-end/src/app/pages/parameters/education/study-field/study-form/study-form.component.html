@@ -1,0 +1,29 @@
+<app-modal modalId="field-create-form" title="Create a new field" wi (close)="closePopup()">
+
+  <form [formGroup]="studyFieldForm" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-y-4 p-4">
+      <div class="col-span-12">
+        <app-form-input [form]="studyFieldForm" controlName="fieldName" label="field Name" placeholder="Enter field Name"
+          [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+
+      <div class="col-span-12">
+        <app-form-input [form]="studyFieldForm" controlName="fieldDescription" label="Description"
+          placeholder="Enter field description" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+
+    </div>
+
+  </form>
+
+  <div footer>
+    <button type="button" class="ti-btn ti-border bg-white text-gray-700" (click)="closePopup()">Close</button>
+    <button type="submit" (click)="createOrUpdateStudyField()" class="ti-btn ti-btn-primary">Save changes</button>
+  </div>
+
+</app-modal>

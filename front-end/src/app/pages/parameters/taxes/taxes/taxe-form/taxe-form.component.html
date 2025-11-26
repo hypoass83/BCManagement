@@ -1,0 +1,60 @@
+<app-modal modalId="taxe-contribution-create-form" title="Create a new taxe declaration" wi (close)="closePopup()">
+
+  <form [formGroup]="taxeContributionForm" class="mx-auto w-full">
+
+    <div class="grid grid-cols-12 gap-y-4 p-4">
+
+
+
+      <div class="col-span-12">
+        <app-form-input [form]="taxeContributionForm" controlName="taxeContributionCode" label="taxe Contribution Code"
+          placeholder="Enter taxeContribution Code" [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+      <div class="col-span-12">
+        <app-form-input [form]="taxeContributionForm" controlName="taxeContributionName" label="taxe Contribution Name"
+          placeholder="Enter taxeContribution Name" [required]="true" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+
+      <div class="col-span-12">
+        <app-form-input [form]="taxeContributionForm" controlName="taxeContributionDescription" label="Description"
+          placeholder="Enter taxeContribution description" [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12">
+        <app-form-input [form]="taxeContributionForm" inputType="checkbox" controlName="isFixedAmount" label="is Fixed Amount ?"
+         [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12" *ngIf="taxeContributionForm.get('isFixedAmount')?.value === false">
+        <app-form-input inputType="number" [form]="taxeContributionForm" controlName="rate" label="Rate in % if it's not fixed"
+          placeholder="Rate " [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+      <div class="col-span-12" *ngIf="taxeContributionForm.get('isFixedAmount')?.value === true">
+        <app-form-input inputType="number" [form]="taxeContributionForm" controlName="fixedAmount" label="fixedAmount if it's  fixed"
+          placeholder="fixedAmount if it's  fixed " [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+
+
+      <div class="col-span-12">
+        <app-form-input [form]="taxeContributionForm" inputType="checkbox" controlName="isActive" label="isActive ?"
+         [submitted]="isSubmitted">
+        </app-form-input>
+      </div>
+    </div>
+
+  </form>
+
+  <div footer>
+    <button type="button" class="ti-btn ti-border bg-white text-gray-700" (click)="closePopup()">Close</button>
+    <button type="submit" (click)="createOrUpdateTaxeContribution()" class="ti-btn ti-btn-primary">Save changes</button>
+  </div>
+
+</app-modal>

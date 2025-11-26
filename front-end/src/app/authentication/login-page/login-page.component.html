@@ -1,0 +1,173 @@
+<div class="auth" style="height: 100vh">
+  <div class="flex h-full !py-0 bg-white dark:bg-bgdark">
+    <div class="grid grid-cols-12 gap-6 w-full h-full">
+      <div class="lg:col-span-6 col-span-12 hidden lg:block relative">
+        <div class="cover relative w-full h-full z-[1] p-10">
+          <div
+            class="authentication-page justify-center w-full max-w-7xl mx-auto p-0"
+          >
+            <img
+              src="./assets/img/2024206.svg"
+              alt="logo"
+              class="mx-auto h-[500px] text-white"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-6 col-span-12">
+        <div class="authentication-page w-full">
+          <!-- ========== MAIN CONTENT ========== -->
+          <main id="content" class="w-full max-w-md mx-auto p-6">
+            <a routerLink="/dashboard/sales" class="header-logo">
+              <img
+                *ngIf="imagePath"
+                [src]="imagePath"
+                alt="logo"
+                class="mx-auto block dark:hidden"
+              />
+              <img
+                alt="logo"
+                *ngIf="imagePath"
+                [src]="imagePath"
+                class="mx-auto hidden dark:block"
+              />
+            </a>
+            <div class="mt-7">
+              <div class="p-4 sm:p-7">
+                <div class="text-center">
+                  <h1
+                    class="block text-2xl font-bold text-gray-800 dark:text-white"
+                  >
+                    Sign in
+                  </h1>
+                </div>
+
+                <div class="mt-5">
+                  <!-- Form -->
+                  <div>
+                    <form [formGroup]="loginForm" (ngSubmit)="Submit()">
+                      <div class="grid gap-y-4">
+                        <p
+                          *ngIf="error"
+                          class="text-sm text-red-600 mt-2 text-center"
+                          id="hs-validation-name-error-helper"
+                        >
+                          {{ error }}
+                        </p>
+                        <!-- Form Group -->
+                        <div>
+                          <label
+                            for="email"
+                            class="block text-sm mb-2 dark:text-white"
+                            >User login</label
+                          >
+
+                          <div class="relative">
+                            <input
+                              type="text"
+                              id="email"
+                              name="email"
+                              class="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70"
+                              placeholder="Username"
+                              autocomplete
+                              formControlName="username"
+                              [ngClass]="
+                                isSubmitted && form['username'].errors
+                                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                                  : ''
+                              "
+                            />
+                            <div
+                              *ngIf="isSubmitted && form['username'].errors"
+                              class="invalid-feedback"
+                            >
+                              <p
+                                *ngIf="form['username'].errors['required']"
+                                class="text-sm text-red-600 mt-2"
+                                id="hs-validation-name-error-helper"
+                              >
+                                This field is required.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- End Form Group -->
+
+                        <!-- Form Group -->
+                        <div>
+                          <div class="flex justify-between items-center">
+                            <label
+                              for="password"
+                              class="block text-sm mb-2 dark:text-white"
+                              >Password</label
+                            >
+                          </div>
+                          <div class="relative">
+                            <input
+                              type="password"
+                              id="password"
+                              name="password"
+                              class="py-2 px-3 block w-full border-gray-200 rounded-sm text-sm focus:border-primary focus:ring-primary dark:bg-bgdark dark:border-white/10 dark:text-white/70"
+                              placeholder="Password"
+                              autocomplete
+                              formControlName="password"
+                              [ngClass]="
+                                isSubmitted && form['password'].errors
+                                  ? 'border-red-500 focus:border-red-500 focus:ring-red-500'
+                                  : ''
+                              "
+                            />
+                            <div
+                              *ngIf="isSubmitted && form['password'].errors"
+                              class="invalid-feedback"
+                            >
+                              <p
+                                *ngIf="form['password'].errors['required']"
+                                class="text-sm text-red-600 mt-2"
+                                id="hs-validation-name-error-helper"
+                              >
+                                This field is required.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- End Form Group -->
+
+                        <!-- End Checkbox -->
+
+                        <button
+                          *ngIf="!isSubmitted"
+                          type="submit"
+                          class="py-2 px-3 inline-flex justify-center items-center gap-2 rounded-sm border border-transparent font-semibold bg-primary text-white hover:bg-primary focus:outline-none focus:ring-0 focus:ring-primary focus:ring-offset-0 transition-all text-sm dark:focus:ring-offset-white/10"
+                        >
+                          Sign in
+                        </button>
+
+                        <button
+                          *ngIf="isSubmitted"
+                          type="button"
+                          class="ti-btn ti-btn-disabled ti-btn-primary"
+                          disabled
+                        >
+                          <span
+                            class="ti-spinner text-white"
+                            role="status"
+                            aria-label="loading"
+                          >
+                            <span class="sr-only">Sign in</span>
+                          </span>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <!-- End Form -->
+                </div>
+              </div>
+            </div>
+          </main>
+          <!-- ========== END MAIN CONTENT ========== -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

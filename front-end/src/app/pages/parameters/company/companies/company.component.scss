@@ -1,0 +1,34 @@
+// Company Component Styles
+
+.ag-grid-container {
+  width: 100%;
+  margin-top: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+// Custom AG Grid styling
+:host ::ng-deep {
+  .ag-header-cell-label {
+    font-weight: 600;
+  }
+
+  .ag-cell {
+    display: flex;
+    align-items: center;
+  }
+
+  // Logo column styling
+  .ag-cell img {
+    border-radius: 4px;
+    padding: 2px;
+  }
+}
+
+// Dark mode support
+:host-context(.dark) {
+  .ag-grid-container {
+    box-shadow: 0 1px 3px rgba(255, 255, 255, 0.1);
+  }
+}

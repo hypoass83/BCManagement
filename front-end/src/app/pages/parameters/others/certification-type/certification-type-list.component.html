@@ -1,0 +1,32 @@
+<!-- certification-type-list.component.html -->
+<app-page-header
+  title="Human Resources"
+  title1="Configuration"
+  activeitem="Certification Types">
+</app-page-header>
+
+<app-search-bar
+  [(quickFilterText)]="quickFilterText"
+  [buttonLabel]="'Create Certification Type'"
+  (buttonClick)="createCertificationType()">
+</app-search-bar>
+
+<div style="height: 60vh" class="ag-grid-container">
+  <ag-grid-angular
+    style="width: 100%; height: 100%"
+    [rowData]="rowData()"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [pagination]="true"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    [class]="themeClass()"
+    [quickFilterText]="quickFilterText"
+    (gridReady)="onGridReady($event)"
+  />
+</div>
+
+<app-certification-type-form
+  [certificationTypeToUpdate]="certificationTypeToEdit"
+  (certificationTypeSaved)="loadCertificationTypes()">
+</app-certification-type-form>

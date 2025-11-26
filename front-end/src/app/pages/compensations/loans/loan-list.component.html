@@ -1,0 +1,60 @@
+<app-page-header
+  title="Human Resources"
+  title1="Financial"
+  activeitem="Employee Loans">
+</app-page-header>
+
+<!-- Filter Buttons -->
+<div class="box p-3 mb-3">
+  <div class="flex gap-2">
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'all' ? 'ti-btn-primary' : 'ti-btn-outline-primary')"
+      (click)="onFilterChange('all')">
+      <i class="ti ti-list"></i> All Loans
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'active' ? 'ti-btn-primary' : 'ti-btn-outline-primary')"
+      (click)="onFilterChange('active')">
+      <i class="ti ti-clock"></i> Active Loans
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'paid' ? 'ti-btn-primary' : 'ti-btn-outline-primary')"
+      (click)="onFilterChange('paid')">
+      <i class="ti ti-check-circle"></i> Paid Off Loans
+    </button>
+  </div>
+</div>
+
+<app-search-bar
+  [(quickFilterText)]="quickFilterText"
+  [buttonLabel]="'Create Loan'"
+  (buttonClick)="createLoan()">
+</app-search-bar>
+
+<div style="height: 60vh" class="ag-grid-container">
+  <ag-grid-angular
+    style="width: 100%; height: 100%"
+    [rowData]="rowData()"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [pagination]="true"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    [class]="themeClass()"
+    [quickFilterText]="quickFilterText"
+    (gridReady)="onGridReady($event)"
+  />
+</div>
+
+<app-loan-form
+  [loanToUpdate]="loanToEdit"
+  (loanSaved)="loadLoans()">
+</app-loan-form>
+
+<app-loan-payment-form
+  [loan]="loanForPayment"
+  (paymentSaved)="loadLoans()">
+</app-loan-payment-form>

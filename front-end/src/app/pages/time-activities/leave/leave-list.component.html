@@ -1,0 +1,61 @@
+<app-page-header
+  title="Human Resources"
+  title1="Time Off"
+  activeitem="Leave Requests">
+</app-page-header>
+
+<!-- Filter Buttons -->
+<div class="box p-3 mb-3">
+  <div class="flex gap-2">
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'all' ? 'ti-btn-primary' : 'ti-btn-outline-primary')"
+      (click)="onFilterChange('all')">
+      <i class="ti ti-list"></i> All Leaves
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'pending' ? 'ti-btn-warning' : 'ti-btn-outline-warning')"
+      (click)="onFilterChange('pending')">
+      <i class="ti ti-clock"></i> Pending
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'approved' ? 'ti-btn-success' : 'ti-btn-outline-success')"
+      (click)="onFilterChange('approved')">
+      <i class="ti ti-check"></i> Approved
+    </button>
+    <button
+      type="button"
+      [class]="'ti-btn ' + (activeFilter === 'rejected' ? 'ti-btn-danger' : 'ti-btn-outline-danger')"
+      (click)="onFilterChange('rejected')">
+      <i class="ti ti-x"></i> Rejected
+    </button>
+  </div>
+</div>
+
+<app-search-bar
+  [(quickFilterText)]="quickFilterText"
+  [buttonLabel]="'Create Leave Request'"
+  (buttonClick)="createLeave()">
+</app-search-bar>
+
+<div style="height: 60vh" class="ag-grid-container">
+  <ag-grid-angular
+    style="width: 100%; height: 100%"
+    [rowData]="rowData()"
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [pagination]="true"
+    [paginationPageSize]="paginationPageSize"
+    [paginationPageSizeSelector]="paginationPageSizeSelector"
+    [class]="themeClass()"
+    [quickFilterText]="quickFilterText"
+    (gridReady)="onGridReady($event)"
+  />
+</div>
+
+<app-leave-form
+  [leaveToUpdate]="leaveToEdit"
+  (leaveSaved)="loadLeaves()">
+</app-leave-form>

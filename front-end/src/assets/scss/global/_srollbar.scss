@@ -1,0 +1,13 @@
+/*-----Scrollbar Styles End------*/
+.dark {
+  ::-webkit-scrollbar {
+    @apply w-[0px] bg-gray-200 #{!important};
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-[10px] bg-bgdark #{!important};
+  }
+
+}
+
+/*-----Scrollbar Styles End------*/

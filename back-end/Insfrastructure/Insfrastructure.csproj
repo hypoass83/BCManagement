@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="tessdata\eng.traineddata" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="tessdata\eng.traineddata">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Extentions\" />
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Only include packages NOT in Directory.Build.props -->
+    <PackageReference Include="Azure.Identity" Version="1.12.0" />
+    <PackageReference Include="itext.bouncy-castle-adapter" Version="9.4.0" />
+    <PackageReference Include="iText7" Version="9.4.0" />
+    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.9.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.0.1" />
+    <PackageReference Include="PdfPig" Version="0.1.12" />
+    <PackageReference Include="Quartz" Version="3.3.3" />
+    <PackageReference Include="SkiaSharp" Version="2.88.8" />
+    <PackageReference Include="System.Formats.Asn1" Version="8.0.1" />
+    <PackageReference Include="Tesseract" Version="5.2.0" />
+    <PackageReference Include="Tesseract.Drawing" Version="5.2.0" />
+    <PackageReference Include="ZXing.Net" Version="0.16.9" />
+    <PackageReference Include="ZXing.Net.Bindings.SkiaSharp" Version="0.16.14" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+</Project>

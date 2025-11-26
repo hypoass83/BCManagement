@@ -1,0 +1,201 @@
+<!-- Start::Header -->
+<header class="header custom-sticky !top-0 !w-full no-print">
+  <nav class="main-header" aria-label="Global">
+    <div class="header-content">
+      <div class="header-left">
+        <!-- Navigation Toggle -->
+        <div class="">
+          <button
+            type="button"
+            class="sidebar-toggle !w-100 !h-100"
+            (click)="toggleSidebar()"
+          >
+            <span class="sr-only">Toggle Navigation</span>
+            <i class="ri-arrow-right-circle-line header-icon"></i>
+          </button>
+        </div>
+        <!-- End Navigation Toggle -->
+      </div>
+
+      <!-- <div class="responsive-logo">
+        <a
+          class="responsive-logo-dark"
+          routerLink="/dashboard/sales"
+          aria-label="Brand"
+          ><img
+            src="./assets/img/brand-logos/desktop-logo.png"
+            alt="logo"
+            class="mx-auto"
+        /></a>
+        <a
+          class="responsive-logo-light"
+          routerLink="/dashboard/sales"
+          aria-label="Brand"
+          ><img
+            src="./assets/img/brand-logos/desktop-dark.png"
+            alt="logo"
+            class="mx-auto"
+        /></a>
+      </div> -->
+
+      <div class="header-right">
+
+        <div class="responsive-headernav">
+
+          <div class="header-nav-right">
+            <div
+              class="header-country hs-dropdown ti-dropdown hidden sm:block"
+              data-hs-dropdown-placement="bottom-right"
+            >
+              <button
+                id="dropdown-flag"
+                type="button"
+                class="hs-dropdown-toggle ti-dropdown-toggle p-0 flex-shrink-0 h-[2.375rem] w-[2.375rem] border-0 rounded-full shadow-none focus:ring-gray-400 text-xs dark:focus:ring-white/10"
+              >
+                <img
+                  [src]="selectedCountry"
+                  alt="flag-img"
+                  class="h-[1.375rem] w-[1.375rem]"
+                />
+              </button>
+              <div
+                class="hs-dropdown-menu ti-dropdown-menu min-w-[10rem]"
+                aria-labelledby="dropdown-flag"
+              >
+                <div class="ti-dropdown-divider divide-y divide-gray-200 dark:divide-white/10">
+                  <div class="py-2 first:pt-0 last:pb-0">
+                    <div class="ti-dropdown-item">
+                      <div
+                        class="flex items-center space-x-2 rtl:space-x-reverse w-full cursor-pointer"
+                        (click)="onCountrySelect('en')"
+
+                      >
+                        <div class="h-[1.375rem] w-[1.375rem] rounded-sm">
+                          <img src="./assets/img/flags/en.png" alt="flag-img" />
+                        </div>
+                        <div>
+                          <p class="text-xs font-medium">English</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="ti-dropdown-item">
+                      <div
+                        class="flex items-center space-x-2 rtl:space-x-reverse w-full cursor-pointer"
+                        (click)="onCountrySelect('fr')"
+                      >
+                        <div class="h-[1.375rem] w-[1.375rem] rounded-sm">
+                          <img src="./assets/img/flags/fr.png" alt="flag-img" />
+                        </div>
+                        <div>
+                          <p class="text-xs font-medium">French</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            Welcome {{current_user.name}}. Business Day {{current_bd}}
+
+
+            <div class="header-theme-mode hidden sm:block" appToggleTheme>
+              <a
+                aria-label="anchor"
+                class="hs-dark-mode-active:hidden flex hs-dark-mode group flex-shrink-0 justify-center items-center gap-2 h-[2.375rem] w-[2.375rem] rounded-full font-medium bg-gray-100 hover:bg-gray-200 text-gray-500 align-middle focus:outline-none focus:ring-0 focus:ring-gray-400 focus:ring-offset-0 focus:ring-offset-white transition-all text-xs dark:bg-bgdark dark:hover:bg-black/20 dark:text-white/70 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10"
+                href="javascript:;"
+                data-hs-theme-click-value="dark"
+                (click)="themeChange('dark', 'dark')"
+              >
+                <i class="ri-moon-line header-icon"></i>
+              </a>
+              <a
+                aria-label="anchor"
+                class="hs-dark-mode-active:flex hidden hs-dark-mode group flex-shrink-0 justify-center items-center gap-2 h-[2.375rem] w-[2.375rem] rounded-full font-medium bg-gray-100 hover:bg-gray-200 text-gray-500 align-middle focus:outline-none focus:ring-0 focus:ring-gray-400 focus:ring-offset-0 focus:ring-offset-white transition-all text-xs dark:bg-bgdark dark:hover:bg-black/20 dark:text-white/70 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10"
+                href="javascript:;"
+                data-hs-theme-click-value="light"
+                (click)="themeChange('light', 'light')"
+              >
+                <i class="ri-sun-line header-icon"></i>
+              </a>
+            </div>
+
+            <div class="header-fullscreen hidden lg:block">
+              <a
+                aria-label="anchor"
+                href="javascript:void(0);"
+                appFullscreen
+                class="inline-flex flex-shrink-0 justify-center items-center gap-2 h-[2.375rem] w-[2.375rem] rounded-full font-medium bg-gray-100 hover:bg-gray-200 text-gray-500 align-middle focus:outline-none focus:ring-0 focus:ring-gray-400 focus:ring-offset-0 focus:ring-offset-white transition-all text-xs dark:bg-bgdark dark:hover:bg-black/20 dark:text-white/70 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10"
+              >
+                <i class="ri-fullscreen-line header-icon full-screen-open"></i>
+                <i
+                  class="ri-fullscreen-line header-icon fullscreen-exit-line hidden"
+                ></i>
+              </a>
+            </div>
+
+
+
+
+            <div
+              class="header-profile hs-dropdown ti-dropdown"
+              data-hs-dropdown-placement="bottom-right"
+            >
+              <button
+                id="dropdown-profile"
+                type="button"
+                class="hs-dropdown-toggle ti-dropdown-toggle gap-2 p-0 flex-shrink-0 h-8 w-8 rounded-full shadow-none focus:ring-gray-400 text-xs dark:focus:ring-white/10"
+              >
+
+                <i class="ti ti-user"></i>
+              </button>
+
+              <div
+                class="hs-dropdown-menu ti-dropdown-menu border-0 w-[20rem]"
+                aria-labelledby="dropdown-profile"
+              >
+                <div class="ti-dropdown-header !bg-primary flex">
+                  <div class="ltr:mr-3 rtl:ml-3">
+                    <i class="ti ti-user"></i>
+                  </div>
+                  <div>
+                    <p class="ti-dropdown-header-title !text-white">
+                      {{current_user.name}} {{current_user.description}}
+                    </p>
+
+                  </div>
+                </div>
+                <div class="mt-2 ti-dropdown-divider">
+                  <a
+                    routerLink="/profile/profilesettings"
+                    class="ti-dropdown-item"
+                  >
+                    <i class="ti ti-adjustments-horizontal text-lg"></i>
+                    Profile
+                  </a>
+
+                  <a   (click)="logOut()" class="ti-dropdown-item">
+                    <i class="ti ti-logout text-lg"></i>
+                    Log Out
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="switcher-icon" *ngIf="false">
+              <button
+                aria-label="button"
+                type="button"
+                class="hs-dropdown-toggle inline-flex flex-shrink-0 justify-center items-center gap-2 h-[2.375rem] w-[2.375rem] rounded-full font-medium bg-gray-100 hover:bg-gray-200 text-gray-500 align-middle focus:outline-none focus-visible:outline-none focus:ring-0 focus:ring-gray-400 focus:ring-offset-0 focus:ring-offset-white transition-all text-xs dark:bg-bgdark dark:hover:bg-black/20 dark:text-white/70 dark:hover:text-white dark:focus:ring-white/10 dark:focus:ring-offset-white/10"
+                data-hs-overlay="#hs-overlay-switcher"
+              >
+                <i class="ri-settings-5-line header-icon animate-spin"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<!-- End::Header -->
