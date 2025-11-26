@@ -36,7 +36,7 @@ namespace Application
             services.AddScoped<SearchDocumentHandler>();
             services.AddScoped<ExtractOcrFromPage1Handler>();
 
-            //services.AddScoped<ICandidateDocumentService, DocumentProcessingService>();
+    
             return services;
         }
     }

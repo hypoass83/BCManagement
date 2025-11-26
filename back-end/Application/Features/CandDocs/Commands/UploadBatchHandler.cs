@@ -1,5 +1,7 @@
 ﻿using Application.Features.CandDocs.Commands;
+using Application.Features.CandDocs.Validators;
 using Application.Service;
+using Domain.DTO.CandDocs;
 using Domain.Entities.CandDocs;
 using Domain.InterfacesServices.CandDocs;
 using Domain.InterfacesServices.Security;
@@ -18,7 +20,7 @@ namespace BCDocumentManagement.Application.Features.CandDocs.Commands
         private readonly ITesseractService _ocr;
         private readonly IFileStore _fileStore;
         private readonly ICandidateRepository _candidateRepo;
-        private readonly IPdfTextExtractor _pdfTextExtractor;
+        private readonly IImportErrorService _importErrorService;
         private readonly ICandidateParser _candidateParser;
         private readonly ICurrentUserService _currentUserService;
         public UploadBatchHandler(
@@ -26,14 +28,14 @@ namespace BCDocumentManagement.Application.Features.CandDocs.Commands
             ITesseractService ocr,
             IFileStore fileStore,
             ICandidateRepository candidateRepo,
-            IPdfTextExtractor pdfTextExtractor,
+            IImportErrorService importErrorService,
             ICandidateParser candidateParser, ICurrentUserService currentUserService)
         {
             _pdfSplit = pdfSplit;
             _ocr = ocr;
             _fileStore = fileStore;
             _candidateRepo = candidateRepo;
-            _pdfTextExtractor = pdfTextExtractor;
+            _importErrorService = importErrorService;
             _candidateParser = candidateParser;
             _currentUserService = currentUserService;
         }
@@ -83,15 +85,32 @@ namespace BCDocumentManagement.Application.Features.CandDocs.Commands
                         //ocrText = await _ocr.ExtractTextAsync(pair.page1Pdf);
                         ocrText = await _ocr.ExtractTextFromPdfAsync(pair.page1Pdf, 1);
                     }
-                    catch
+                    catch (Exception ocrEx)
                     {
-                        // swallow or log - OCR may fail for some pages
-                        ocrText = string.Empty;
+                        // If OCR fails, log an OCRIssue error and continue (no candidate insert)
+                        await LogOcrError(ocrEx, savedPath, request, command.UploadedBy, candidateIndex, result);
+                        continue; // skip to next candidate
                     }
 
                     var info = _candidateParser.Parse(ocrText ?? "");
 
-                    var examyear = info.SessionYear ?? request.ExamYear;
+                    // Validate
+                    var validator = new DocumentValidator(command.UploadedBy);
+                    var validation = validator.Validate(pair.page1Pdf, ocrText ?? "", info, savedPath, request);
+
+                    if (!validation.IsValid)
+                    {
+                        // Persist validation errors
+                        await _importErrorService.AddErrorsAsync(validation.Errors);
+                        // Optionally add messages to result for API response
+                        foreach (var e in validation.Errors)
+                            result.Errors.Add($"CandidateIndex {candidateIndex}: {e.FieldName} - {e.ErrorMessage}");
+
+                        // do NOT persist CandidateDocument when there are validation errors
+                        continue;
+                    }
+
+                    /*var examyear = info.SessionYear ?? request.ExamYear;
                     var centrenumber = info.CentreNumber ?? request.CenterNumber;
                     var candidateNumber = info.CandidateNumber;
                     var candidateName = info.CandidateName;
@@ -108,16 +127,28 @@ namespace BCDocumentManagement.Application.Features.CandDocs.Commands
                         OcrText = ocrText ?? "",
                         CreatedAt = DateTime.UtcNow,
                         UserId= _currentUserService.GetCurentUserId() ?? 2
-                    };
+                    };*/
 
+                    // If valid -> persist CandidateDocument
+                    var entity = new CandidateDocument
+                    {
+                        CandidateName = info.CandidateName,
+                        CandidateNumber = info.CandidateNumber,
+                        Session = info.SessionYear ?? request.ExamYear,
+                        CentreCode = info.CentreNumber ?? request.CenterNumber,
+                        FilePath = savedPath,
+                        OcrText = ocrText ?? "",
+                        CreatedAt = DateTime.UtcNow,
+                        UserId = _currentUserService.GetCurentUserId() ?? 2
+                    };
                     await _candidateRepo.AddCandidateDocumentAsync(entity);
 
                     result.SavedFilePaths.Add(savedPath);
                     }
                 catch (Exception ex)
                 {
-                    // log error - for now add to result's error list (you can use a proper logger)
-                    result.Errors.Add($"CandidateIndex {candidateIndex}: {ex.Message}");
+                    // For unexpected exceptions: log a generic ImportError and keep going
+                    await LogUnhandledError(ex, request, command.UploadedBy, candidateIndex, result);
                 }
             }
 
@@ -125,7 +156,48 @@ namespace BCDocumentManagement.Application.Features.CandDocs.Commands
             return result;
         }
 
-        
+        // ----------------------------------------------------------------------
+        //  SUPPORT METHODS
+        // ----------------------------------------------------------------------
+
+        private async Task LogOcrError(Exception ex, string savedPath, UploadBatchRequestDTO request,
+            string uploadedBy, int index, UploadBatchResult result)
+        {
+            var err = new ImportError
+            {
+                FilePath = savedPath,
+                FieldName = "OcrText",
+                ErrorType = "OCRIssue",
+                ErrorMessage = $"OCR failed: {ex.Message}",
+                CandidateNumber = null,
+                Session = request.ExamYear,
+                UploadedBy = uploadedBy
+            };
+
+            await _importErrorService.AddErrorsAsync(new[] { err });
+
+            result.Errors.Add($"[{index}] OCR ERROR: {ex.Message}");
+        }
+
+        private async Task LogUnhandledError(Exception ex, UploadBatchRequestDTO request,
+            string uploadedBy, int index, UploadBatchResult result)
+        {
+            var err = new ImportError
+            {
+                FilePath = null,
+                FieldName = "Unhandled",
+                ErrorType = "UnhandledException",
+                ErrorMessage = ex.Message,
+                CandidateNumber = null,
+                Session = request.ExamYear,
+                UploadedBy = uploadedBy
+            };
+
+            await _importErrorService.AddErrorsAsync(new[] { err });
+
+            result.Errors.Add($"[{index}] UNHANDLED ERROR: {ex.Message}");
+        }
+
 
         // Helper: build two-page PDF by appending page bytes (implementation uses PdfSharpCore or iText via MemoryStreams)
         private async Task<byte[]> CreateTwoPagePdfAsync(byte[] page1Pdf, byte[] page2Pdf)

@@ -15,6 +15,5 @@ namespace Domain.Entities.CandDocs
         public string Division { get; set; } = "";
         public string SubDivision { get; set; } = "";
 
-        public virtual ICollection<CandidateDocument> CandidateDocuments { get; set; } 
     }
 }

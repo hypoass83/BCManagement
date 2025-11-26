@@ -12,6 +12,7 @@ using BCDocumentManagement.Infrastructure.Stores.CandDocs;
 using Domain.InterfacesServices.CandDocs;
 using Insfrastructure.Services.CandDocs;
 using Microsoft.Extensions.Configuration;
+using Insfrastructure.Stores.CandDocs;
 
 namespace Insfrastructure
 {
@@ -48,6 +49,7 @@ namespace Insfrastructure
             services.AddScoped<IOcrService, OcrService>();
             services.AddScoped<IFileStore, FileStore>();
             services.AddScoped<ICandidateRepository, CandidateRepository>();
+            services.AddScoped<IImportErrorService, ImportErrorStore>();
 
             services.AddSingleton<IPdfTextExtractor, PdfPigTextExtractor>();
             services.AddSingleton<ICandidateParser, CandidateParser>();

@@ -41,6 +41,8 @@ namespace Infrastructure.Context
         // Mobilité et reconnaissance
         public DbSet<CandidateDocument> CandidateDocuments { get; set; }
         public DbSet<ExamCenter> ExamCenters { get; set; }
+
+        public DbSet<ImportError> ImportErrors { get; set; }
         //public DbSet<Candidate> Candidates { get; set; }
         //public DbSet<BatchUpload> BatchUploads { get; set; }
 

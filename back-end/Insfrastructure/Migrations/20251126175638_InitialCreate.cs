@@ -58,6 +58,26 @@ namespace Insfrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ImportErrors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CandidateNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FieldName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ErrorType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Session = table.Column<int>(type: "int", nullable: true),
+                    ImportDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UploadedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImportErrors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Jobs",
                 columns: table => new
                 {
@@ -668,13 +688,16 @@ namespace Insfrastructure.Migrations
                 name: "CandidateDocuments");
 
             migrationBuilder.DropTable(
+                name: "ExamCenters");
+
+            migrationBuilder.DropTable(
+                name: "ImportErrors");
+
+            migrationBuilder.DropTable(
                 name: "Mouchards");
 
             migrationBuilder.DropTable(
                 name: "SubMenus");
-
-            migrationBuilder.DropTable(
-                name: "ExamCenters");
 
             migrationBuilder.DropTable(
                 name: "Users");

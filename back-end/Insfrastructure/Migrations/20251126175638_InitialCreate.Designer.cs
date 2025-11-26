@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Insfrastructure.Migrations
 {
     [DbContext(typeof(FsContext))]
-    [Migration("20251125094137_InitialCreate")]
+    [Migration("20251126175638_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -67,7 +67,6 @@ namespace Insfrastructure.Migrations
 
                     b.HasKey("Id");
 
-
                     b.HasIndex("UserId");
 
                     b.ToTable("CandidateDocuments");
@@ -103,6 +102,49 @@ namespace Insfrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ExamCenters");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CandDocs.ImportError", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CandidateNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ErrorMessage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ErrorType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FieldName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ImportDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("Session")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UploadedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ImportErrors");
                 });
 
             modelBuilder.Entity("Domain.Entities.Configurations.Archive", b =>
@@ -787,7 +829,6 @@ namespace Insfrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.CandDocs.CandidateDocument", b =>
                 {
-                    
                     b.HasOne("Domain.Entities.Security.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -1009,11 +1050,6 @@ namespace Insfrastructure.Migrations
                     b.Navigation("Job");
 
                     b.Navigation("Profile");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CandDocs.ExamCenter", b =>
-                {
-                    b.Navigation("CandidateDocuments");
                 });
 
             modelBuilder.Entity("Domain.Entities.Localisation.Country", b =>
