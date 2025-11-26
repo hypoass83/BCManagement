@@ -128,5 +128,5 @@ orleans.codegen.cs
 
 .fake
 
-#back-end/Tests/IntegrationTests/TestData/
-#*.pdf
+back-end/Tests/IntegrationTests/TestData/
+*.pdf
