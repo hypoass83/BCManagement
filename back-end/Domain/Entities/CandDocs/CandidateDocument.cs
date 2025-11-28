@@ -27,5 +27,17 @@ namespace Domain.Entities.CandDocs
         [ForeignKey("UserId")]
         public virtual User? User { get; set; }
 
+        public int? ExamCenterId { get; set; }
+
+        [ForeignKey("ExamCenterId")]
+        public virtual ExamCenter? ExamCenter { get; set; }
+        // NEW FIELD → used to determine error/success
+        public bool IsValid { get; set; } = false;
+
+        // NAVIGATION — list of all validation errors for this document
+        public virtual ICollection<ImportError> ImportErrors { get; set; }
+
+        public string FormCentreCode { get; set; } = "";
+
     }
 }

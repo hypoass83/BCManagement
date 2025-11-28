@@ -29,6 +29,25 @@ namespace Insfrastructure.Stores.CandDocs
         {
             return await _context.ImportErrors.ToListAsync();
         }
+        public async Task<List<ImportError>> GetErrorsForDocument(int candidateDocumentId)
+        {
+            return await _context.ImportErrors
+                .Where(x => x.CandidateDocumentId == candidateDocumentId)
+                .ToListAsync();
+        }
+
+        public async Task ClearErrorsForDocument(int candidateDocumentId)
+        {
+            var items = await _context.ImportErrors
+                .Where(x => x.CandidateDocumentId == candidateDocumentId)
+                .ToListAsync();
+
+            if (items.Any())
+            {
+                _context.ImportErrors.RemoveRange(items);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 
 }

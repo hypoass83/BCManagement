@@ -10,7 +10,7 @@ namespace Domain.DTO.CandDocs
     {
         public byte[] PdfFile { get; set; }
         public int ExamYear { get; set; }
-        public int ExamCode { get; set; }
+        public string ExamCode { get; set; }
         public string CenterNumber { get; set; } = "";
     }
 }

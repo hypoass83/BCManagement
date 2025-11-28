@@ -103,7 +103,8 @@ namespace BCDocumentManagement.WebAPI.Controllers
             var command = new UploadBatchCommand
             {
                 Request = requestDto,
-                UploadedBy = User?.Identity?.Name ?? "anonymous"
+                UploadedBy = User?.Identity?.Name ?? "anonymous",
+                ServerSourceFilePath = form.ServerSourceFilePath
             };
 
             try
@@ -175,6 +176,20 @@ namespace BCDocumentManagement.WebAPI.Controllers
 
             var bytes = await System.IO.File.ReadAllBytesAsync(item.FilePath);
             return File(bytes, "application/pdf", Path.GetFileName(item.FilePath));
+        }
+
+        [HttpPut("candidate/update")]
+        public async Task<IActionResult> UpdateCandidate([FromBody] UpdateCandidateRequestDTO req)
+        {
+            var result = await _uploadHandler.UpdateCandidateAsync(req);
+            return Ok(result);
+        }
+
+        [HttpPost("validate-document")]
+        public async Task<IActionResult> ValidateDocument([FromBody] ValidateDocumentRequestDTO req)
+        {
+            var result = await _uploadHandler.ValidateCorrectedDocumentAsync(req.CandidateDocumentId);
+            return Ok(result);
         }
     }
 }

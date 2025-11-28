@@ -43,9 +43,8 @@ namespace Infrastructure.Context
         public DbSet<ExamCenter> ExamCenters { get; set; }
 
         public DbSet<ImportError> ImportErrors { get; set; }
-        //public DbSet<Candidate> Candidates { get; set; }
-        //public DbSet<BatchUpload> BatchUploads { get; set; }
-
+        public DbSet<Candidate> Candidates { get; set; }
+       
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -85,6 +84,22 @@ namespace Infrastructure.Context
                 .HasForeignKey(amp => amp.ModuleID)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            ////CandidateDocument
+            //modelBuilder.Entity<CandidateDocument>()
+            //    .HasKey(x => x.Id);
+
+            //modelBuilder.Entity<CandidateDocument>().HasMany(x => x.ImportErrors)
+            //       .WithOne(e => e.CandidateDocument)
+            //       .HasForeignKey(e => e.CandidateDocumentId)
+            //       .OnDelete(DeleteBehavior.Cascade);
+
+            //modelBuilder.Entity<CandidateDocument>().HasIndex(x => x.IsValid);
+            //modelBuilder.Entity<CandidateDocument>().HasIndex(x => new { x.CentreCode, x.Session });
+
+            ////ImportError
+            //modelBuilder.Entity<ImportError>().HasKey(x => x.Id);
+
+            //modelBuilder.Entity<ImportError>().HasIndex(x => x.CandidateDocumentId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

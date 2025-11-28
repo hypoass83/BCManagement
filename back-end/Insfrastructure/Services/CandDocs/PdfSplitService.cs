@@ -5,31 +5,39 @@ namespace BCDocumentManagement.Infrastructure.Services.CandDocs
 {
     public class PdfSplitService : IPdfSplitService
     {
+        
         public async Task<List<byte[]>> SplitPdfByPageAsync(byte[] pdfBytes)
         {
             var result = new List<byte[]>();
 
             using (var inputStream = new MemoryStream(pdfBytes))
-            using (var reader = new PdfReader(inputStream))
-            using (var pdfDoc = new PdfDocument(reader))
             {
-                int totalPages = pdfDoc.GetNumberOfPages();
+                var reader = new PdfReader(inputStream);
+                reader.SetCloseStream(true); // CRITICAL FIX
 
-                for (int i = 1; i <= totalPages; i++)
+                using (var pdfDoc = new PdfDocument(reader))
                 {
-                    using var outputStream = new MemoryStream();
-                    using var writer = new PdfWriter(outputStream);
-                    using var singlePagePdf = new PdfDocument(writer);
+                    int totalPages = pdfDoc.GetNumberOfPages();
 
-                    // Copy page i into a new PDF
-                    pdfDoc.CopyPagesTo(i, i, singlePagePdf);
+                    for (int i = 1; i <= totalPages; i++)
+                    {
+                        using var outputStream = new MemoryStream();
 
-                    singlePagePdf.Close();
-                    result.Add(outputStream.ToArray());
+                        using (var writer = new PdfWriter(outputStream))
+                        using (var singlePagePdf = new PdfDocument(writer))
+                        {
+                            pdfDoc.CopyPagesTo(i, i, singlePagePdf);
+                        }
+
+                        result.Add(outputStream.ToArray());
+                    }
                 }
+
+                reader.Close(); // CRITICAL FIX
             }
 
             return result;
         }
+
     }
 }

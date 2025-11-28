@@ -13,5 +13,6 @@ namespace Application.Features.CandDocs.Commands
         public UploadBatchRequestDTO Request { get; set; }
 
         public string UploadedBy { get; set; } = string.Empty;
+        public string ServerSourceFilePath { get; set; }
     }
 }

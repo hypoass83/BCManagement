@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.InterfacesServices.CandDocs
+namespace Domain.DTO.CandDocs
 {
-    public interface IPdfTextExtractor
+    public class ValidateDocumentRequestDTO
     {
-        string ExtractText(byte[] pdfBytes);
+        public int CandidateDocumentId { get; set; }
     }
 }

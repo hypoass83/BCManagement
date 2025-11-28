@@ -11,5 +11,8 @@ namespace Domain.InterfacesStores.CandDocs
     {
         Task AddErrorsAsync(IEnumerable<ImportError> errors);
         Task<IEnumerable<ImportError>> GetAllAsync();
+
+        Task<List<ImportError>> GetErrorsForDocument(int candidateDocumentId);
+        Task ClearErrorsForDocument(int candidateDocumentId);
     }
 }

@@ -38,6 +38,7 @@ namespace Application.Features.CandDocs.Validators
                 {
                     FilePath = savedPath,
                     CandidateNumber = info.CandidateNumber,
+                    CandidateName = info.CandidateName,
                     FieldName = "CandidateNumber",
                     ErrorType = "MissingField",
                     ErrorMessage = "Candidate number is missing.",
@@ -51,6 +52,7 @@ namespace Application.Features.CandDocs.Validators
                 {
                     FilePath = savedPath,
                     CandidateNumber = info.CandidateNumber,
+                    CandidateName = info.CandidateName,
                     FieldName = "CandidateNumber",
                     ErrorType = "InvalidFormat",
                     ErrorMessage = "Candidate number must be numeric.",
@@ -61,12 +63,13 @@ namespace Application.Features.CandDocs.Validators
 
             // CandidateName not OCR garbage
             if (string.IsNullOrWhiteSpace(info.CandidateName) ||
-                info.CandidateName.ToUpperInvariant().StartsWith("GENERAL CERTIFICATE"))
+                info.CandidateName.ToUpperInvariant().Contains("CERTIFICATE"))
             {
                 result.Errors.Add(new ImportError
                 {
                     FilePath = savedPath,
                     CandidateNumber = info.CandidateNumber,
+                    CandidateName = info.CandidateName,
                     FieldName = "CandidateName",
                     ErrorType = "OCRIssue",
                     ErrorMessage = "Candidate name probably not detected by OCR.",
@@ -82,6 +85,7 @@ namespace Application.Features.CandDocs.Validators
                 {
                     FilePath = savedPath,
                     CandidateNumber = info.CandidateNumber,
+                    CandidateName = info.CandidateName,
                     FieldName = "FilePath",
                     ErrorType = "FileNotFound",
                     ErrorMessage = "Saved file not found on disk.",
@@ -98,6 +102,7 @@ namespace Application.Features.CandDocs.Validators
                 {
                     FilePath = savedPath,
                     CandidateNumber = info.CandidateNumber,
+                    CandidateName = info.CandidateName,
                     FieldName = "Session",
                     ErrorType = "InvalidFormat",
                     ErrorMessage = $"Session year {session} out of expected range.",
@@ -106,9 +111,10 @@ namespace Application.Features.CandDocs.Validators
                 });
             }
 
-            // You can add more checks (CentreNumber existence, OCRText length, banned characters, etc.)
 
-            return result;
+                // You can add more checks (CentreNumber existence, OCRText length, banned characters, etc.)
+
+                return result;
         }
     }
 }

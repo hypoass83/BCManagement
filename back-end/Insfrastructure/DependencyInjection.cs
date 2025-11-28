@@ -10,9 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using BCDocumentManagement.Infrastructure.Services.CandDocs;
 using BCDocumentManagement.Infrastructure.Stores.CandDocs;
 using Domain.InterfacesServices.CandDocs;
-using Insfrastructure.Services.CandDocs;
+
 using Microsoft.Extensions.Configuration;
 using Insfrastructure.Stores.CandDocs;
+using Insfrastructure.Services.CandDocs;
 
 namespace Insfrastructure
 {
@@ -25,7 +26,7 @@ namespace Insfrastructure
             {
                 var config = sp.GetRequiredService<IConfiguration>();
                 var tessPath = config["Tesseract:TessDataPath"] ?? "tessdata";
-                return new TesseractService(tessPath);
+                return new TesseractService(tessPath,"eng");
             });
 
             // Security
@@ -51,7 +52,6 @@ namespace Insfrastructure
             services.AddScoped<ICandidateRepository, CandidateRepository>();
             services.AddScoped<IImportErrorService, ImportErrorStore>();
 
-            services.AddSingleton<IPdfTextExtractor, PdfPigTextExtractor>();
             services.AddSingleton<ICandidateParser, CandidateParser>();
 
             return services;

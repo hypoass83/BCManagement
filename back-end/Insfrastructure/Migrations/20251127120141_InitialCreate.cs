@@ -58,26 +58,6 @@ namespace Insfrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ImportErrors",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CandidateNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FieldName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ErrorType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Session = table.Column<int>(type: "int", nullable: true),
-                    ImportDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UploadedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ImportErrors", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Jobs",
                 columns: table => new
                 {
@@ -516,11 +496,19 @@ namespace Insfrastructure.Migrations
                     FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     OcrText = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ExamCenterId = table.Column<int>(type: "int", nullable: true),
+                    IsValid = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CandidateDocuments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CandidateDocuments_ExamCenters_ExamCenterId",
+                        column: x => x.ExamCenterId,
+                        principalTable: "ExamCenters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_CandidateDocuments_Users_UserId",
                         column: x => x.UserId,
@@ -564,6 +552,34 @@ namespace Insfrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ImportErrors",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CandidateNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CandidateName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FieldName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ErrorType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ErrorMessage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Session = table.Column<int>(type: "int", nullable: true),
+                    ImportDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UploadedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CandidateDocumentId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ImportErrors", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ImportErrors_CandidateDocuments_CandidateDocumentId",
+                        column: x => x.CandidateDocumentId,
+                        principalTable: "CandidateDocuments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_ActionMenuProfiles_MenuID",
                 table: "ActionMenuProfiles",
@@ -600,6 +616,11 @@ namespace Insfrastructure.Migrations
                 column: "CompanyID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CandidateDocuments_ExamCenterId",
+                table: "CandidateDocuments",
+                column: "ExamCenterId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CandidateDocuments_UserId",
                 table: "CandidateDocuments",
                 column: "UserId");
@@ -618,6 +639,11 @@ namespace Insfrastructure.Migrations
                 name: "IX_GlobalPeople_AdressID",
                 table: "GlobalPeople",
                 column: "AdressID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ImportErrors_CandidateDocumentId",
+                table: "ImportErrors",
+                column: "CandidateDocumentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Menus_ModuleID",
@@ -685,12 +711,6 @@ namespace Insfrastructure.Migrations
                 name: "ActionSubMenuProfiles");
 
             migrationBuilder.DropTable(
-                name: "CandidateDocuments");
-
-            migrationBuilder.DropTable(
-                name: "ExamCenters");
-
-            migrationBuilder.DropTable(
                 name: "ImportErrors");
 
             migrationBuilder.DropTable(
@@ -700,10 +720,19 @@ namespace Insfrastructure.Migrations
                 name: "SubMenus");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "CandidateDocuments");
 
             migrationBuilder.DropTable(
                 name: "Menus");
+
+            migrationBuilder.DropTable(
+                name: "ExamCenters");
+
+            migrationBuilder.DropTable(
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Modules");
 
             migrationBuilder.DropTable(
                 name: "Branches");
@@ -716,9 +745,6 @@ namespace Insfrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Profiles");
-
-            migrationBuilder.DropTable(
-                name: "Modules");
 
             migrationBuilder.DropTable(
                 name: "Companies");

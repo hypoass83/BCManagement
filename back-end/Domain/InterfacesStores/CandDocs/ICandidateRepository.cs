@@ -11,6 +11,13 @@ namespace Domain.InterfacesStores.CandDocs
     {
         Task AddCandidateDocumentAsync(CandidateDocument document);
         Task<List<CandidateDocument>> SearchAsync(string name, string candidatenumber, string centerNumber);
-
+        
+        Task<CandidateDocument> GetByIdAsync(int id);
+        Task UpdateAsync(CandidateDocument doc);
+        Task<List<CandidateDocument>> GetInvalidDocumentsAsync();
+        Task<List<CandidateDocument>> GetValidDocumentsAsync();
+        Task SaveChangesAsync();
+        Task<List<CandidateDocument>> GetInvalidWithErrorsAsync();
+        Task<List<CandidateDocument>> GetErrorsByCentreAsync(string centre);
     }
 }

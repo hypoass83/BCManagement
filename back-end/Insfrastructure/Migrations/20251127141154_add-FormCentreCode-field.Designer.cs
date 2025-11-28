@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Insfrastructure.Migrations
 {
     [DbContext(typeof(FsContext))]
-    [Migration("20251126175638_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251127141154_add-FormCentreCode-field")]
+    partial class addFormCentreCodefield
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,9 +51,19 @@ namespace Insfrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("ExamCenterId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FilePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FormCentreCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsValid")
+                        .HasColumnType("bit");
 
                     b.Property<string>("OcrText")
                         .IsRequired()
@@ -66,6 +76,8 @@ namespace Insfrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ExamCenterId");
 
                     b.HasIndex("UserId");
 
@@ -112,6 +124,13 @@ namespace Insfrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CandidateDocumentId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CandidateName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CandidateNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -143,6 +162,8 @@ namespace Insfrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CandidateDocumentId");
 
                     b.ToTable("ImportErrors");
                 });
@@ -829,13 +850,30 @@ namespace Insfrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.CandDocs.CandidateDocument", b =>
                 {
+                    b.HasOne("Domain.Entities.CandDocs.ExamCenter", "ExamCenter")
+                        .WithMany("CandidateDocuments")
+                        .HasForeignKey("ExamCenterId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.HasOne("Domain.Entities.Security.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("ExamCenter");
+
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CandDocs.ImportError", b =>
+                {
+                    b.HasOne("Domain.Entities.CandDocs.CandidateDocument", "CandidateDocument")
+                        .WithMany("ImportErrors")
+                        .HasForeignKey("CandidateDocumentId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("CandidateDocument");
                 });
 
             modelBuilder.Entity("Domain.Entities.Configurations.Branch", b =>
@@ -1050,6 +1088,16 @@ namespace Insfrastructure.Migrations
                     b.Navigation("Job");
 
                     b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CandDocs.CandidateDocument", b =>
+                {
+                    b.Navigation("ImportErrors");
+                });
+
+            modelBuilder.Entity("Domain.Entities.CandDocs.ExamCenter", b =>
+                {
+                    b.Navigation("CandidateDocuments");
                 });
 
             modelBuilder.Entity("Domain.Entities.Localisation.Country", b =>
