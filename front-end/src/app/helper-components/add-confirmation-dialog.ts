@@ -34,7 +34,7 @@ import { Component } from '@angular/core';
 
       <div class="ti-modal-body">
         <p class="text-gray-800 dark:text-white/70">
-          Your have requested to Add /Modifier an item, Are you sure to do this
+          You have requested to Add /Modify an item, Are you sure to do this
           action ?
         </p>
       </div>

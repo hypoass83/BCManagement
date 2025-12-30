@@ -6,6 +6,7 @@ import { mergeMap } from 'rxjs/operators';
 // ✔ Correction ici 🔥
 import { showConfirmationDialog as showDeleteConfirmationDialog } from '../delete-confirmation';
 import { showAddConfirmationDialog } from '../add-confirmation';
+import { SKIP_CONFIRM } from './skip-confirm.token';
 
 @Injectable()
 export class ConfirmationInterceptor implements HttpInterceptor {
@@ -19,6 +20,11 @@ export class ConfirmationInterceptor implements HttpInterceptor {
 
     // 🚫 Skip upload/import → no popup ever
     if (req.url.includes('/upload') || req.url.includes('/import')) {
+      return next.handle(req);
+    }
+
+    // ✅ CHECK FIRST
+    if (req.context.get(SKIP_CONFIRM)) {
       return next.handle(req);
     }
 

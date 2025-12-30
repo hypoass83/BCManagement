@@ -8,7 +8,8 @@ import {
 
 import { PagedResult } from 'src/app/models/paged-result';
 import { CandidateDocumentDto } from 'src/app/models/candidate-document.dto';
-import { HttpResponse } from '@angular/common/http';
+import { HttpContext, HttpResponse } from '@angular/common/http';
+import { SKIP_CONFIRM } from 'src/app/helper/interceptors/skip-confirm.token';
 
 @Injectable({ providedIn: 'root' })
 export class CandidateDocumentsManager {
@@ -18,10 +19,21 @@ export class CandidateDocumentsManager {
   ) {}
 
   // 🔍 Recherche paginée (AG-Grid infinite)
-  search( request: SearchCandidateDocumentsRequest): Observable<PagedResult<CandidateDocumentDto>> {
+ /* search( request: SearchCandidateDocumentsRequest): Observable<PagedResult<CandidateDocumentDto>> {
     return this.api.candidateDocumentsControllerSearch(request) as Observable<PagedResult<CandidateDocumentDto>>;
-  }
+  }*/
 
+  search( request: SearchCandidateDocumentsRequest ): Observable<PagedResult<CandidateDocumentDto>> {
+
+  return this.api.candidateDocumentsControllerSearch(
+    request,
+    'body',
+    false,
+    {
+      context: new HttpContext().set(SKIP_CONFIRM, true)
+    }
+  ) as Observable<PagedResult<CandidateDocumentDto>>;
+}
 // 📄 GET PDF (AUTHORIZED, BLOB SAFE)
 
   getDocumentFile(id: number): Observable<Blob> {
