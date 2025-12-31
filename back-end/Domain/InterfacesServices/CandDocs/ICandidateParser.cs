@@ -1,4 +1,5 @@
-﻿using Domain.Entities.CandDocs;
+﻿using Domain.DTO.CandDocs;
+using Domain.Entities.CandDocs;
 using Domain.Models.CandDocs;
 using System;
 using System.Collections.Generic;
@@ -11,5 +12,6 @@ namespace Domain.InterfacesServices.CandDocs
     public interface ICandidateParser
     {
         CandidateInfo Parse(string text);
+        CandidateAutoFillDto ParseAutoFill(string ocrText);
     }
 }

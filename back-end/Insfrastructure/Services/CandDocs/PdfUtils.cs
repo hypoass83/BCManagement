@@ -1,35 +1,12 @@
 ﻿
 using iText.Kernel.Pdf;
 
+
 namespace Infrastructure.Services.CandDocs
 {
     public static class PdfUtils
     {
 
-        /*public static async Task<List<byte[]>> SplitPdfByPageAsync(byte[] pdfBytes)
-        {
-            var list = new List<byte[]>();
-
-            using var ms = new MemoryStream(pdfBytes);
-            using var reader = new PdfReader(ms);
-            using var src = new PdfDocument(reader);
-
-            int n = src.GetNumberOfPages();
-
-            for (int i = 1; i <= n; i++)
-            {
-                using var outMs = new MemoryStream();
-                using var writer = new PdfWriter(outMs);
-                using var dest = new PdfDocument(writer);
-
-                src.CopyPagesTo(i, i, dest);
-                dest.Close();
-
-                list.Add(outMs.ToArray());
-            }
-
-            return list;
-        }*/
 
         public static async Task<List<byte[]>> SplitPdfByPageAsync(byte[] pdfBytes)
         {

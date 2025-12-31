@@ -58,6 +58,22 @@ export class CandidateDocumentsManager {
     { httpHeaderAccept: 'application/pdf' } as any
   ) as Observable<Blob>;
 }
+/*
+this.docsFacade.autoFill(documentId).subscribe(dto => {
+  this.form.patchValue({
+    candidateName: dto.candidateName,
+    candidateNumber: dto.candidateNumber,
+    centreCode: dto.centreCode
+  });
 
+  if (dto.isConfidenceLow) {
+    this.snackBar.open(
+      'Please verify extracted data',
+      'OK',
+      { duration: 4000 }
+    );
+  }
+});
+*/
   
 }

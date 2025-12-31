@@ -50,13 +50,13 @@ namespace Insfrastructure
             services.AddScoped<ICompanyStore, CompanyStore>();
             services.AddScoped<IArchiveStore, ArchiveStore>();
 
-            //services.AddScoped<IPdfSplitService, PdfUtils>();
+            services.AddSingleton<IPdfRenderService, PdfRenderService>();
             services.AddScoped<IOcrService, OcrService>();
             services.AddScoped<IFileStore, FileStore>(sp => new FileStore("D:\\GCEB_PROJECT\\Storage"));
             services.AddScoped<ICandidateRepository, CandidateRepository>();
             services.AddScoped<IImportErrorService, ImportErrorStore>();
 
-            services.AddSingleton<ICandidateParser, CandidateParser>();
+            services.AddScoped<ICandidateParser, CandidateParser>();
 
             return services;
         }

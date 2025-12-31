@@ -1,4 +1,5 @@
-﻿using Domain.InterfacesServices.CandDocs;
+﻿using Domain.DTO.CandDocs;
+using Domain.InterfacesServices.CandDocs;
 using Domain.Models.CandDocs;
 using Infrastructure.Utils;
 using System.Text.RegularExpressions;
@@ -185,6 +186,162 @@ namespace Infrastructure.Services.CandDocs
             info.SessionYear = ExtractSessionYear(cleaned);
 
             return info;
+        }
+
+        public CandidateAutoFillDto ParseAutoFill(string ocrText)
+        {
+            var result = new CandidateAutoFillDto();
+
+            if (string.IsNullOrWhiteSpace(ocrText))
+            {
+                result.IsConfidenceLow = true;
+                return result;
+            }
+
+            var text = NormalizeOcrText(ocrText);
+
+            string? candidateNumber = null;
+            string? candidateName = null;
+            string? centreCode = null;
+
+            // ==================================================
+            // 1️⃣ Candidate Number
+            // ==================================================
+
+            // 1a) CIN après "CIN and Name" (>=9)
+            var cinAfterNameMatch = Regex.Match(
+                text,
+                @"CIN\s*(?:and|und|&)?\s*Name\s*[:\-]?\s*(\d+)",
+                RegexOptions.IgnoreCase
+            );
+
+            if (cinAfterNameMatch.Success &&
+                cinAfterNameMatch.Groups[1].Value.Length >= 9)
+            {
+                candidateNumber = cinAfterNameMatch.Groups[1].Value.Substring(0, 9);
+            }
+
+            // 1b) Fallback Receipt
+            if (string.IsNullOrEmpty(candidateNumber))
+            {
+                var receiptMatch = Regex.Match(
+                    text,
+                    @"Receipt\s*No\.?\s*[:\-]?\s*(\d{9,10})",
+                    RegexOptions.IgnoreCase
+                );
+
+                if (!receiptMatch.Success)
+                {
+                    receiptMatch = Regex.Match(
+                        text,
+                        @"\b(\d{9,10})[A-Z]{2}\d+",
+                        RegexOptions.IgnoreCase
+                    );
+                }
+
+                if (receiptMatch.Success)
+                    candidateNumber = receiptMatch.Groups[1].Value.Substring(0, 9);
+            }
+
+            // 1c) Fallback paiement : "CIN 222277002"
+            if (string.IsNullOrEmpty(candidateNumber))
+            {
+                var cinDirectMatch = Regex.Match(
+                    text,
+                    @"\bCIN\s+(\d{9})\b",
+                    RegexOptions.IgnoreCase
+                );
+
+                if (cinDirectMatch.Success)
+                    candidateNumber = cinDirectMatch.Groups[1].Value;
+            }
+
+            // ==================================================
+            // 2️⃣ Candidate Name
+            // ==================================================
+
+            // 2a) Après "CIN and Name"
+            var nameAfterCinMatch = Regex.Match(
+                text,
+                @"CIN\s*(?:and|und|&)?\s*Name\s*(?:me|:)?\s*\d*\s*([A-Z]{4,}(?:\s+[A-Z]{2,})*)",
+                RegexOptions.IgnoreCase
+            );
+
+            if (nameAfterCinMatch.Success)
+                candidateName = nameAfterCinMatch.Groups[1].Value.Trim();
+
+            // 2b) Fallback paiement : "Candidate KENGNE JUNIOR"
+            if (string.IsNullOrEmpty(candidateName))
+            {
+                var candidateLineMatch = Regex.Match(
+                    text,
+                    @"Candidate\s+([A-Z]{2,}(?:\s+[A-Z]{2,})*)",
+                    RegexOptions.IgnoreCase
+                );
+
+                if (candidateLineMatch.Success)
+                    candidateName = candidateLineMatch.Groups[1].Value.Trim();
+            }
+
+            // ==================================================
+            // 3️⃣ Centre Code
+            // ==================================================
+
+            // 3a) Règle métier principale : depuis CIN
+            if (!string.IsNullOrEmpty(candidateNumber) &&
+                candidateNumber.Length >= 5)
+            {
+                centreCode = candidateNumber.Substring(0, 5);
+            }
+
+            // 3b) Fallback paiement : "CentreNo. | 22227"
+            if (string.IsNullOrEmpty(centreCode))
+            {
+                var centreDirectMatch = Regex.Match(
+                    text,
+                    @"Centre\s*No\.?\s*\|?\s*(\d{4,6})",
+                    RegexOptions.IgnoreCase
+                );
+
+                if (centreDirectMatch.Success)
+                    centreCode = centreDirectMatch.Groups[1].Value;
+            }
+
+            // ==================================================
+            // 4️⃣ Résultat final
+            // ==================================================
+
+            result.CandidateNumber = candidateNumber;
+            result.CandidateName = candidateName;
+            result.CentreCode = centreCode;
+
+            result.IsConfidenceLow =
+                string.IsNullOrEmpty(candidateNumber) ||
+                string.IsNullOrEmpty(candidateName) ||
+                string.IsNullOrEmpty(centreCode);
+
+            return result;
+        }
+
+
+
+
+        // 🔒 Privée : utilisée uniquement par le parser
+        private static string NormalizeOcrText(string input)
+        {
+            return input
+                .Replace("|", " ")
+                .Replace("_", " ")
+                .Replace("\r", " ")
+                .Replace("\n", " ")
+                .Replace("  ", " ")
+                .Trim();
+        }
+
+        private static string SplitOcrName(string input)
+        {
+            // ESSENIESSENIADEL → ESSENI ESSENI ADEL (approximatif)
+            return Regex.Replace(input, @"([A-Z]{4,})([A-Z]{4,})", "$1 $2");
         }
     }
 }

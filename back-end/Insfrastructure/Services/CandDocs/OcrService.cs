@@ -6,10 +6,11 @@ namespace Infrastructure.Services.CandDocs
     public class OcrService : IOcrService
     {
         private readonly string _tessDataPath;
-
-        public OcrService()
+        private readonly IPdfRenderService _pdfRenderService;
+        public OcrService(IPdfRenderService pdfRenderService)
         {
             _tessDataPath = Path.Combine(AppContext.BaseDirectory, "tessdata");
+            _pdfRenderService = pdfRenderService;
         }
 
         public async Task<string> ExtractTextAsync(byte[] imageBytes)
@@ -29,5 +30,19 @@ namespace Infrastructure.Services.CandDocs
 
             return page.GetText();
         }
+
+        public async Task<string> ExtractTextFromPdfAsync(string pdfPath,int page, bool highAccuracy, CancellationToken ct = default)
+        {
+            // 1️⃣ PDF → image (page ciblée)
+            byte[] imageBytes = _pdfRenderService.ConvertPageToImage(
+                pdfPath,
+                page,
+                dpi: highAccuracy ? 300 : 150
+            );
+
+            // 2️⃣ OCR (réutilise ton existant)
+            return await ExtractTextAsync(imageBytes);
+        }
+
     }
 }

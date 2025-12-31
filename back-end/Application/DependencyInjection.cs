@@ -1,3 +1,5 @@
+using Application.Features.CandDocs.Commands;
+using Application.Features.CandDocs.Queries;
 using Application.Service;
 using Application.Service.Configurations;
 using Application.Service.Localisation;
@@ -5,8 +7,6 @@ using Domain.InterfacesServices.Configurations;
 using Domain.InterfacesServices.Security;
 using Domain.InterfacesStores.Security;
 using Microsoft.Extensions.DependencyInjection;
-using Application.Features.CandDocs.Commands;
-using Application.Features.CandDocs.Queries;
 
 namespace Application
 {

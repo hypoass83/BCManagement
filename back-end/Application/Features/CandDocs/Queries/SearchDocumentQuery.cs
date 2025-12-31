@@ -9,8 +9,7 @@ using MediatR;
 
 namespace Application.Features.CandDocs.Queries
 {
-    using MediatR;
-
+    
     public class SearchDocumentQuery  : IRequest<PagedResult<CandidateDocumentDto>>
     {
         // 🔴 Champ principal (déjà validé via Request + FluentValidation)

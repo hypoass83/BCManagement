@@ -10,5 +10,12 @@ namespace Domain.InterfacesServices.CandDocs
     {
         Task<string> ExtractTextAsync(byte[] imageBytes);
         string ExtractTextFromImage(byte[] imageBytes);
+        //  POUR AUTOFILL
+        Task<string> ExtractTextFromPdfAsync(
+            string pdfPath,
+            int page,
+            bool highAccuracy,
+            CancellationToken ct = default
+        );
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.Features.CandDocs.Queries;
+using Domain.DTO.CandDocs;
 using Domain.DTO.Requests;
 using Infrastructure.Context;
 using MediatR;
@@ -48,5 +49,15 @@ public class CandidateDocumentsController : ControllerBase
         return result;
     }
 
+    [HttpGet("{id:int}/autofill")]
+    public async Task<ActionResult<CandidateAutoFillDto>> AutoFill(int id)
+    {
+        var result = await _mediator.Send(new AutoFillCandidateDocumentQuery(id));
+
+        if (result == null)
+            return NotFound();
+
+        return Ok(result);
+    }
 
 }
