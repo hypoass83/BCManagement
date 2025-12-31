@@ -71,18 +71,18 @@ namespace Infrastructure.Services.CandDocs
         // 🔥 Découpage intelligent de la zone CIN
         private static Bitmap CropCinZone(Bitmap source)
         {
-            int width = source.Width;
-            int height = source.Height;
+            int w = source.Width;
+            int h = source.Height;
 
-            // 👉 ZONE OPTIMISÉE POUR DOCUMENTS GCE
-            var cropRect = new Rectangle(
-                x: (int)(width * 0.05),   // marge gauche
-                y: (int)(height * 0.18),  // sous le titre
-                width: (int)(width * 0.90),
-                height: (int)(height * 0.30)
+            // ✅ Zone STRICTE : CIN / Name / Centre uniquement
+            var rect = new Rectangle(
+                x: (int)(w * 0.05),
+                y: (int)(h * 0.20),
+                width: (int)(w * 0.90),
+                height: (int)(h * 0.18)
             );
 
-            return source.Clone(cropRect, source.PixelFormat);
+            return source.Clone(rect, source.PixelFormat);
         }
     }
 }

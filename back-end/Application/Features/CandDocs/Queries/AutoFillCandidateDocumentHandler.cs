@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Application.Features.CandDocs.Queries
@@ -43,6 +44,28 @@ namespace Application.Features.CandDocs.Queries
 
             var ocrText = await _ocr.ExtractTextAsync(cinZoneImage);
 
+            // 🚨 Détection OCR catastrophique
+            bool looksLikeGarbage =
+                string.IsNullOrWhiteSpace(ocrText) ||
+                ocrText.Length < 40 ||
+                Regex.Matches(ocrText, @"[A-Z]").Count < 10 ||
+                ocrText.Contains("SPECIALTY", StringComparison.OrdinalIgnoreCase) ||
+                ocrText.Contains("SUBJECT", StringComparison.OrdinalIgnoreCase);
+
+            if (looksLikeGarbage)
+            {
+                // 🔁 Fallback : OCR page 1 entière
+                var fullPageImage = _pdfRenderService.ConvertPageToImage(pdfBytes, 1, 300);
+                ocrText = await _ocr.ExtractTextAsync(fullPageImage);
+
+                if (string.IsNullOrWhiteSpace(ocrText))
+                {
+                    return new CandidateAutoFillDto
+                    {
+                        IsConfidenceLow = true
+                    };
+                }
+            }
             // 3️⃣ Parsing métier
             return _parser.ParseAutoFill(ocrText);
         }

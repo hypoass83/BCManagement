@@ -24,7 +24,11 @@ namespace Infrastructure.Services.CandDocs
         public string ExtractTextFromImage(byte[] imageBytes)
         {
             using var engine = new TesseractEngine(_tessDataPath, "eng", EngineMode.Default);
-
+            // 🔒 Interdire les caractères parasites
+            /*engine.SetVariable(
+                "tessedit_char_whitelist",
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789:./ "
+            );*/
             using var img = Pix.LoadFromMemory(imageBytes);
             using var page = engine.Process(img);
 
