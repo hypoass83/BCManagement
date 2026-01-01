@@ -1,0 +1,5 @@
+.hs-dropdown-toggle i,
+.hs-dropdown-toggle i::before,
+.hs-dropdown-toggle i::after {
+  pointer-events: none;
+}

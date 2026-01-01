@@ -46,6 +46,8 @@ namespace Infrastructure.Context
         public DbSet<Candidate> Candidates { get; set; }
         public DbSet <ImportedBatchLog> ImportedBatchLogs { get; set; }
 
+        public DbSet<DocumentAccessAudit> DocumentAccessAudits { get; set; }
+
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -98,6 +100,13 @@ namespace Infrastructure.Context
 
                 entity.HasIndex(x => new { x.Session, x.ExamCode, x.CandidateName })
                       .HasDatabaseName("IX_CandidateDocuments_Session_Exam_CandidateName");
+            });
+
+            modelBuilder.Entity<DocumentAccessAudit>(entity =>
+            {
+                entity.HasIndex(x => x.DocumentId);
+                entity.HasIndex(x => x.UserId);
+                entity.HasIndex(x => x.AccessedAt);
             });
         }
 

@@ -11,6 +11,92 @@ namespace Infrastructure.Services.CandDocs
         // ================= CLEAN OCR =================
         private string CleanOcrText(string text)
         {
+            if (string.IsNullOrWhiteSpace(text))
+                return text ?? string.Empty;
+
+            // =================================================
+            // 1️⃣ Nettoyage de base
+            // =================================================
+
+            string cleaned = TextUtils.RemoveAccents(text);
+
+            // Supprimer caractères OCR non imprimables
+            cleaned = Regex.Replace(
+                cleaned,
+                @"[^\x20-\x7E\r\n\tÀ-ÿ]",
+                " "
+            );
+
+            // =================================================
+            // 2️⃣ Remplacement des symboles parasites
+            // =================================================
+
+            cleaned = cleaned
+                .Replace("|", " ")
+                .Replace("¦", " ")
+                .Replace("—", " ")
+                .Replace("~", " ")
+                .Replace("=", " ")
+                .Replace(";", ":");
+
+            // =================================================
+            // 3️⃣ Suppression des préfixes numériques isolés
+            // (cas OCR fréquent au début de ligne)
+            // =================================================
+
+            cleaned = Regex.Replace(
+                cleaned,
+                @"(?m)^\s*[\d\s\|\-]{1,}\s+(?=[A-Za-zÀ-ÿ])",
+                ""
+            );
+
+            // =================================================
+            // 4️⃣ Normalisation des espaces
+            // =================================================
+
+            cleaned = Regex.Replace(cleaned, @"\t+", " ");
+            cleaned = Regex.Replace(cleaned, @" {2,}", " ");
+
+            // =================================================
+            // 5️⃣ Normalisation CIN (large mais SAFE)
+            // =================================================
+
+            cleaned = Regex.Replace(
+                cleaned,
+                @"\bC[\.\s\|\-]*[I1L][\.\s\|\-]*N\b",
+                "CIN",
+                RegexOptions.IgnoreCase
+            );
+
+            cleaned = cleaned
+                .Replace("C.LLN", "CIN")
+                .Replace("C.LN", "CIN")
+                .Replace("C.1.N", "CIN")
+                .Replace("C.L.N", "CIN")
+                .Replace("C.ILN", "CIN");
+
+            // =================================================
+            // 6️⃣ Normalisation EXAMINATION_CENTRE
+            // =================================================
+
+            cleaned = Regex.Replace(
+                cleaned,
+                @"Examination\s*Cent(er|re)\s*[:\-]?",
+                "EXAMINATION_CENTRE:",
+                RegexOptions.IgnoreCase
+            );
+
+            cleaned = cleaned
+                .Replace("Bxamination Centre", "EXAMINATION_CENTRE")
+                .Replace("Exatnitiation Centre", "EXAMINATION_CENTRE")
+                .Replace("Examination Contre.", "EXAMINATION_CENTRE:")
+                .Replace("Examination Centre.", "EXAMINATION_CENTRE:");
+
+            return cleaned.Trim();
+        }
+
+        /*private string CleanOcrText(string text)
+        {
             if (string.IsNullOrWhiteSpace(text)) return text ?? "";
 
             string cleaned = TextUtils.RemoveAccents(text);
@@ -49,7 +135,7 @@ namespace Infrastructure.Services.CandDocs
                              .Replace("Examination Centre.", "EXAMINATION_CENTRE:");
 
             return cleaned.Trim();
-        }
+        }*/
 
         // ================= HELPERS =================
         private string ToUpperClean(string s)
@@ -188,6 +274,9 @@ namespace Infrastructure.Services.CandDocs
             return info;
         }
 
+        // =====================================================
+        // 🔹 MÉTHODE PRINCIPALE
+        // =====================================================
         public CandidateAutoFillDto ParseAutoFill(string ocrText)
         {
             var result = new CandidateAutoFillDto();
@@ -200,117 +289,26 @@ namespace Infrastructure.Services.CandDocs
 
             var text = NormalizeOcrText(ocrText);
 
-            string? candidateNumber = null;
-            string? candidateName = null;
-            string? centreCode = null;
-
-            // ==================================================
+            // =========================
             // 1️⃣ Candidate Number
-            // ==================================================
+            // =========================
+            var candidateNumber = ExtractCandidateNumber(text);
 
-            // 1a) CIN après "CIN and Name" (>=9)
-            var cinAfterNameMatch = Regex.Match(
-                text,
-                @"CIN\s*(?:and|und|&)?\s*Name\s*[:\-]?\s*(\d+)",
-                RegexOptions.IgnoreCase
-            );
-
-            if (cinAfterNameMatch.Success &&
-                cinAfterNameMatch.Groups[1].Value.Length >= 9)
-            {
-                candidateNumber = cinAfterNameMatch.Groups[1].Value.Substring(0, 9);
-            }
-
-            // 1b) Fallback Receipt
-            if (string.IsNullOrEmpty(candidateNumber))
-            {
-                var receiptMatch = Regex.Match(
-                    text,
-                    @"Receipt\s*No\.?\s*[:\-]?\s*(\d{9,10})",
-                    RegexOptions.IgnoreCase
-                );
-
-                if (!receiptMatch.Success)
-                {
-                    receiptMatch = Regex.Match(
-                        text,
-                        @"\b(\d{9,10})[A-Z]{2}\d+",
-                        RegexOptions.IgnoreCase
-                    );
-                }
-
-                if (receiptMatch.Success)
-                    candidateNumber = receiptMatch.Groups[1].Value.Substring(0, 9);
-            }
-
-            // 1c) Fallback paiement : "CIN 222277002"
-            if (string.IsNullOrEmpty(candidateNumber))
-            {
-                var cinDirectMatch = Regex.Match(
-                    text,
-                    @"\bCIN\s+(\d{9})\b",
-                    RegexOptions.IgnoreCase
-                );
-
-                if (cinDirectMatch.Success)
-                    candidateNumber = cinDirectMatch.Groups[1].Value;
-            }
-
-            // ==================================================
+            // =========================
             // 2️⃣ Candidate Name
-            // ==================================================
+            // =========================
+            var candidateName = ExtractCandidateName(text);
 
-            // 2a) Après "CIN and Name"
-            var nameAfterCinMatch = Regex.Match(
-                text,
-                @"CIN\s*(?:and|und|&)?\s*Name\s*(?:me|:)?\s*\d*\s*([A-Z]{4,}(?:\s+[A-Z]{2,})*)",
-                RegexOptions.IgnoreCase
-            );
-
-            if (nameAfterCinMatch.Success)
-                candidateName = nameAfterCinMatch.Groups[1].Value.Trim();
-
-            // 2b) Fallback paiement : "Candidate KENGNE JUNIOR"
-            if (string.IsNullOrEmpty(candidateName))
-            {
-                var candidateLineMatch = Regex.Match(
-                    text,
-                    @"Candidate\s+([A-Z]{2,}(?:\s+[A-Z]{2,})*)",
-                    RegexOptions.IgnoreCase
-                );
-
-                if (candidateLineMatch.Success)
-                    candidateName = candidateLineMatch.Groups[1].Value.Trim();
-            }
-
-            // ==================================================
-            // 3️⃣ Centre Code
-            // ==================================================
-
-            // 3a) Règle métier principale : depuis CIN
-            if (!string.IsNullOrEmpty(candidateNumber) &&
-                candidateNumber.Length >= 5)
-            {
+            // =========================
+            // 3️⃣ Centre Code (règle métier)
+            // =========================
+            string? centreCode = null;
+            if (!string.IsNullOrEmpty(candidateNumber) && candidateNumber.Length >= 5)
                 centreCode = candidateNumber.Substring(0, 5);
-            }
 
-            // 3b) Fallback paiement : "CentreNo. | 22227"
-            if (string.IsNullOrEmpty(centreCode))
-            {
-                var centreDirectMatch = Regex.Match(
-                    text,
-                    @"Centre\s*No\.?\s*\|?\s*(\d{4,6})",
-                    RegexOptions.IgnoreCase
-                );
-
-                if (centreDirectMatch.Success)
-                    centreCode = centreDirectMatch.Groups[1].Value;
-            }
-
-            // ==================================================
+            // =========================
             // 4️⃣ Résultat final
-            // ==================================================
-
+            // =========================
             result.CandidateNumber = candidateNumber;
             result.CandidateName = candidateName;
             result.CentreCode = centreCode;
@@ -323,25 +321,228 @@ namespace Infrastructure.Services.CandDocs
             return result;
         }
 
+        // =====================================================
+        // 🔹 EXTRACTION DU CANDIDATE NUMBER
+        // =====================================================
+        private static string? ExtractCandidateNumber(string text)
+        {
+            // 1️⃣ Priorité : CIN / CAN and Name (>= 9 chiffres)
+            var cinMatch = Regex.Match(
+                text,
+                @"CIN\s*and\s*Name\s*[:\-]?\s*(\d{9,10})",
+                RegexOptions.IgnoreCase
+            );
+
+            if (cinMatch.Success)
+                return cinMatch.Groups[1].Value.Substring(0, 9);
+
+            // 2️⃣ Fallback : Receipt No
+            var receiptMatch = Regex.Match(
+                text,
+                @"Receipt\s*No\.?\s*[:\-]?\s*(\d{9,10})",
+                RegexOptions.IgnoreCase
+            );
+
+            if (!receiptMatch.Success)
+            {
+                // OCR bruité : 1126952590L100274
+                receiptMatch = Regex.Match(
+                    text,
+                    @"\b(\d{9,10})[A-Z]\d+",
+                    RegexOptions.IgnoreCase
+                );
+            }
+
+            if (receiptMatch.Success)
+                return receiptMatch.Groups[1].Value.Substring(0, 9);
+
+            // 3️⃣ Fallback paiement : "CIN 222277002"
+            var directCin = Regex.Match(
+                text,
+                @"\bCIN\s+(\d{9})\b",
+                RegexOptions.IgnoreCase
+            );
+
+            if (directCin.Success)
+                return directCin.Groups[1].Value;
+
+            return null;
+        }
+
+        // =====================================================
+        // 🔹 EXTRACTION DU NOM DU CANDIDAT
+        // =====================================================
+        private static string? ExtractCandidateName(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return null;
+
+            // =====================================================
+            // 1️⃣ Trouver l’ancre CIN ou NAME (CIN prioritaire)
+            // =====================================================
+
+            int anchorIndex = FindCinOrNameAnchorIndex(text);
+            if (anchorIndex < 0)
+                return null;
+
+            // =====================================================
+            // 2️⃣ Texte après l’ancre
+            // =====================================================
+
+            var afterAnchor = text.Substring(anchorIndex + 3); // saute "CIN"
+
+            // On travaille sur une version normalisée pour l’analyse
+            var working = afterAnchor.ToUpperInvariant();
+
+            // =====================================================
+            // 3️⃣ Nettoyage léger (NE PAS sur-nettoyer)
+            // =====================================================
+
+            working = Regex.Replace(working, @"[^A-Z\s]", " ");
+            working = Regex.Replace(working, @"\s{2,}", " ").Trim();
+
+            if (string.IsNullOrWhiteSpace(working))
+                return null;
+
+            // =====================================================
+            // 4️⃣ Découper en mots
+            // =====================================================
+
+            var words = working.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            // =====================================================
+            // 5️⃣ Fenêtre glissante pour trouver un vrai nom
+            // =====================================================
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                for (int size = 2; size <= 5 && i + size <= words.Length; size++)
+                {
+                    var candidate = string.Join(" ", words.Skip(i).Take(size));
+
+                    // ❌ rejeter mots métier / institutionnels
+                    if (IsForbiddenNameSegment(candidate))
+                        continue;
+
+                    // ❌ rejeter segments triviaux
+                    if (IsTrivialName(candidate))
+                        continue;
+
+                    // ❌ rejeter si pas un nom humain plausible
+                    if (!LooksLikeHumanName(candidate))
+                        continue;
+
+                    return candidate;
+                }
+            }
+
+            return null;
+        }
+
+        private static bool IsTrivialName(string name)
+        {
+            return Regex.IsMatch(
+                name,
+                @"^(AND|NAME|AND\s+NAME)$",
+                RegexOptions.IgnoreCase
+            );
+        }
+
+        private static bool LooksLikeHumanName(string text)
+        {
+            var words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+            // 2 à 5 mots
+            if (words.Length < 2 || words.Length > 5)
+                return false;
+
+            // chaque mot doit être alphabétique et raisonnable
+            return words.All(w => w.Length >= 2 && w.All(char.IsLetter));
+        }
 
 
+        private static int FindCinOrNameAnchorIndex(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return -1;
 
-        // 🔒 Privée : utilisée uniquement par le parser
-        private static string NormalizeOcrText(string input)
+            // 🔹 1. CIN prioritaire (tolérant OCR)
+            var normalized = NormalizeForAnchor(text);
+            var cinIndex = normalized.IndexOf("CIN");
+            if (cinIndex >= 0)
+                return cinIndex;
+
+            // 🔹 2. NAME en fallback (label isolé uniquement)
+            var nameMatch = Regex.Match(
+                text,
+                @"\b(AND\s+NAME|NAME)\b\s*[:\-]?",
+                RegexOptions.IgnoreCase
+            );
+
+            if (nameMatch.Success)
+                return nameMatch.Index;
+
+            return -1;
+        }
+
+        private static string NormalizeForAnchor(string input)
         {
             return input
-                .Replace("|", " ")
-                .Replace("_", " ")
-                .Replace("\r", " ")
-                .Replace("\n", " ")
-                .Replace("  ", " ")
-                .Trim();
+                .ToUpperInvariant()
+                .Replace(".", "")
+                .Replace("|", "")
+                .Replace(":", "")
+                .Replace("-", "")
+                .Replace(" ", "");
         }
 
-        private static string SplitOcrName(string input)
+        private static bool IsForbiddenNameSegment(string text)
         {
-            // ESSENIESSENIADEL → ESSENI ESSENI ADEL (approximatif)
-            return Regex.Replace(input, @"([A-Z]{4,})([A-Z]{4,})", "$1 $2");
+            return Regex.IsMatch(
+                text,
+                @"\b(CIN|NAME|AND|DATE|SEX|FEMALE|MALE|BIRTH|PLACE|SCHOOL|HIGH|BILINGUAL|COLLEGE|LYCEE|GOVERNMENT|CENTRE|SESSION|SUBJECT|SPECIALTY|EXAMINATION|RECEIPT|TIMETABLE|PAYMENT)\b",
+                RegexOptions.IgnoreCase
+            );
         }
+
+
+
+
+
+
+        private static string NormalizeOcrText(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return string.Empty;
+
+            var text = input.ToUpperInvariant();
+
+            // ================================
+            // 🔥 NORMALISATION DES VARIANTES DE "CIN"
+            // ================================
+
+            // C.I.N / C I N / C-1-N / C.1.N / C|I|N
+            text = Regex.Replace(text, @"\bC[\.\s\-\|]*[I1L][\.\s\-\|]*N\b", "CIN");
+
+            // CLN / CLLN / CIIN / CILN / C.ILN / C.LLN
+            text = Regex.Replace(text, @"\bC[L|I|1]{1,2}N\b", "CIN");
+
+            // CAN and Name / C A N and Name
+            text = Regex.Replace(text, @"\bC\s*A\s*N\s+AND\s+NAME\b", "CIN AND NAME");
+
+            // ================================
+            // 🔧 NORMALISATION GÉNÉRALE
+            // ================================
+
+            text = text.Replace("|", " ");
+            text = text.Replace(":", " : ");
+            text = Regex.Replace(text, @"\s{2,}", " ");
+            text = text.Replace("\r", " ").Replace("\n", " ");
+
+            return text.Trim();
+        }
+
+
+
     }
 }

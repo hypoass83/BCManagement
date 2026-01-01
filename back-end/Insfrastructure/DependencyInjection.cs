@@ -11,6 +11,7 @@ using Domain.InterfacesServices.CandDocs;
 using Insfrastructure.Stores.CandDocs;
 using Infrastructure.Services.CandDocs;
 using Infrastructure.Repositories.CandDocs;
+using Infrastructure.Stores.CandDocs;
 
 
 namespace Insfrastructure
@@ -50,14 +51,16 @@ namespace Insfrastructure
             services.AddScoped<ICompanyStore, CompanyStore>();
             services.AddScoped<IArchiveStore, ArchiveStore>();
 
-            services.AddSingleton<IPdfRenderService, PdfRenderService>();
+            
             services.AddScoped<IOcrService, OcrService>();
             services.AddScoped<IFileStore, FileStore>(sp => new FileStore("D:\\GCEB_PROJECT\\Storage"));
             services.AddScoped<ICandidateRepository, CandidateRepository>();
             services.AddScoped<IImportErrorService, ImportErrorStore>();
 
             services.AddScoped<ICandidateParser, CandidateParser>();
+            services.AddScoped<IAuditRepository, AuditRepository>();
 
+            services.AddHttpContextAccessor();
             return services;
         }
     }

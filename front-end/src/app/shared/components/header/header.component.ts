@@ -1,6 +1,6 @@
 import { AuthService } from '../../../services/auth.service';
 /* eslint-disable no-constant-condition */
-import { Component, effect, ElementRef } from '@angular/core';
+import { Component, effect, ElementRef, HostListener } from '@angular/core';
 import { NavService } from '../../services/navservice';
 import { Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
@@ -16,6 +16,15 @@ import { AgGridThemeService } from 'src/app/services/theme/theme.service';
 })
 
 export class HeaderComponent {
+
+  menuOpen = false;
+  toggleMenu(event: MouseEvent) {
+    event.stopPropagation(); // 🔑 critical
+    this.menuOpen = !this.menuOpen;
+  }
+  closeMenu() {
+    this.menuOpen = false;
+  }
 
   selectedCountry = './assets/img/flags/en.png';
   constructor(public navServices: NavService, private router: Router, private authService: AuthService,private themeService:AgGridThemeService,
@@ -140,9 +149,16 @@ export class HeaderComponent {
   }
 
   logOut() {
+    this.menuOpen = false;
     this.authService.logout();
   }
 
+  // Close when clicking outside
+  @HostListener('document:click')
+  onDocumentClick() {
+    this.menuOpen = false;
+  }
+  
   ngOnDestroy(): void {
     const windowObject: any = window;
     const html = this.elementRef.nativeElement.ownerDocument.documentElement;

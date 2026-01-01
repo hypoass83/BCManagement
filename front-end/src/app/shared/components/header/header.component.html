@@ -135,10 +135,59 @@
               </a>
             </div>
 
+              <div class="relative">
+                <!-- Toggle button -->
+                <button
+                  type="button"
+                  class="flex items-center justify-center h-8 w-8 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-gray-400"
+                  (click)="toggleMenu($event)"
+                  aria-haspopup="true"
+                  [attr.aria-expanded]="menuOpen"
+                >
+                  <i class="ti ti-user text-lg"></i>
+                </button>
+
+                <!-- Dropdown -->
+                <div
+                  *ngIf="menuOpen"
+                  class="absolute right-0 mt-2 w-[20rem] bg-white rounded shadow-lg z-50"
+                >
+                  <!-- Header -->
+                  <div class="bg-primary text-white px-4 py-3 flex items-center">
+                    <i class="ti ti-user mr-3"></i>
+                    <div>
+                      <p class="font-semibold">
+                        {{ current_user?.name }} {{ current_user?.description }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <!-- Menu items -->
+                  <div class="py-2">
+                    <a
+                      routerLink="/profile/profilesettings"
+                      class="flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                      (click)="closeMenu()"
+                    >
+                      <i class="ti ti-adjustments-horizontal mr-2"></i>
+                      Profile
+                    </a>
+
+                    <button
+                      type="button"
+                      class="flex items-center w-full px-4 py-2 hover:bg-gray-100"
+                      (click)="logOut()"
+                    >
+                      <i class="ti ti-logout mr-2"></i>
+                      Log Out
+                    </button>
+                  </div>
+                </div>
+              </div>
 
 
 
-            <div
+            <!--<div
               class="header-profile hs-dropdown ti-dropdown"
               data-hs-dropdown-placement="bottom-right"
             >
@@ -181,7 +230,7 @@
                   </a>
                 </div>
               </div>
-            </div>
+            </div>-->
             <div class="switcher-icon" *ngIf="false">
               <button
                 aria-label="button"

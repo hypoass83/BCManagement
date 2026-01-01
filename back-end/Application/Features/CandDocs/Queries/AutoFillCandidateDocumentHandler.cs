@@ -18,57 +18,43 @@ namespace Application.Features.CandDocs.Queries
         private readonly ICandidateRepository _repo;
         private readonly IOcrService _ocr;
         private readonly ICandidateParser _parser;
-        private readonly IPdfRenderService _pdfRenderService;
 
         public AutoFillCandidateDocumentHandler(
             ICandidateRepository repo,
             IOcrService ocr,
-            ICandidateParser parser,
-            IPdfRenderService pdfRenderService)
+            ICandidateParser parser)
         {
             _repo = repo;
             _ocr = ocr;
             _parser = parser;
-            _pdfRenderService = pdfRenderService;
         }
 
-        public async Task<CandidateAutoFillDto?> Handle(AutoFillCandidateDocumentQuery request, CancellationToken ct) {
+        public async Task<CandidateAutoFillDto?> Handle(AutoFillCandidateDocumentQuery request, CancellationToken ct)
+        {
             var doc = await _repo.GetByIdAsync(request.DocumentId);
-            if (doc == null) return null;
+            if (doc == null)
+                return null;
 
-            // 1️⃣ Charger le PDF
-            var pdfBytes = await File.ReadAllBytesAsync(doc.FilePath, ct);
+            string? ocrText = doc.OcrText;
 
-            // 2️⃣ OCR ciblé (page 1 + zone CIN)
-            var cinZoneImage = _pdfRenderService.ConvertFirstPageCinZoneToImage(pdfBytes, dpi: 300);
-
-            var ocrText = await _ocr.ExtractTextAsync(cinZoneImage);
-
-            // 🚨 Détection OCR catastrophique
-            bool looksLikeGarbage =
-                string.IsNullOrWhiteSpace(ocrText) ||
-                ocrText.Length < 40 ||
-                Regex.Matches(ocrText, @"[A-Z]").Count < 10 ||
-                ocrText.Contains("SPECIALTY", StringComparison.OrdinalIgnoreCase) ||
-                ocrText.Contains("SUBJECT", StringComparison.OrdinalIgnoreCase);
-
-            if (looksLikeGarbage)
+            // 1️⃣ Utiliser l'OCR déjà stocké
+            if (!string.IsNullOrWhiteSpace(ocrText))
             {
-                // 🔁 Fallback : OCR page 1 entière
-                var fullPageImage = _pdfRenderService.ConvertPageToImage(pdfBytes, 1, 300);
-                ocrText = await _ocr.ExtractTextAsync(fullPageImage);
+                var result = _parser.ParseAutoFill(ocrText);
 
-                if (string.IsNullOrWhiteSpace(ocrText))
-                {
-                    return new CandidateAutoFillDto
-                    {
-                        IsConfidenceLow = true
-                    };
-                }
+                // Si résultat fiable → STOP
+                //if (!result.IsConfidenceLow)
+                    return result;
             }
-            // 3️⃣ Parsing métier
-            return _parser.ParseAutoFill(ocrText);
+            else
+            {
+                return null;
+                
+            }
+                
         }
+
+        
 
     }
 
