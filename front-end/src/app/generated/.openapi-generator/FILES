@@ -6,6 +6,7 @@ api/authentification.service.ts
 api/branch.service.ts
 api/candidateDocuments.service.ts
 api/company.service.ts
+api/dashboard.service.ts
 api/document.service.ts
 api/files.service.ts
 api/importErrors.service.ts
@@ -26,6 +27,7 @@ model/archiveModel.ts
 model/assignMenu.ts
 model/assignSubMenu.ts
 model/branchModel.ts
+model/candidateAutoFillDto.ts
 model/changePasswordRequestDto.ts
 model/companyModel.ts
 model/countryModel.ts

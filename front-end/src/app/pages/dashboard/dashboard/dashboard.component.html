@@ -1,3 +1,52 @@
+<!-- HEADER -->
+<div class="dashboard-header">
+  <h2>Import Dashboard</h2>
 
-<app-page-header title="Dashboad" title1="Dashboad" activeitem="Users Dashboad">
-</app-page-header>
+<div class="simple-filter">
+  <label class="filter-label">Session</label>
+
+  <select
+    class="simple-select"
+    [(ngModel)]="selectedSession"
+    (change)="onSessionChange(selectedSession)">
+    <option *ngFor="let s of sessions" [value]="s">
+      {{ s }}
+    </option>
+  </select>
+</div>
+
+</div>
+
+<!-- EXAM CARDS -->
+<div class="exam-grid" *ngIf="stats">
+  <mat-card class="exam-card" *ngFor="let exam of stats.exams">
+
+    <h3>{{ exam.examLabel }}</h3>
+    <span class="exam-code">{{ exam.examCode }}</span>
+
+    <!-- Centres -->
+    <div class="section">
+      <h4>Centres</h4>
+      <p>Total: {{ exam.totalCentres }}</p>
+      <p class="success">Success: {{ exam.successCentres }}</p>
+      <p class="error">Errors: {{ exam.errorCentres }}</p>
+    </div>
+
+    <!-- Candidats -->
+    <div class="section">
+      <h4>Candidates</h4>
+      <p>Total: {{ exam.totalCandidates }}</p>
+      <p class="success">Success: {{ exam.successCandidates }}</p>
+      <p class="error">Errors: {{ exam.errorCandidates }}</p>
+    </div>
+
+    <!-- Progress -->
+    <mat-progress-bar
+      mode="determinate"
+      [value]="exam.successRate">
+    </mat-progress-bar>
+
+    <small>{{ exam.successRate }}% success</small>
+
+  </mat-card>
+</div>

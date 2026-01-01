@@ -110,7 +110,7 @@ namespace Infrastructure.Initialiser
             var menus = new[]
             {
                 // DASHBOARD & ANALYTICS
-                new { Code = "DASHBOARD_GLOBAL", Label = "Global Dashboard", Controller = "Dashboard", Path = "dashboard/global", ModuleCode = "MODULE_DASHBOARD_ANALYTICS" },
+                new { Code = "DASHBOARD_GLOBAL", Label = "Global Dashboard", Controller = "Dashboard", Path = "dashboard/sales", ModuleCode = "MODULE_DASHBOARD_ANALYTICS" },
 
                
                 // ADMINISTRATION

@@ -75,6 +75,10 @@
   border-radius: 0 !important;
 }
 
+.session-panel.mat-mdc-select-panel {
+  max-height: 260px !important;
+  overflow-y: auto !important;
+}
 
 
 

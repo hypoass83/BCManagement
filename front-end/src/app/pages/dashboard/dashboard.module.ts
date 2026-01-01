@@ -14,6 +14,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslocoRootModule } from 'src/app/transloco-root.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
+import { MaterialModule } from "src/app/materialModule/material-module/material-module.module";
 @NgModule({
   declarations: [
     DashboardComponent
@@ -30,6 +31,7 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
     AgGridModule,
     ReactiveFormsModule,
     TranslocoRootModule,
-  ],
+    MaterialModule
+],
 })
 export class DashboardModule { }

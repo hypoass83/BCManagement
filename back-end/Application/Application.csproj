@@ -25,6 +25,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Features\Dashboard\Commands\" />
+	  <Folder Include="Features\Dashboard\Validators\" />
 	  <Folder Include="Features\ImportErrors\Validators\" />
 	  <Folder Include="Features\ImportErrors\Queries\" />
 	</ItemGroup>

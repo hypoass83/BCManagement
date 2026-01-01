@@ -7,6 +7,7 @@ export * from './archiveModel';
 export * from './assignMenu';
 export * from './assignSubMenu';
 export * from './branchModel';
+export * from './candidateAutoFillDto';
 export * from './changePasswordRequestDto';
 export * from './companyModel';
 export * from './countryModel';
