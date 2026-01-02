@@ -41,12 +41,17 @@ long maxUploadSize = 500 * 1024 * 1024;
 builder.WebHost.ConfigureKestrel(options =>
 {
     options.Limits.MaxRequestBodySize = maxUploadSize; // Unlimited = null
+
+    // LONG-RUNNING REQUESTS (IMPORT / OCR)
+    options.Limits.KeepAliveTimeout = TimeSpan.FromHours(12);
+    options.Limits.RequestHeadersTimeout = TimeSpan.FromHours(12);
 });
 
 // ---- 2) ASP.NET Core Form limits ----
 builder.Services.Configure<FormOptions>(options =>
 {
     options.MultipartBodyLengthLimit = maxUploadSize;
+    
 });
 
 // ---- 3) Increase limit for Swagger (UI uploads) ----

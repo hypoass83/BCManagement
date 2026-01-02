@@ -119,8 +119,7 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("imported-batches")]
-        public async Task<IActionResult> GetImportedBatches(
-            [FromServices] GetImportedBatchesHandler handler)
+        public async Task<IActionResult> GetImportedBatches([FromServices] GetImportedBatchesHandler handler)
         {
             var batches = await handler.HandleAsync();
             return Ok(batches);

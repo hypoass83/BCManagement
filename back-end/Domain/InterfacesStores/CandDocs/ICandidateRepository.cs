@@ -29,5 +29,7 @@ namespace Domain.InterfacesStores.CandDocs
         Task LogImportedBatchAsync(string fileName, int year, string examCode, string center);
         Task<List<ImportedBatchDTO>> GetImportedBatchesAsync();
         Task<List<ImportedFilesDto>> GetImportedFilesAsync(List<string> fileNames);
+
+        Task<List<(string CandidateNumber, string CandidateName)>> GetExistingCandidatesAsync(int examYear,string examCode);
     }
 }

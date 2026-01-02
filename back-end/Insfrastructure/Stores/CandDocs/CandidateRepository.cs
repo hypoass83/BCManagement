@@ -151,6 +151,17 @@ namespace Infrastructure.Repositories.CandDocs
                 .ToListAsync();
         }
 
+        public async Task<List<(string, string)>> GetExistingCandidatesAsync(int examYear, string examCode)
+        {
+            return await _ctx.CandidateDocuments
+                .Where(d => d.Session == examYear && d.ExamCode == examCode)
+                .Select(d => new ValueTuple<string, string>(
+                    d.CandidateNumber,
+                    d.CandidateName
+                ))
+                .ToListAsync();
+        }
+
     }
 }
 

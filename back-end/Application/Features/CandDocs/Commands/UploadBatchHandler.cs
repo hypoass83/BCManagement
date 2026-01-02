@@ -88,6 +88,13 @@ namespace Application.Features.CandDocs.Commands
                     originalBytes = PdfUtils.RewritePdf(originalBytes);
                 }
 
+                var existingCandidates = await _repo.GetExistingCandidatesAsync(request.ExamYear,request.ExamCode);
+
+                var existingSet = new HashSet<string>(
+                    existingCandidates.Select(c =>
+                        $"{Normalize(c.CandidateNumber)}|{Normalize(c.CandidateName)}"
+                    )
+                );
 
                 // ----------------------------------------------------------
                 // 2. SPLIT INTO SINGLE PAGES (PAGE 1 + PAGE 2)
@@ -152,6 +159,22 @@ namespace Application.Features.CandDocs.Commands
                     // 4. EXTRACT REAL CANDIDATE INFO USING THE PARSER
                     // ----------------------------------------------------------
                     CandidateInfo info = _candidateParser.Parse(ocrText);
+
+                    var candidateKey = $"{Normalize(info.CandidateNumber)}|{Normalize(info.CandidateName)}";
+
+                    if (existingSet.Contains(candidateKey))
+                    {
+                        _logger.LogWarning(
+                            "Duplicate candidate skipped: {CIN} - {Name}",
+                            info.CandidateNumber,
+                            info.CandidateName
+                        );
+
+                        // 👉 passer au candidat suivant (PAS de PDF, PAS de DB)
+                        continue;
+                    }
+
+                    existingSet.Add(candidateKey);
 
                     // ----------------------------------------------------------
                     // 5. VALIDATION: TRUE VALIDITY BASED ON EXTRACTED DATA
@@ -292,6 +315,14 @@ namespace Application.Features.CandDocs.Commands
             //}
             return result;
             
+        }
+
+        private static string Normalize(string? value)
+        {
+            return value?
+                .Trim()
+                .ToUpperInvariant()
+                .Replace("  ", " ") ?? string.Empty;
         }
 
         private bool ValidateExtractedInfo(CandidateInfo info, UploadBatchRequestDTO req)
