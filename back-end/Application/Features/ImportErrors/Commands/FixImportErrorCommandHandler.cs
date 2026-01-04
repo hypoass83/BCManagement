@@ -54,9 +54,12 @@ namespace Application.Features.ImportErrors.Commands
 
                 if (request.CentreCode != request.ExpectedCentreCode)
                 {
-                    throw new BusinessException(
-                        "Centre mismatch. You are not allowed to change the centre."
-                    );
+                    if (!request.ForceCentreCorrection)
+                    {
+                        throw new BusinessException(
+                            "Centre mismatch. Enable centre correction to proceed."
+                        );
+                    }
                 }
 
                 // CIN LENGTH
@@ -106,11 +109,24 @@ namespace Application.Features.ImportErrors.Commands
                 // 2️⃣ Suppression des erreurs
                 if (document.ImportErrors?.Any() == true)
                 {
+                    //foreach (var err in document.ImportErrors)
+                    //{
+                    //    err.IsResolved = true;
+                    //    err.ResolvedOn = DateTime.UtcNow;
+                    //}
                     _context.ImportErrors.RemoveRange(document.ImportErrors);
                 }
 
                 // 3️⃣ Déplacement du fichier PDF
-                MovePdfFromErrorToSuccess(document);
+                MovePdfFromErrorToSuccess(document, request.CentreCode);
+
+                // Optional but GOLD for audit
+                //document.CorrectionMode = request.ForceCentreCorrection
+                //    ? "MANUAL_CENTRE_OVERRIDE"
+                //    : "STANDARD_FIX";
+
+                //document.CorrectedOn = DateTime.UtcNow;
+                //document.CorrectedBy = _currentUserService.UserId;
 
                 await _context.SaveChangesAsync(cancellationToken);
                 await tx.CommitAsync(cancellationToken);
@@ -125,7 +141,49 @@ namespace Application.Features.ImportErrors.Commands
             }
         }
 
-        private void MovePdfFromErrorToSuccess(CandidateDocument document)
+        private void MovePdfFromErrorToSuccess(
+    CandidateDocument document,
+    string targetCentreCode
+)
+        {
+            if (string.IsNullOrWhiteSpace(document.FilePath))
+                return;
+
+            var currentPath = document.FilePath;
+
+            if (!File.Exists(currentPath))
+                return;
+
+            var directory = Path.GetDirectoryName(currentPath)!;
+            var fileName = Path.GetFileName(currentPath);
+
+            // directory = ...\Storage\2025\7101\22240\errors
+            var parentDir = Directory.GetParent(directory); // centreCode
+            if (parentDir == null)
+                throw new InvalidOperationException("Invalid error directory structure.");
+
+            var examCentreDir = parentDir.FullName; // ...\Storage\2025\7101\22240
+            var examDir = parentDir.Parent?.FullName; // ...\Storage\2025\7101
+            if (examDir == null)
+                throw new InvalidOperationException("Invalid exam directory structure.");
+
+            var successDir = Path.Combine(
+                examDir,
+                targetCentreCode,
+                "success"
+            );
+
+            Directory.CreateDirectory(successDir);
+
+            var successPath = Path.Combine(successDir, fileName);
+
+            File.Move(currentPath, successPath, overwrite: true);
+
+            document.FilePath = successPath;
+        }
+
+
+        /*private void MovePdfFromErrorToSuccess(CandidateDocument document)
         {
             if (string.IsNullOrWhiteSpace(document.FilePath))
                 return;
@@ -147,6 +205,52 @@ namespace Application.Features.ImportErrors.Commands
             System.IO.File.Move(currentPath, successPath, overwrite: true);
 
             document.FilePath = successPath;
-        }
+        }*/
+
+        /*private void MovePdfFromErrorToSuccess(CandidateDocument document, string targetCentreCode)
+        {
+            if (string.IsNullOrWhiteSpace(document.FilePath))
+                return;
+
+            var currentPath = document.FilePath;
+
+            if (!File.Exists(currentPath))
+                return;
+
+            var parts = currentPath.Split(Path.DirectorySeparatorChar);
+
+            var errorsIndex = Array.FindIndex(parts,
+                p => p.Equals("errors", StringComparison.OrdinalIgnoreCase));
+
+            if (errorsIndex < 3)
+                throw new InvalidOperationException(
+                    $"Invalid error file path structure: {currentPath}");
+
+            var session = parts[errorsIndex - 3];
+            var examCode = parts[errorsIndex - 2];
+            var fileName = parts[^1];
+
+            // root path BEFORE "Storage"
+            var rootPath = Path.Combine(parts.Take(errorsIndex - 3).ToArray());
+
+            var successPath = Path.Combine(
+                rootPath,
+                "",
+                session,
+                examCode,
+                targetCentreCode,
+                "success",
+                fileName
+            );
+
+            var successDir = Path.GetDirectoryName(successPath)!;
+            Directory.CreateDirectory(successDir);
+
+            File.Move(currentPath, successPath, overwrite: true);
+
+            document.FilePath = successPath;
+        }*/
+
+
     }
 }

@@ -17,6 +17,9 @@ namespace Application.Features.ImportErrors.Commands
         public int ExpectedSession { get; set; }
         public string ExpectedExamCode { get; set; }
         public string ExpectedCentreCode { get; set; }
+
+        //  NEW
+        public bool ForceCentreCorrection { get; set; }
     }
 }
 

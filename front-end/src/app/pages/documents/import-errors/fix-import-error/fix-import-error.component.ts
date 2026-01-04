@@ -31,7 +31,7 @@ export class FixImportErrorComponent implements OnInit {
 
   document!: CandidateDocumentEditDto;
   form!: FormGroup;
-  
+
   apiBaseUrl = environment.apiUrl
 
   pdfUrl!: string;
@@ -55,6 +55,15 @@ export class FixImportErrorComponent implements OnInit {
     this.context = data.context;
   }
 
+  get canForceCentreCorrection(): boolean {
+  return (
+    this.form &&
+    this.form.value.centreCode &&
+    this.context?.centreCode &&
+    this.form.value.centreCode !== this.context.centreCode
+  );
+}
+
 
    ngOnInit(): void {
   this.form = this.fb.group({
@@ -62,7 +71,8 @@ export class FixImportErrorComponent implements OnInit {
     examCode: [''],
     centreCode: [''],
     candidateNumber: [''],
-    candidateName: ['']
+    candidateName: [''],
+    forceCentreCorrection: [false]
   });
 
   this.loadDetail();
@@ -134,7 +144,9 @@ submit(): void {
 
     expectedSession: this.context.session,
     expectedExamCode: this.context.examCode,
-    expectedCentreCode: this.context.centreCode
+    expectedCentreCode: this.context.centreCode,
+
+    forceCentreCorrection: this.form.value.forceCentreCorrection
   };
 
   this.manager.fixImportError(payload).subscribe({

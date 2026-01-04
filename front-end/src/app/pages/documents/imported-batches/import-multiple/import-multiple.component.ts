@@ -93,39 +93,70 @@ export class ImportMultipleComponent {
 }
 
   // -------------------------------------------------
-  // DECODAGE NOM FICHIER
-  // -------------------------------------------------
-  decodeFilename(name: string): {
+// DECODAGE NOM FICHIER
+// - separators: _ or -
+// - starts with year OR examCode
+// - strict digit lengths
+// -------------------------------------------------
+decodeFilename(name: string): {
   year: string | null,
   examCode: string | null,
   center: string | null,
   batch: string | null
 } {
-  const clean = name.replace('.pdf', '');
-  const parts = clean.split('_');
+  if (!name?.toLowerCase().endsWith('.pdf')) {
+    return { year: null, examCode: null, center: null, batch: null };
+  }
 
+  // 1️⃣ Remove extension
+  const clean = name.replace(/\.pdf$/i, '');
+
+  // 2️⃣ Normalize separators (- and _ are equivalent)
+  const normalized = clean.replace(/-/g, '_');
+
+  const parts = normalized.split('_');
+
+  // Must be exactly 4 logical blocks
   if (parts.length !== 4) {
     return { year: null, examCode: null, center: null, batch: null };
   }
 
   const [p0, p1, center, batch] = parts;
 
-  let year = '';
-  let exam = '';
-
-  if (this.isYearLike(p0)) {
-    year = p0;
-    exam = p1;
-  } else if (this.isYearLike(p1)) {
-    exam = p0;
-    year = p1;
-  } else {
-    // pas de modèle valide
+  // 3️⃣ Centre MUST be exactly 5 digits ✅
+  if (!/^\d{5}$/.test(center)) {
     return { year: null, examCode: null, center: null, batch: null };
   }
 
-  return { year, examCode: exam, center, batch };
+  // 4️⃣ Batch must be numeric
+  if (!/^\d+$/.test(batch)) {
+    return { year: null, examCode: null, center: null, batch: null };
+  }
+
+  let year = '';
+  let exam = '';
+
+  // 5️⃣ Filename must start with YEAR or EXAMCODE
+  //     both are 4 digits, year identified via isYearLike()
+  if (this.isYearLike(p0) && /^\d{4}$/.test(p1)) {
+    year = p0;
+    exam = p1;
+  } else if (this.isYearLike(p1) && /^\d{4}$/.test(p0)) {
+    year = p1;
+    exam = p0;
+  } else {
+    // does not start with year or examCode
+    return { year: null, examCode: null, center: null, batch: null };
+  }
+
+  return {
+    year,
+    examCode: exam,
+    center,
+    batch
+  };
 }
+
 
   private isYearLike(value: string): boolean {
     const n = Number(value);

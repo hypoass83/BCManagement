@@ -38,6 +38,19 @@
             class="ti-form-input w-full"
             formControlName="centreCode"
           />
+          <div *ngIf="canForceCentreCorrection"
+              class="mt-2 p-2 rounded bg-yellow-50 border border-yellow-300">
+
+            <mat-checkbox
+              formControlName="forceCentreCorrection"
+              color="warn">
+              Use this Centre Code and fix the error
+            </mat-checkbox>
+
+            <div class="text-xs text-gray-600 mt-1">
+              This will override the extracted centre and move the file to the selected centre.
+            </div>
+          </div>
         </div>
 
         <div>
@@ -73,7 +86,7 @@
           color="primary"
           class="w-full mt-3"
           type="submit"
-          [disabled]="saving">
+          [disabled]="saving || (canForceCentreCorrection && !form.value.forceCentreCorrection)">
           {{ saving ? 'Saving…' : 'Fix Error' }}
         </button>
 
