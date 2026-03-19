@@ -32,8 +32,9 @@ export class ImportErrorsComponent {
 
   columnDefs: ColDef[] = [
     { headerName: '#', valueGetter: 'node.rowIndex + 1', width: 80 },
-    { headerName: 'Candidate Name', field: 'candidateName' },
-    { headerName: 'CIN', field: 'candidateNumber' },
+    { headerName: 'File Path', field: 'filePath' },
+    //{ headerName: 'Candidate Name', field: 'candidateName' },
+    //{ headerName: 'CIN', field: 'candidateNumber' },
     { headerName: 'Field', field: 'fieldName' },
     { headerName: 'Error Type', field: 'errorType' },
     { headerName: 'Message', field: 'errorMessage', flex: 2 },

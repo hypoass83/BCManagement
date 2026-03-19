@@ -160,21 +160,52 @@ namespace Application.Features.CandDocs.Commands
                     // ----------------------------------------------------------
                     CandidateInfo info = _candidateParser.Parse(ocrText);
 
-                    var candidateKey = $"{Normalize(info.CandidateNumber)}|{Normalize(info.CandidateName)}";
+                    //var candidateKey = $"{Normalize(info.CandidateNumber)}|{Normalize(info.CandidateName)}";
 
-                    if (existingSet.Contains(candidateKey))
+                    //if (existingSet.Contains(candidateKey))
+                    //{
+                    //    _logger.LogWarning(
+                    //        "Duplicate candidate skipped: {CIN} - {Name}",
+                    //        info.CandidateNumber,
+                    //        info.CandidateName
+                    //    );
+
+                    //    // 👉 passer au candidat suivant (PAS de PDF, PAS de DB)
+                    //    continue;
+                    //}
+
+                    //existingSet.Add(candidateKey);
+
+
+                    bool hasValidIdentity = HasValidIdentity(info);
+
+                    string candidateKey = null;
+
+                    if (hasValidIdentity)
+                    {
+                        candidateKey = $"{Normalize(info.CandidateNumber)}|{Normalize(info.CandidateName)}";
+
+                        if (existingSet.Contains(candidateKey))
+                        {
+                            _logger.LogWarning(
+                                "Duplicate candidate skipped: {CIN} - {Name}",
+                                info.CandidateNumber,
+                                info.CandidateName
+                            );
+                            continue;
+                        }
+
+                        existingSet.Add(candidateKey);
+                    }
+                    else
                     {
                         _logger.LogWarning(
-                            "Duplicate candidate skipped: {CIN} - {Name}",
+                            "Candidate with missing identity detected (allowed): CIN='{CIN}', Name='{Name}'",
                             info.CandidateNumber,
                             info.CandidateName
                         );
-
-                        // 👉 passer au candidat suivant (PAS de PDF, PAS de DB)
-                        continue;
                     }
 
-                    existingSet.Add(candidateKey);
 
                     // ----------------------------------------------------------
                     // 5. VALIDATION: TRUE VALIDITY BASED ON EXTRACTED DATA
@@ -315,6 +346,12 @@ namespace Application.Features.CandDocs.Commands
             //}
             return result;
             
+        }
+
+        bool HasValidIdentity(CandidateInfo info)
+        {
+            return !string.IsNullOrWhiteSpace(info.CandidateNumber)
+                && !string.IsNullOrWhiteSpace(info.CandidateName);
         }
 
         private static string Normalize(string? value)
